@@ -424,8 +424,8 @@ function Brand() {
   return (
     <>
       <div className="auth-brand">
-        <span className="auth-mark" aria-hidden="true">С</span>
-        <span>Смена</span>
+        <img className="auth-mascot" src="/schoolboy.png" alt="" width="80" height="80" decoding="async" />
+        <span className="auth-brand-name">Смена</span>
       </div>
       <SchoolName className="auth-school-name" />
     </>

@@ -64,26 +64,38 @@
   box-shadow: 0 16px 50px rgb(25 49 37 / 9%);
 }
 
+@font-face {
+  font-family: "SmenaBrand";
+  src: url("/fonts/lato-black.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+}
+
 .auth-brand {
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin-bottom: 24px;
+  gap: 24px;
+  margin-bottom: 14px;
   color: #425bd8;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 
-.auth-mark {
-  display: grid;
-  width: 29px;
-  height: 29px;
-  place-items: center;
-  border-radius: 9px;
-  color: #fff;
-  background: #4660dd;
-  font-size: 16px;
+.auth-brand-name {
+  font-family: "SmenaBrand", "Ubuntu", "Segoe UI", sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.auth-mascot {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
 }
 
 .auth-card h1 {
@@ -181,6 +193,16 @@
 }
 
 @media (max-width: 480px) {
+  .auth-brand {
+    gap: 20px;
+  }
+  .auth-brand-name {
+    font-size: 40px;
+  }
+  .auth-mascot {
+    width: 64px;
+    height: 64px;
+  }
   .auth-page {
     padding: 16px;
   }
