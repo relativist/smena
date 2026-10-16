@@ -1,0 +1,207 @@
+{
+  "analysisDate": "2026-10-14",
+  "scope": "Read-only application analysis; benchmarks on a copied database; no schedule mutations",
+  "server": {
+    "measuredAt": "2026-10-14T12:19:54.830Z",
+    "revision": 359,
+    "groups": 74,
+    "quarters": 10,
+    "totalDays": 44548,
+    "totalSlots": 278124,
+    "totalLessons": 181323,
+    "stateResponseBytes": 60310751,
+    "stateGetMs": 1625,
+    "stateJsonParseMs": 164,
+    "fullSaveBytes": 55812913,
+    "fullSaveSerializationMs": 179,
+    "weekViewBytes": 6677,
+    "weekDays": 7,
+    "weekLessons": 21,
+    "allGroupsSameWeekLessons": 2156,
+    "catalogBytes": 89548,
+    "weekSqlRows": 30,
+    "weekSqlMs": 0.4,
+    "method": "One local app.inject GET and SQL query on a copied database; week payload is a proposed projection, not an implemented endpoint; no schedule writes"
+  },
+  "browser": {
+    "loadMs": 2676,
+    "initial": {
+      "state": [
+        {
+          "milliseconds": 1618,
+          "bodyBytes": 60310751,
+          "transferBytes": 60311051
+        }
+      ],
+      "longTasks": [
+        {
+          "start": 1792.5,
+          "duration": 154
+        },
+        {
+          "start": 1946.800000000745,
+          "duration": 199
+        },
+        {
+          "start": 2151.60000000149,
+          "duration": 361
+        }
+      ]
+    },
+    "timings": [
+      {
+        "groupName": "1А",
+        "groupMs": 57,
+        "choiceMs": 5023,
+        "slots": 25,
+        "marked": 25,
+        "allowed": 4,
+        "longTasks": [
+          {
+            "start": 2758.60000000149,
+            "duration": 4872
+          },
+          {
+            "start": 7635,
+            "duration": 78
+          }
+        ]
+      },
+      {
+        "groupName": "10А",
+        "groupMs": 271,
+        "choiceMs": 5003,
+        "slots": 42,
+        "marked": 42,
+        "allowed": 4,
+        "longTasks": [
+          {
+            "start": 8140.400000002235,
+            "duration": 4963
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "method": "One warm-browser load and one teacher-card selection per group; copied DB, no lesson writes"
+  },
+  "sqlExperiment": {
+    "query": "SELECT l.id,l.teacher_ref,l.room_ref,s.start_minute,s.duration,d.group_id\nFROM schedule_days d JOIN schedule_slots s ON s.day_id=d.id JOIN lessons l ON l.slot_id=s.id\nWHERE d.date=? AND (l.teacher_ref=? OR l.room_ref=?)",
+    "parameters": [
+      "2026-10-12",
+      "teacher-001",
+      "room-teacher-1"
+    ],
+    "before": {
+      "explain": [
+        {
+          "id": 5,
+          "parent": 0,
+          "notused": 216,
+          "detail": "SCAN l"
+        },
+        {
+          "id": 11,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 14,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH d USING INTEGER PRIMARY KEY (rowid=?)"
+        }
+      ],
+      "rows": 4,
+      "timesMs": [
+        15.75,
+        12.17,
+        11.98
+      ]
+    },
+    "after": {
+      "explain": [
+        {
+          "id": 7,
+          "parent": 0,
+          "notused": 0,
+          "detail": "MULTI-INDEX OR"
+        },
+        {
+          "id": 8,
+          "parent": 7,
+          "notused": 0,
+          "detail": "INDEX 1"
+        },
+        {
+          "id": 16,
+          "parent": 8,
+          "notused": 61,
+          "detail": "SEARCH l USING INDEX analysis_lessons_teacher (teacher_ref=?)"
+        },
+        {
+          "id": 21,
+          "parent": 7,
+          "notused": 0,
+          "detail": "INDEX 2"
+        },
+        {
+          "id": 29,
+          "parent": 21,
+          "notused": 61,
+          "detail": "SEARCH l USING INDEX analysis_lessons_room (room_ref=?)"
+        },
+        {
+          "id": 39,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH s USING INTEGER PRIMARY KEY (rowid=?)"
+        },
+        {
+          "id": 42,
+          "parent": 0,
+          "notused": 45,
+          "detail": "SEARCH d USING INTEGER PRIMARY KEY (rowid=?)"
+        }
+      ],
+      "rows": 4,
+      "timesMs": [
+        0.28,
+        0.2,
+        0.2
+      ]
+    },
+    "method": "Same-date teacher/room occupancy query, 3 runs; experimental indexes in copied DB, not installed in application"
+  },
+  "proposedBoundaries": {
+    "bootstrap": "catalogue, school settings, quarter list and versions without lessons or archive deletion blockers",
+    "week": "selected group/week geometry, lessons and scoped quarter counters",
+    "placementPreview": "one request for all visible cells; checks teacher/room occupancy on affected dates, rules and resolved room; includes revision",
+    "command": "atomic add/move/swap/edit/delete with requestId and revision; persist touched rows and return patches/counters",
+    "bulkOperations": "explicit date/group scope; heavy generation in a background job with progress"
+  },
+  "migrationOrder": [
+    "Server command validation and selective reads with equivalence checks against existing rules",
+    "Switch manual editor to bootstrap + week + placement preview + commands; bounded undo and stale-request handling",
+    "Move copy, joint lessons, replacements, calendar/bells and clearing to scoped transactions",
+    "Server aggregation for load, then background generation and publication/printing improvements"
+  ],
+  "mustPreserve": [
+    "teacher and room overlaps by actual time, across groups/shifts",
+    "subgroup membership and whole-group clashes",
+    "joint lesson mirrors and partial deletion",
+    "unavailability, suitable room type/capacity, room priority",
+    "plans, archived entries and unchanged legacy conflicts",
+    "teacher replacement origins and return behaviour",
+    "atomic writes, CSRF, same-origin, optimistic revision checks, idempotent retries",
+    "frozen published snapshots until republishing"
+  ],
+  "acceptanceTargets": {
+    "measurementStatus": "targets for the next implementation, not achieved endpoint timings",
+    "preview": "p95 <= 300 ms on local reference hardware and no multi-second browser task",
+    "command": "p95 <= 500 ms on local reference hardware for a single ordinary lesson",
+    "initialEditorData": "<= 200 KB excluding JS/CSS/images in this fixture",
+    "correctness": "equivalence to current rules for add/move/swap/edit/delete/undo/joints/absence and concurrent requests"
+  }
+}

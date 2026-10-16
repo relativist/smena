@@ -1,0 +1,131 @@
+{
+  "measuredAt": "2026-10-14T13:04:53.126Z",
+  "method": "app.inject on isolated copy, 5 samples per read/preview, original181323 lessons intact",
+  "bootstrap": {
+    "bytes": 93824,
+    "samplesMs": [
+      9.61,
+      3.16,
+      2.91,
+      2.75,
+      2.81
+    ],
+    "medianMs": 2.91,
+    "maxMs": 9.61
+  },
+  "grade-1-А": {
+    "week": {
+      "bytes": 752323,
+      "samplesMs": [
+        23.31,
+        20.42,
+        21.04,
+        18.71,
+        20.51
+      ],
+      "medianMs": 20.51,
+      "maxMs": 23.31
+    },
+    "days": 518,
+    "lessons": 2156,
+    "plans": 8,
+    "preview": {
+      "bytes": 14063,
+      "samplesMs": [
+        101.58,
+        74.2,
+        65.89,
+        55.66,
+        54.45
+      ],
+      "medianMs": 65.89,
+      "maxMs": 101.58
+    },
+    "cells": 35,
+    "allowed": 4
+  },
+  "grade-10-А": {
+    "week": {
+      "bytes": 756347,
+      "samplesMs": [
+        21.34,
+        20.45,
+        20.31,
+        20.25,
+        20.36
+      ],
+      "medianMs": 20.36,
+      "maxMs": 21.34
+    },
+    "days": 518,
+    "lessons": 2156,
+    "plans": 19,
+    "preview": {
+      "bytes": 20969,
+      "samplesMs": [
+        65.79,
+        61.34,
+        64.08,
+        62.76,
+        61.12
+      ],
+      "medianMs": 62.76,
+      "maxMs": 65.79
+    },
+    "cells": 49,
+    "allowed": 4
+  },
+  "command": {
+    "requestBytes": 2632,
+    "responseBytes": 55,
+    "deleteMs": 64.77,
+    "undoMs": 51.54,
+    "unaffectedDayIdsStable": true,
+    "publishedSnapshotsUnchanged": true,
+    "lessonCount": 181323
+  },
+  "browser": {
+    "viewport": "1920x1080",
+    "source": "isolated-copy server3036, production build, actual UI interactions",
+    "initialReadyMs": 236,
+    "teacherCardChoiceMs": {
+      "grade-1-А": 220,
+      "grade-10-А": 179
+    },
+    "addIncludingDebounceMs": 570,
+    "undoIncludingDebounceMs": 513,
+    "addCommandBytes": 2404,
+    "ordinaryEditorUsedFullState": false,
+    "checks": {
+      "greenBackgroundClickAddsLesson": true,
+      "addAndUndoLessonCounts": [
+        21,
+        22,
+        21
+      ],
+      "crossWeekMoveAndUndo": true,
+      "crossWeekChangedDays": 2,
+      "crossWeekQuarterCountsUnchanged": true,
+      "legacyClearDialogLoadsFullStateOnlyOnOpen": true,
+      "legacyDialogCloseReloadsWeek": true,
+      "documentationAndDisplaySettingsAvoidFullState": true,
+      "pageErrors": 0
+    }
+  },
+  "validation": {
+    "npmTest": {
+      "tests": 287,
+      "passed": 287,
+      "failed": 0
+    },
+    "buildPassed": true,
+    "quarterAssignmentCountsComparedToFullState": 40,
+    "quarterAssignmentCountsMatch": true,
+    "workingDatabase": {
+      "revision": 359,
+      "lessons": 181323,
+      "publishedQuarters": 10,
+      "scheduleDataChanged": false
+    }
+  }
+}

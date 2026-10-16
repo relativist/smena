@@ -1,0 +1,3 @@
+.action-label { display: inline-flex; align-items: center; justify-content: center; gap: 5px; max-width: 100%; vertical-align: middle; }
+.action-icon { display: block; width: 14px; height: 14px; flex: 0 0 14px; }
+.action-label-text { min-width: 0; }

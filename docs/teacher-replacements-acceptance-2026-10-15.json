@@ -1,0 +1,1010 @@
+{
+  "step": "8.1.5",
+  "technicalStatus": "passed",
+  "userAcceptance": "pending",
+  "schoolHardware": "not available; browser CPU emulation is not a substitute",
+  "dataset": {
+    "lessonCount": 181324,
+    "groups": 74,
+    "teachers": 131,
+    "sourceRevision": 423
+  },
+  "browser": {
+    "errors-before": {
+      "partialAcknowledgement": true,
+      "mixedRowsPreserved": true,
+      "sameChoiceNoRequest": true,
+      "previewFailureSafe": true,
+      "uncertainApplyDisabled": false,
+      "uncertainCloseDisabled": true,
+      "afterRejectedRetry": {
+        "retryVisible": 1,
+        "closeDisabled": true,
+        "applyDisabled": false
+      },
+      "errors": []
+    },
+    "errors-after": {
+      "partialAcknowledgement": true,
+      "mixedRowsPreserved": true,
+      "sameChoiceNoRequest": true,
+      "previewFailureSafe": true,
+      "uncertainApplyDisabled": true,
+      "uncertainCloseDisabled": true,
+      "afterRejectedRetry": {
+        "retryVisible": 0,
+        "closeDisabled": false,
+        "applyDisabled": false
+      },
+      "errors": []
+    },
+    "writes": {
+      "before": {
+        "revision": 427,
+        "count": 23
+      },
+      "committed": {
+        "revision": 428,
+        "count": 1
+      },
+      "publicationBefore": 6,
+      "publicationAfter": 7,
+      "publicFrozenUntilPublish": true,
+      "applyAttempts": [
+        {
+          "requestId": "6d2b3c92-4879-4def-a2fb-8198ba55342a",
+          "status": 500
+        },
+        {
+          "requestId": "6d2b3c92-4879-4def-a2fb-8198ba55342a",
+          "error": "TypeError"
+        },
+        {
+          "requestId": "6d2b3c92-4879-4def-a2fb-8198ba55342a",
+          "status": 200
+        }
+      ],
+      "undoAttempts": [
+        {
+          "requestId": "343221cb-5023-4e93-adb0-98ce94cac156",
+          "error": "TypeError"
+        },
+        {
+          "requestId": "343221cb-5023-4e93-adb0-98ce94cac156",
+          "status": 200
+        }
+      ],
+      "doubleRequests": 1,
+      "errors": []
+    },
+    "concurrency": {
+      "foreign1": {
+        "revision": 433,
+        "lessonId": "grade-10-А--4-2026-09-07-1-0",
+        "target": "teacher-106"
+      },
+      "foreign2": {
+        "revision": 434,
+        "lessonId": "grade-10-А--5-2026-09-02-0-0",
+        "target": "teacher-101"
+      },
+      "undoError": "После переназначения данные изменились. Отмена уже невозможна",
+      "applyError": "Данные изменились. Обновите предпросмотр",
+      "choicesPreservedAfterRefresh": true,
+      "foreignPreserved": true,
+      "errors": []
+    },
+    "public-ui": {
+      "counts": {
+        "studentEnglish": 23,
+        "distribution": {
+          "teacher-110": 1,
+          "teacher-111": 1,
+          "teacher-106": 1,
+          "teacher-109": 20
+        },
+        "sourceGroupEnglish": 1,
+        "targetGroupEnglish": 20,
+        "version": 7
+      },
+      "pupilPageMixedTeachers": true,
+      "teacherPageIncludes10A": true,
+      "mobile": {
+        "width": 360,
+        "scrollWidth": 360
+      }
+    },
+    "integrity": {
+      "workingRevision": 423,
+      "workingLessons": 181324,
+      "workingOperations": 0,
+      "schedule_days": {
+        "unchanged": true,
+        "count": 44548
+      },
+      "schedule_slots": {
+        "unchanged": true,
+        "count": 278124
+      },
+      "lessonNonTeacherFieldsUnchanged": true,
+      "changedRawLessonRows": 23,
+      "qaOperations": 7
+    },
+    "absence": {
+      "explicitLaunch": true,
+      "request": {
+        "teacherId": "teacher-112",
+        "startDate": "2026-10-20",
+        "endDate": "2026-10-20",
+        "groupId": "grade-10-А",
+        "subjectId": "english",
+        "ruleId": "qa-accept-absence-second"
+      },
+      "rows": 1,
+      "returnActionCount": 0,
+      "errors": []
+    }
+  },
+  "speed": {
+    "speed-1x": {
+      "cpuThrottleRate": 1,
+      "reactionFrames": [
+        {
+          "ms": 24.600000001490116,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 31.5,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 26.100000001490116,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 26.399999998509884,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 26.69999999552965,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 26.399999998509884,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 25.899999998509884,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 26.700000002980232,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 28.100000001490116,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 26,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 4.4000000059604645,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 26.899999998509884,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 26.899999998509884,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 26.80000000447035,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 26.399999998509884,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 28.5,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 31.700000002980232,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 27.599999994039536,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 28.299999997019768,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 28,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 27.399999998509884,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 35.79999999701977,
+          "value": "teacher-111",
+          "rendered": "teacher-112",
+          "pending": 1
+        },
+        {
+          "ms": 25.299999997019768,
+          "value": "teacher-112",
+          "rendered": "teacher-112",
+          "pending": 1
+        }
+      ],
+      "firstOpenMs": 320,
+      "row23": {
+        "samples": [
+          {
+            "ms": 103,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 92,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 114,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 117,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 119,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 110,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 87,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 113,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 87,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 110,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 88,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 122,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 108,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 115,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 117,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 120,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 121,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 106,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 88,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 111,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          }
+        ],
+        "medianMs": 110.5,
+        "p95Ms": 121,
+        "maxMs": 122
+      },
+      "noEndRowMs": 113,
+      "latestRapidChoicePreserved": true,
+      "applyUndoReceipts": [
+        {
+          "url": "/api/teacher-reassignments/apply?response=receipt",
+          "bytes": 96,
+          "ms": 566.5
+        },
+        {
+          "url": "/api/teacher-reassignments/K1kQfIu1q7PQ2YIIy9LJV487/undo?response=receipt",
+          "bytes": 55,
+          "ms": 103.39999999850988
+        }
+      ],
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 1103.6000000014901,
+          "ms": 59
+        }
+      ],
+      "reactionSummary20": {
+        "medianMs": 26.75000000372529,
+        "p95Ms": 31.5,
+        "maxMs": 31.700000002980232
+      }
+    },
+    "speed-4x": {
+      "cpuThrottleRate": 4,
+      "reactionFrames": [
+        {
+          "ms": 31.200000002980232,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 23.5,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 35.899999998509884,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 27.100000001490116,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 24.599999994039536,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 24.899999998509884,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 26.600000001490116,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 29.399999998509884,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 26.600000001490116,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 29.400000005960464,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 26.599999994039536,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 26.5,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 26.5,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 25.200000002980232,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 26.399999998509884,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 27.600000001490116,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 26.600000001490116,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 40.600000001490116,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 42.899999998509884,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 25.399999998509884,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 43.100000001490116,
+          "value": "teacher-110",
+          "rendered": "teacher-110",
+          "pending": 1
+        },
+        {
+          "ms": 41.599999994039536,
+          "value": "teacher-111",
+          "rendered": "teacher-111",
+          "pending": 1
+        },
+        {
+          "ms": 45,
+          "value": "teacher-112",
+          "rendered": "teacher-112",
+          "pending": 1
+        }
+      ],
+      "firstOpenMs": 385,
+      "row23": {
+        "samples": [
+          {
+            "ms": 155,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 161,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 163,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 159,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 156,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 154,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 150,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 165,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 159,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 159,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 152,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 152,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 153,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 155,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 156,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 164,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 167,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 194,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          },
+          {
+            "ms": 173,
+            "target": "teacher-110",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-110"
+          },
+          {
+            "ms": 195,
+            "target": "teacher-111",
+            "disabled": 0,
+            "checking": 1,
+            "selected": "teacher-111"
+          }
+        ],
+        "medianMs": 159,
+        "p95Ms": 194,
+        "maxMs": 195
+      },
+      "noEndRowMs": 206,
+      "latestRapidChoicePreserved": true,
+      "applyUndoReceipts": [
+        {
+          "url": "/api/teacher-reassignments/apply?response=receipt",
+          "bytes": 96,
+          "ms": 494.29999999701977
+        },
+        {
+          "url": "/api/teacher-reassignments/nUwXup6NCDFIl06kYGlYeEyp/undo?response=receipt",
+          "bytes": 55,
+          "ms": 89.30000000447035
+        }
+      ],
+      "errors": [],
+      "longTasks": [
+        {
+          "start": 725.5,
+          "ms": 92
+        },
+        {
+          "start": 960,
+          "ms": 85
+        },
+        {
+          "start": 1703.3999999985099,
+          "ms": 82
+        },
+        {
+          "start": 1890.5,
+          "ms": 61
+        },
+        {
+          "start": 2042,
+          "ms": 73
+        },
+        {
+          "start": 2769.39999999851,
+          "ms": 57
+        },
+        {
+          "start": 7028.5,
+          "ms": 52
+        },
+        {
+          "start": 8386.19999999553,
+          "ms": 69
+        }
+      ],
+      "reactionSummary20": {
+        "medianMs": 26.600000001490116,
+        "p95Ms": 40.600000001490116,
+        "maxMs": 42.899999998509884
+      }
+    }
+  },
+  "explicitSkip": {
+    "status": "Оставлено без изменений",
+    "explicitSkipVisible": true
+  },
+  "verification": {
+    "nodeTests": 333,
+    "nodeTestFailures": 0,
+    "pureReassignmentChecks": 29,
+    "buildPassed": true,
+    "trialSchoolPassed": true,
+    "independentCodeReview": "no concrete issues found",
+    "qaBrowsersAndServersStopped": true
+  },
+  "api": {
+    "format": "teacher-reassignment-acceptance-v1",
+    "overall": "passed",
+    "source": {
+      "lessons": 181324,
+      "groups": 74,
+      "teachers": 131,
+      "revision": 423,
+      "fixtureRevision": 425
+    },
+    "selectedFixture": {
+      "date": "2026-10-15",
+      "quarterId": "quarter-2026-1",
+      "scope": "partial selection in quarter",
+      "groupId": "grade-1-А",
+      "subjectId": "school:visual-arts"
+    },
+    "cases": [
+      {
+        "name": "large-context-preview",
+        "status": "passed",
+        "lessons": 181337,
+        "previewUnits": 16,
+        "candidateTeacherId": "teacher-007",
+        "durationMs": 409
+      },
+      {
+        "name": "unqualified-target-rejected",
+        "status": "passed",
+        "statusCode": 200,
+        "reason": "Преподаватель не ведёт предмет одного из уроков.",
+        "expected": "не ведёт предмет"
+      },
+      {
+        "name": "archived-target-rejected",
+        "status": "passed",
+        "statusCode": 400,
+        "error": "Преподаватель для замены отсутствует или архивирован."
+      },
+      {
+        "name": "unavailability-rejected",
+        "status": "passed",
+        "statusCode": 200,
+        "reason": "Преподаватель недоступен: Приемочная проверка.",
+        "expected": "недоступен"
+      },
+      {
+        "name": "cross-group-overlap-rejected",
+        "status": "passed",
+        "statusCode": 200,
+        "reason": "У преподавателя уже есть занятие в это время.",
+        "expected": "уже есть занятие"
+      },
+      {
+        "name": "adjacent-interval-is-allowed",
+        "status": "passed",
+        "statusCode": 200,
+        "occupiedInterval": "11:40-12:00",
+        "selectedInterval": "12:00-12:20"
+      },
+      {
+        "name": "shortened-20-minute-lesson-uses-actual-interval",
+        "status": "passed",
+        "selectedDurationMinutes": 20,
+        "adjacentDurationMinutes": 20,
+        "boundaryMinute": 720
+      },
+      {
+        "name": "joint-mirrors-grouped",
+        "status": "passed",
+        "statusCode": 200,
+        "lessonIds": [
+          "accept-joint-a",
+          "accept-joint-b"
+        ]
+      },
+      {
+        "name": "malformed-joint-rejected",
+        "status": "passed",
+        "statusCode": 200,
+        "reason": "Объединённые уроки имеют разные время, предмет или текущего преподавателя; исправьте их вместе в расписании.",
+        "mirrorCount": 2
+      },
+      {
+        "name": "subgroup-is-preserved",
+        "status": "passed",
+        "statusCode": 200,
+        "subgroups": [
+          "Подгруппа приемки"
+        ],
+        "subgroupIds": []
+      },
+      {
+        "name": "finite-quarter-boundaries-inclusive",
+        "status": "passed",
+        "statusCode": 200,
+        "returnedIds": [
+          "accept-boundary-start",
+          "grade-1-А--5-2026-09-03-3-0",
+          "grade-1-А--4-2026-09-10-3-0",
+          "grade-1-А--3-2026-09-17-3-0",
+          "grade-1-А--2-2026-09-24-3-0",
+          "grade-1-А--1-2026-10-01-3-0",
+          "grade-1-А-0-2026-10-08-3-0",
+          "grade-1-А-1-2026-10-15-3-0",
+          "accept-adjacent-source",
+          "accept-subgroup",
+          "accept-unavailable-source",
+          "accept-joint-a",
+          "accept-joint-b",
+          "accept-malformed-a",
+          "accept-malformed-b",
+          "accept-cross-source",
+          "grade-1-А-2-2026-10-22-3-0",
+          "accept-boundary-end"
+        ],
+        "included": [
+          "quarter start",
+          "quarter end"
+        ],
+        "excluded": [
+          "day after quarter end"
+        ]
+      },
+      {
+        "name": "lesson-scope-lessonIds-only",
+        "status": "passed",
+        "statusCode": 200,
+        "returnedSelectedLesson": true
+      },
+      {
+        "name": "open-ended-group-subject-without-source",
+        "status": "passed",
+        "statusCode": 200,
+        "returnedUnits": 25
+      },
+      {
+        "name": "mid-transaction-apply-failure-is-atomic",
+        "status": "passed",
+        "statusCode": 500,
+        "lessonsSlotsDaysPublicationsAndRevisionUnchanged": true
+      },
+      {
+        "name": "single-selection-apply-isolation",
+        "status": "passed",
+        "changedLessonCount": 1,
+        "mirrorCount": 1,
+        "durationMs": 456,
+        "publicationStable": true,
+        "slotAndDayRowsStable": true
+      },
+      {
+        "name": "undo-restores-source-data",
+        "status": "passed",
+        "durationMs": 33,
+        "allLessonRowsRestored": true
+      },
+      {
+        "name": "stale-revision-rejected",
+        "status": "passed",
+        "statusCode": 409
+      },
+      {
+        "name": "joint-mirror-apply-and-undo",
+        "status": "passed",
+        "mirrorCount": 2,
+        "teacherId": "teacher-002"
+      }
+    ],
+    "elapsedMs": 14952,
+    "integrity": "ok"
+  },
+  "apiScenarioCount": 18,
+  "sourceFileHashes": {
+    "server/app.ts": "4956e68d06ccf32357356c43fb8408a537bcd760a6f2de8055f069015d556698",
+    "shared/teacherReassignment.ts": "50e3b56ea55a1b00f7271d7fbfeb2c61604a4084a0de4085b69b769c801fcc8b",
+    "src/TeacherReassignmentsPage.tsx": "bb54c421414735c819a8f89847e8c959ce163e775baf2916b7f6bec9163cd8b8",
+    "scripts/verify-teacher-reassignment-acceptance.mjs": "86407e284063838d95a035d9f85b519616acb5bc6ccda2462829dd60da5f8ea5"
+  },
+  "workingDatabaseAfter": {
+    "revision": 423,
+    "lessons": 181324,
+    "reassignmentOperations": 0
+  },
+  "completedAt": "2026-10-15T14:40:36.362977+00:00"
+}

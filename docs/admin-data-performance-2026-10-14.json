@@ -1,0 +1,236 @@
+{
+  "measuredAt": "2026-10-14T13:47:39.085Z",
+  "method": "app.inject on private isolated 181323-lesson copy; 3 samples per endpoint; no schedule mutations",
+  "catalog": {
+    "bytes": 93801,
+    "samplesMs": [
+      9.44,
+      3.09,
+      2.97
+    ],
+    "medianMs": 3.09
+  },
+  "plans": {
+    "bytes": 520106,
+    "samplesMs": [
+      14.95,
+      11.58,
+      13.98
+    ],
+    "medianMs": 13.98
+  },
+  "bells": {
+    "bytes": 93801,
+    "samplesMs": [
+      2.53,
+      2.45,
+      2.78
+    ],
+    "medianMs": 2.53
+  },
+  "calendar": {
+    "bytes": 93801,
+    "samplesMs": [
+      2.91,
+      3.49,
+      3.09
+    ],
+    "medianMs": 3.09
+  },
+  "teacherLoadDraft": {
+    "bytes": 58768,
+    "samplesMs": [
+      65.84,
+      56.24,
+      52.81
+    ],
+    "medianMs": 56.24,
+    "teacherRows": 131
+  },
+  "teacherLoadDetail": {
+    "bytes": 16481,
+    "samplesMs": [
+      45.81,
+      53.02,
+      47.26
+    ],
+    "medianMs": 47.26
+  },
+  "teacherLoadPublished": {
+    "bytes": 58903,
+    "samplesMs": [
+      49.21,
+      42.5,
+      43.25
+    ],
+    "medianMs": 43.25
+  },
+  "reassignmentIndex": {
+    "bytes": 557,
+    "samplesMs": [
+      77.43,
+      75.86,
+      76.18
+    ],
+    "medianMs": 76.18
+  },
+  "reassignmentFiltered": {
+    "bytes": 26261,
+    "samplesMs": [
+      3.29,
+      3.06,
+      2.8
+    ],
+    "medianMs": 3.06
+  },
+  "printIndex": {
+    "bytes": 52570,
+    "samplesMs": [
+      267.18,
+      3.27,
+      2.89
+    ],
+    "medianMs": 3.27
+  },
+  "printPreview": {
+    "bytes": 24072,
+    "samplesMs": [
+      27.86,
+      16.51,
+      14.25
+    ],
+    "medianMs": 16.51
+  },
+  "studentIndex": {
+    "bytes": 490708,
+    "samplesMs": [
+      686.49,
+      1.96,
+      1.88
+    ],
+    "medianMs": 1.96
+  },
+  "studentSelected": {
+    "bytes": 81898,
+    "samplesMs": [
+      22.77,
+      0.58,
+      0.38
+    ],
+    "medianMs": 0.58
+  },
+  "teacherIndex": {
+    "bytes": 910773,
+    "samplesMs": [
+      1104.29,
+      3.17,
+      3.3
+    ],
+    "medianMs": 3.3
+  },
+  "teacherSelected": {
+    "bytes": 48407,
+    "samplesMs": [
+      37.25,
+      0.46,
+      0.34
+    ],
+    "medianMs": 0.46
+  },
+  "clearPreview": {
+    "bytes": 34,
+    "samplesMs": [
+      11.97,
+      5.29,
+      5.02
+    ],
+    "medianMs": 5.29
+  },
+  "publicationPreview": {
+    "bytes": 460,
+    "samplesMs": [
+      374.61,
+      352.65,
+      325.79
+    ],
+    "medianMs": 352.65
+  },
+  "database": {
+    "revision": 360,
+    "lessons": 181323
+  },
+  "validation": {
+    "automated": {
+      "tests": 298,
+      "pass": 298,
+      "fail": 0
+    },
+    "generationJobsChecksPassed": true,
+    "buildPassed": true,
+    "databaseUsedForBrowserChecks": "private copy only",
+    "largeQuarterPersistence": {
+      "method": "stress persistence on isolated copy only: preserved lesson content, assigned new IDs to all quarter lessons to exercise a large replacement; no generator calculation",
+      "quarterLessons": 16601,
+      "oldAndNewIds": 33202,
+      "applyMs": 1136.91,
+      "status": 200,
+      "responseBytes": 74,
+      "lessonCount": 181323,
+      "unaffectedDayIdsStable": true,
+      "publishedSnapshotsUnchanged": true
+    },
+    "workingDatasetLessonCountAfter": 181323,
+    "workingPublishedQuartersAfter": 10
+  },
+  "browser": {
+    "viewport": "1920x1080",
+    "adminRoutes": [
+      "teacher-load",
+      "catalog",
+      "plans",
+      "calendar",
+      "bells",
+      "teacher-replacements",
+      "schedule-print"
+    ],
+    "allRoutesReady": true,
+    "fullStateRequests": 0,
+    "pageErrors": 0,
+    "teacherLoad": {
+      "teachers": 131,
+      "lazyDetailStatus": 200,
+      "detailResponseCharacters": 15091,
+      "weekTableColumns": 8
+    },
+    "plans": {
+      "selectedQuarterOnly": true,
+      "switchQuarterStatus": 200,
+      "visiblePlans": 74,
+      "olderQuarterResponseCharacters": 522284
+    },
+    "print": {
+      "group": "10А",
+      "week": "2026-10-12",
+      "status": 200,
+      "a4Pages": 1,
+      "requestBytes": 113,
+      "responseCharacters": 12298
+    },
+    "generation": {
+      "oneGroupRecalculationCompleted": true,
+      "appliedToCopy": true,
+      "applyStatus": 200,
+      "applyAndWeekRefreshMs": 883,
+      "applyResponseBytes": 74,
+      "visibleWeekLessons": 21,
+      "schoolLessonCountAfter": 181323,
+      "allSchoolStartGroups": 74,
+      "startRequestBytes": 1021,
+      "otherApiDuringAllSchoolCalculationMs": 4.1,
+      "cancelAndDialogCloseMs": 116,
+      "cancelStatus": 200,
+      "cancelled": true,
+      "scheduleSentToBrowser": false
+    }
+  }
+}

@@ -1,0 +1,192 @@
+.admin-workspace {
+  min-height: 100vh;
+  padding-left: 48px;
+}
+
+.admin-rail {
+  position: fixed;
+  z-index: 60;
+  inset: 0 auto 0 0;
+  width: 48px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+  border-right: 1px solid #e6e9ef;
+  box-shadow: 3px 0 16px rgb(29 43 75 / 5%);
+  transition: width 160ms ease;
+}
+
+.admin-rail-head {
+  height: 46px;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 9px;
+  justify-content: flex-start;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.admin-rail-logo {
+  width: 0;
+  height: 28px;
+  min-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  display: none;
+  place-items: center;
+  border-radius: 7px;
+  color: white;
+  background: #4260d5;
+}
+
+.admin-rail-brand,
+.admin-rail-section,
+.admin-rail-item > span,
+.admin-rail-item > svg:last-child {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 100ms ease;
+}
+
+.admin-rail-brand {
+  display: none;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: -0.4px;
+}
+
+.admin-rail-toggle {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  display: grid;
+  place-items: center;
+  margin-left: 0;
+  order: -1;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  color: #667187;
+  background: transparent;
+  cursor: pointer;
+}
+
+.admin-rail-toggle:hover,
+.admin-rail-toggle:focus-visible {
+  color: #344b9f;
+  background: #eef1fb;
+}
+
+.admin-rail-nav {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 8px 5px;
+}
+
+.admin-rail-section {
+  display: block;
+  height: 24px;
+  padding: 9px 8px 2px;
+  color: #8a94a6;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.admin-rail-item {
+  width: 37px;
+  min-height: 37px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 2px 0;
+  padding: 0 9px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 7px;
+  color: #556176;
+  background: transparent;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.admin-rail-item > svg:first-child {
+  flex: 0 0 19px;
+}
+
+.admin-rail-item > span:first-of-type {
+  flex: 1;
+  font-size: 12px;
+}
+
+.admin-rail-item > svg:last-child {
+  flex: 0 0 14px;
+  margin-left: auto;
+}
+
+.admin-rail-item:hover:not(:disabled),
+.admin-rail-item:focus-visible:not(:disabled) {
+  color: #344b9f;
+  background: #f0f3fc;
+  outline: none;
+}
+
+.admin-rail-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-rail-item:disabled > span {
+  opacity: 0.65;
+}
+
+.admin-rail-soon {
+  flex: 0 0 auto !important;
+  padding: 2px 5px;
+  border-radius: 8px;
+  color: #7c8799;
+  background: #f0f2f6;
+  font-size: 9px !important;
+}
+
+.admin-rail-footer {
+  padding: 7px 5px 9px;
+  border-top: 1px solid #edf0f5;
+}
+
+.admin-rail-user {
+  display: block;
+  overflow: hidden;
+  max-height: 0;
+  padding: 0 8px;
+  color: #8993a5;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: max-height 100ms ease, padding 100ms ease;
+}
+
+.admin-workspace.nav-open .admin-rail,
+/* Hover and keyboard focus open the menu; the button never pins it. */
+.admin-workspace.nav-open .admin-rail { width: 230px; }
+.admin-workspace.nav-open .admin-rail-head { justify-content: flex-start; }
+.admin-workspace.nav-open .admin-rail-logo { display: grid; width: 28px; min-width: 28px; opacity: 1; }
+.admin-workspace.nav-open .admin-rail-brand { display: block; }
+.admin-workspace.nav-open :is(.admin-rail-brand, .admin-rail-section, .admin-rail-item > span, .admin-rail-item > svg:last-child) { opacity: 1; pointer-events: auto; }
+.admin-workspace.nav-open .admin-rail-item { width: 100%; }
+.admin-workspace.nav-open .admin-rail-user { max-height: 28px; padding: 4px 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-rail,
+  .admin-rail * {
+    transition: none !important;
+  }
+}

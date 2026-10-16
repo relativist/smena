@@ -1,0 +1,141 @@
+body.teacher-load-view { margin: 0; overflow-x: hidden; overflow-y: auto; }
+body.teacher-load-view *, body.teacher-load-view *::before, body.teacher-load-view *::after { box-sizing: border-box; }
+.teacher-load-page { min-height: 100vh; color: #253047; background: #f5f6fa; font: 14px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.teacher-load-page button, .teacher-load-page input, .teacher-load-page select { font: inherit; }
+.teacher-load-page button, .teacher-load-page select { cursor: pointer; }
+.teacher-load-page :focus-visible { outline: 3px solid #91a8ff; outline-offset: 2px; }
+.teacher-load-main { display: block; height: auto; overflow: visible; gap: 0; width: min(1320px, calc(100% - 48px)); margin: 0 auto; padding: 34px 0 48px; }
+.teacher-load-intro { margin-bottom: 22px; }
+.teacher-load-eyebrow { margin: 0 0 7px; color: #5269c7; text-transform: uppercase; letter-spacing: .12em; font-size: 11px; font-weight: 750; }
+.teacher-load-intro h1 { margin: 0 0 8px; font-size: clamp(27px, 4vw, 35px); line-height: 1.15; letter-spacing: -.04em; }
+.teacher-load-intro > p:last-child { max-width: 760px; margin: 0; color: #778399; line-height: 1.5; }
+.teacher-load-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; padding: 16px; background: #fff; border: 1px solid #e7eaf1; border-radius: 13px; box-shadow: 0 4px 18px #1f2c4510; }
+.teacher-load-controls > label { display: flex; flex: 0 1 170px; flex-direction: column; gap: 6px; min-width: 145px; color: #68748a; font-size: 12px; font-weight: 650; }
+.teacher-load-controls .teacher-load-source { flex-basis: 225px; }
+.teacher-load-controls .teacher-load-search { flex: 1 1 190px; }
+.teacher-load-controls > label input, .teacher-load-controls > label select { width: 100%; min-width: 0; height: 40px; padding: 0 10px; color: #253047; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font-weight: 550; }
+.teacher-load-refresh { height: 40px; padding: 0 14px; color: #fff; background: #5269c7; border: 1px solid #5269c7; border-radius: 8px; font-weight: 700; }
+.teacher-load-refresh:hover:not(:disabled) { background: #4259b7; }
+.teacher-load-refresh:disabled { opacity: .65; cursor: wait; }
+.teacher-load-periods { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 16px 2px 6px; color: #58657b; font-size: 12px; }
+.teacher-load-periods strong { color: #34415a; }
+.teacher-load-publication-meta { margin: 0 2px 9px; color: #7a8599; font-size: 11px; }
+.teacher-load-footer { margin-top: 14px; }
+.teacher-load-footnote { margin: 0 2px 12px; color: #8791a2; font-size: 11px; line-height: 1.45; }
+.teacher-load-table-wrap { max-width: 100%; min-height: 220px; overflow: auto; background: #fff; border: 1px solid #e7eaf1; border-radius: 11px; box-shadow: 0 3px 14px #1f2c4508; }
+.teacher-load-table { width: 100%; min-width: 760px; border-collapse: collapse; text-align: left; }
+.teacher-load-table th, .teacher-load-table td { padding: 11px 12px; border-bottom: 1px solid #eef0f4; vertical-align: middle; }
+.teacher-load-table tbody tr { height: 72px; }
+.teacher-load-table thead th { position: sticky; top: 0; z-index: 1; color: #657188; background: #f9fafe; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.teacher-load-table tbody tr:last-child > * { border-bottom: 0; }
+.teacher-load-table tbody tr:hover { background: #fafbff; }
+.teacher-load-table tbody th { min-width: 190px; color: #34415a; font-weight: 650; }
+.teacher-load-table tbody tr.is-archived th { color: #8892a3; }
+.teacher-load-sort { padding: 0; color: inherit; background: none; border: 0; font: inherit; text-align: left; white-space: nowrap; }
+.teacher-load-sort:hover { color: #4159bd; }
+.teacher-load-name { display: inline-flex; align-items: center; gap: 8px; padding: 0; color: inherit; background: none; border: 0; font-weight: inherit; text-align: left; }
+.teacher-load-name:hover { color: #4159bd; }
+.teacher-load-name small { padding: 3px 6px; color: #7e8798; background: #f0f2f6; border-radius: 20px; font-size: 10px; font-weight: 600; }
+.teacher-load-metric { padding: 0; color: #68748a; background: none; border: 0; text-align: left; white-space: nowrap; }
+.teacher-load-metric strong { color: #34415a; font-size: 15px; }
+.teacher-load-metric span { color: #8993a4; font-size: 11px; }
+.teacher-load-metric:hover strong { color: #4159bd; }
+.teacher-load-no-rows, .teacher-load-loading { padding: 22px; color: #818ba0; text-align: center; }
+.teacher-load-message { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 12px 0; padding: 12px 14px; color: #5d6880; background: #fff; border: 1px solid #e7eaf1; border-radius: 9px; line-height: 1.45; }
+.teacher-load-message.is-warning { color: #785f35; background: #fffaf0; border-color: #f1e1bd; }
+.teacher-load-message.is-error { color: #93434e; background: #fff7f7; border-color: #edd4d7; }
+.teacher-load-message button { flex: 0 0 auto; padding: 7px 10px; color: #4159bd; background: #fff; border: 1px solid #dfe4ed; border-radius: 7px; font-weight: 650; }
+.teacher-load-footnote { margin-top: 12px; }
+.teacher-load-table th:first-child { position: sticky; left: 0; width: 270px; min-width: 240px; background: #fff; z-index: 2; box-shadow: 1px 0 #e7eaf1; }
+.teacher-load-table thead th:first-child { background: #f9fafe; z-index: 3; }
+.teacher-load-table thead th > small { display: block; max-width: 125px; margin-top: 5px; color: #8a94a5; font-size: 10px; font-weight: 500; white-space: normal; line-height: 1.3; }
+.teacher-load-table .teacher-load-month-total { background: #f3f6ff; border-left: 1px solid #e1e7f7; }
+.teacher-load-metric { display: block; width: 100%; min-width: 96px; }
+.teacher-load-metric .teacher-load-metric-top { display: block; color: #68748a; font-size: 12px; }
+.teacher-load-red { --load-color: #bf4148; }
+.teacher-load-yellow { --load-color: #a57612; }
+.teacher-load-blue { --load-color: #4159bd; }
+.teacher-load-green { --load-color: #23835a; }
+.teacher-load-unavailable { --load-color: #8993a4; }
+.teacher-load-metric .teacher-load-percent { display: block; margin-top: 4px; color: var(--load-color); font-size: 13px; font-weight: 650; }
+.teacher-load-metric .teacher-load-bar { display: block; width: 75px; height: 3px; margin-top: 5px; overflow: hidden; border-radius: 3px; background: #e8ecf6; }
+.teacher-load-bar i { display: block; height: 100%; border-radius: inherit; background: var(--load-color); }
+.teacher-load-metric .teacher-load-events { display: block; margin-top: 5px; font-size: 10px; }
+.teacher-load-metric .teacher-load-incomplete { display: block; margin-top: 4px; color: #956b36; font-size: 10px; }
+.teacher-load-detail-calculation { margin: 12px 22px 4px; color: #788398; font-size: 11px; line-height: 1.45; }
+.teacher-load-detail-groups { margin: 12px 22px; padding: 10px 12px; background: #f8f9fc; border: 1px solid #e9edf4; border-radius: 8px; }
+.teacher-load-detail-groups h3 { margin: 0 0 8px; color: #55627a; font-size: 12px; font-weight: 650; }
+.teacher-load-detail-groups > p { margin: 0; color: #8791a2; font-size: 12px; }
+.teacher-load-group-list { display: flex; flex-wrap: wrap; gap: 6px; max-height: 104px; overflow-y: auto; margin: 0; padding: 0; list-style: none; }
+.teacher-load-group-list li { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; padding: 5px 8px; color: #34415a; background: #fff; border: 1px solid #e3e8f1; border-radius: 6px; }
+.teacher-load-group-list strong { min-width: 0; overflow-wrap: anywhere; font-size: 12px; font-weight: 650; }
+.teacher-load-group-list span { flex-shrink: 0; color: #788398; font-size: 11px; }
+.teacher-load-color-legend { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; margin: 0 2px; font-size: 11px; }
+.teacher-load-color-legend > span:not(.teacher-load-info) { display: inline-flex; align-items: center; gap: 5px; color: var(--load-color); }
+.teacher-load-color-legend > span:not(.teacher-load-info)::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--load-color); }
+.teacher-load-info { display: inline-flex; }
+.teacher-load-info button { display: grid; place-items: center; width: 20px; height: 20px; padding: 0; color: #68748a; background: #fff; border: 1px solid #cbd2df; border-radius: 50%; font-weight: 700; }
+.teacher-load-info button:hover { color: #4159bd; border-color: #91a8ff; }
+.teacher-load-info [role="tooltip"] { position: absolute; left: 0; bottom: calc(100% + 8px); z-index: 3; width: min(360px, 100%); padding: 12px 14px; color: #34415a; background: #fff; border: 1px solid #dfe4ed; border-radius: 9px; box-shadow: 0 6px 24px #19243c20; font-size: 12px; line-height: 1.5; visibility: hidden; }
+.teacher-load-info:hover [role="tooltip"], .teacher-load-info:focus-within [role="tooltip"] { visibility: visible; }
+.teacher-load-detail-summary .teacher-load-detail-percent strong { color: var(--load-color); }
+.teacher-load-metric.teacher-load-extra .teacher-load-percent, .teacher-load-detail-summary .teacher-load-extra strong { font-weight: 800; }
+.teacher-load-non-study { display: block; max-width: 120px; padding: 0; color: #7c8799; background: none; border: 0; font-size: 11px; line-height: 1.4; text-align: left; }
+.teacher-load-non-study:hover { color: #4159bd; }
+.teacher-load-non-study small { display: block; margin-top: 4px; }
+.teacher-load-dialog { width: min(1240px, calc(100% - 28px)); max-width: none; max-height: min(90vh, 1000px); padding: 0; overflow: hidden; color: #253047; background: #fff; border: 1px solid #e2e6ef; border-radius: 14px; box-shadow: 0 20px 70px #19243c35; }
+.teacher-load-dialog::backdrop { background: #18223875; backdrop-filter: blur(2px); }
+.teacher-load-dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 20px 22px 14px; border-bottom: 1px solid #eef0f4; }
+.teacher-load-dialog-header p { margin: 0 0 4px; color: #7c879a; font-size: 11px; font-weight: 650; text-transform: uppercase; letter-spacing: .08em; }
+.teacher-load-dialog-header h2 { margin: 0; font-size: 22px; letter-spacing: -.03em; }
+.teacher-load-dialog-header > button { width: 32px; height: 32px; color: #68748a; background: #f5f6fa; border: 0; border-radius: 8px; font-size: 22px; line-height: 1; }
+.teacher-load-detail-period { margin: 11px 22px; color: #647188; font-size: 12px; }
+.teacher-load-detail-summary { display: flex; flex-wrap: wrap; gap: 7px 17px; padding: 11px 22px; color: #68748a; background: #f8f9fc; border-block: 1px solid #edf0f5; font-size: 12px; }
+.teacher-load-detail-summary strong { color: #34415a; font-size: 14px; }
+.teacher-load-empty-detail { margin: 0; padding: 8px 22px 12px; color: #8791a2; font-size: 12px; }
+.teacher-load-week-scroll { max-height: 48vh; overflow: auto; margin: 14px 22px 16px; border: 1px solid #e5eaf2; border-radius: 8px; }
+.teacher-load-week-grid { width: 100%; min-width: 980px; table-layout: fixed; border-collapse: separate; border-spacing: 0; text-align: left; }
+.teacher-load-grid-caption { padding: 8px 10px; color: #68748a; background: #f8f9fc; font-size: 11px; text-align: left; }
+.teacher-load-week-grid th, .teacher-load-week-grid td { padding: 8px; border-right: 1px solid #e8ecf3; border-bottom: 1px solid #e8ecf3; vertical-align: top; }
+.teacher-load-week-grid tr > :last-child { border-right: 0; }
+.teacher-load-week-grid tbody tr:last-child > * { border-bottom: 0; }
+.teacher-load-week-grid thead th { position: sticky; top: 0; z-index: 2; color: #52617b; background: #f6f8fc; font-size: 12px; font-weight: 650; }
+.teacher-load-week-grid thead th:first-child { left: 0; width: 94px; z-index: 3; }
+.teacher-load-grid-week { position: sticky; left: 0; z-index: 1; background: #f8f9fc; }
+.teacher-load-grid-week strong { color: #536381; font-size: 11px; font-weight: 650; line-height: 1.45; }
+.teacher-load-grid-week small { display: block; margin-top: 6px; color: #8a94a5; font-size: 10px; font-weight: 500; overflow-wrap: anywhere; }
+.teacher-load-week-grid .is-weekend { background: #fcfaf5; }
+.teacher-load-week-grid .is-outside { background: #f2f4f8; }
+.teacher-load-grid-date { display: block; margin-bottom: 6px; color: #8692a5; font-size: 10px; font-variant-numeric: tabular-nums; }
+.is-outside .teacher-load-grid-date { color: #b0b7c4; }
+.teacher-load-grid-empty { color: #bdc4d0; font-size: 12px; }
+.teacher-load-grid-lesson { margin-top: 6px; padding: 6px; color: #34415a; background: #fff; border: 1px solid #e2e7f0; border-radius: 6px; }
+.teacher-load-grid-lesson-title { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: baseline; }
+.teacher-load-grid-lesson-title time { color: #536381; font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.teacher-load-grid-lesson-title strong { overflow-wrap: anywhere; font-size: 11px; font-weight: 650; }
+.teacher-load-grid-lesson-meta { display: flex; gap: 5px; justify-content: space-between; margin-top: 4px; color: #8490a3; font-size: 10px; }
+.teacher-load-grid-lesson-meta > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.teacher-load-grid-room { flex-shrink: 0; }
+.teacher-load-dialog-footer { display: flex; justify-content: flex-end; padding: 12px 22px; border-top: 1px solid #eef0f4; }
+.teacher-load-dialog-footer button { padding: 8px 14px; color: #4159bd; background: #f7f8fd; border: 1px solid #dfe4ed; border-radius: 7px; font-weight: 650; }
+@media (max-width: 700px) {
+  .teacher-load-main { width: calc(100% - 26px); padding: 20px 0 30px; }
+  .teacher-load-intro { margin-bottom: 15px; }
+  .teacher-load-intro h1 { font-size: 25px; }
+  .teacher-load-intro > p:last-child { font-size: 13px; }
+  .teacher-load-eyebrow { display: none; }
+  .teacher-load-controls { gap: 10px; padding: 12px; }
+  .teacher-load-controls > label, .teacher-load-controls .month-year-picker { flex: 1 1 calc(50% - 6px); min-width: 130px; }
+  .teacher-load-controls .teacher-load-source, .teacher-load-controls .teacher-load-search { flex-basis: 100%; }
+  .teacher-load-refresh { flex: 1 1 calc(50% - 6px); }
+  .teacher-load-periods { flex-direction: column; gap: 5px; }
+  .teacher-load-table { min-width: 700px; }
+  .teacher-load-table th:first-child { width: 190px; min-width: 170px; }
+  .teacher-load-detail-calculation { margin-inline: 16px; }
+  .teacher-load-detail-groups { margin-inline: 16px; }
+  .teacher-load-dialog-header { padding: 16px 16px 12px; }
+  .teacher-load-detail-period { margin-inline: 16px; }
+  .teacher-load-detail-summary { padding-inline: 16px; gap: 7px 12px; }
+  .teacher-load-week-scroll { margin-inline: 16px; }
+  .teacher-load-dialog-footer { padding-inline: 16px; }
+}

@@ -1,0 +1,51 @@
+.schedule-group-select {
+  display: grid;
+  grid-template-columns: auto minmax(90px, 130px);
+  align-items: center;
+  gap: 5px 9px;
+  min-width: 0;
+}
+.schedule-group-select__label { grid-column: 1 / -1; color: #68758a; font-size: 11px; }
+.schedule-group-select > select {
+  min-width: 0;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid #dbe1ec;
+  border-radius: 7px;
+  color: #35415a;
+  background: #fff;
+  font: inherit;
+}
+.schedule-group-select__variants {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: visible;
+  min-width: 0;
+  gap: 5px;
+  grid-column: 1 / -1;
+  max-width: 100%;
+}
+.schedule-group-select__variants button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  min-width: 34px;
+  min-height: 30px;
+  padding: 3px 9px;
+  border: 1px solid #dbe1ec;
+  border-radius: 7px;
+  color: #43516a;
+  background: #fff;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.schedule-group-select__variants button:hover { border-color: #9aa9dd; background: #f6f8ff; }
+.schedule-group-select__variants button.is-selected,
+.schedule-group-select__variants button[aria-pressed="true"] { border-color: #5368d8; color: #fff; background: #5368d8; }
+.schedule-group-select__variants > span { color: #79859a; font-size: 12px; }
+@media (min-width: 900px) {
+  .schedule-group-select { grid-template-columns: auto 120px minmax(0, 1fr); }
+  .schedule-group-select__label { grid-column: 1 / 2; }
+  .schedule-group-select > select { grid-column: 2; }
+  .schedule-group-select__variants { grid-column: 3; align-self: center; }
+}

@@ -1,0 +1,10 @@
+html body,
+html body :is(.admin-workspace, .students-page, .teachers-page, .auth-page, .catalog-page, .curricula-page, .bell-page, .teacher-load-page, .calendar-page, .display-settings-page, .documentation-page, .teacher-reassignments-page, .sp-page) {
+  background-image: url('/school-pattern.svg');
+  background-repeat: repeat;
+  background-size: 420px 320px;
+}
+
+@media print {
+  html body, html body * { background-image: none !important; }
+}

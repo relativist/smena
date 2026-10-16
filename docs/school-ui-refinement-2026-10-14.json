@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-14",
+  "school": "Лицей №67",
+  "data": {
+    "teachers": 131,
+    "uniqueTeacherSurnames": 131,
+    "curriculaBefore": 740,
+    "quarterApplications": 110,
+    "reusablePlans": 11,
+    "quarters": 10,
+    "lessonsAtRefinement": 181323,
+    "normalizedAssignmentTargets": 1904,
+    "addedPlans": 0,
+    "addedAssignments": 0,
+    "preservedPlanAndAssignmentIds": true,
+    "backup": "backups/pre-school-ui-refinement-2026-10-14.sqlite"
+  },
+  "verification": {
+    "build": "passed",
+    "nodeTests": 300,
+    "planAndArchiveTestsAfterFinalEdit": 8,
+    "browserConsoleErrors": 0,
+    "databaseIntegrity": "ok",
+    "normalizerIdempotent": true,
+    "qaLessonStructureChanges": 0
+  },
+  "browser": {
+    "scheduleSelectedVariant": "5В",
+    "planTooltipInitiallyOpen": false,
+    "publicationTooltipInitiallyOpen": false,
+    "archiveQuarterOptions": {
+      "before": 10,
+      "archived": 9,
+      "restored": 10
+    },
+    "plansInCurrentQuarter": 11,
+    "newPlanNames": [
+      "Новый план",
+      "Новый план 2"
+    ],
+    "groupSearch5Selected": 7,
+    "autoDialogWidth": 648,
+    "teacherLoadTableHeightAt1080": 745,
+    "students": {
+      "2560": {
+        "days": 6,
+        "rows": 1,
+        "dayWidth": 305
+      },
+      "1920": {
+        "days": 6,
+        "rows": 1,
+        "dayWidth": 303.66
+      },
+      "390": {
+        "days": 6,
+        "rows": 6,
+        "overflow": false
+      }
+    },
+    "teachers": {
+      "2560": {
+        "rows": 1
+      },
+      "1920": {
+        "rows": 1
+      },
+      "390": {
+        "rows": 5,
+        "overflow": false
+      }
+    }
+  }
+}

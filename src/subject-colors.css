@@ -1,0 +1,110 @@
+/* Extra subject tones share the variables consumed by timetable cards. */
+.coral {
+  --tone: #e49585;
+  --ink: #a9574d;
+  --tint: #fff3f0;
+  --tint-border: #f5dfda;
+}
+.cyan {
+  --tone: #83bacd;
+  --ink: #477b91;
+  --tint: #f0f8fb;
+  --tint-border: #dcecf2;
+}
+.lime {
+  --tone: #afc477;
+  --ink: #6d8243;
+  --tint: #f7f9ef;
+  --tint-border: #e9eed8;
+}
+.plum {
+  --tone: #bb91b2;
+  --ink: #825878;
+  --tint: #faf3f8;
+  --tint-border: #eddfeb;
+}
+.indigo {
+  --tone: #8c9ccb;
+  --ink: #596c9e;
+  --tint: #f2f4fb;
+  --tint-border: #e0e5f3;
+}
+.mint {
+  --tone: #83b9a6;
+  --ink: #4d8375;
+  --tint: #eff8f4;
+  --tint-border: #dceee6;
+}
+.rust {
+  --tone: #c99b78;
+  --ink: #986548;
+  --tint: #fbf5f0;
+  --tint-border: #eee2d7;
+}
+.sky {
+  --tone: #8eb4d5;
+  --ink: #527fa8;
+  --tint: #f1f7fc;
+  --tint-border: #dfeaf5;
+}
+.olive {
+  --tone: #aeb77b;
+  --ink: #707b45;
+  --tint: #f7f8f0;
+  --tint-border: #e8ead9;
+}
+.orchid {
+  --tone: #bd91c9;
+  --ink: #8b5c99;
+  --tint: #faf4fb;
+  --tint-border: #ecdef0;
+}
+.slate {
+  --tone: #9aafbf;
+  --ink: #5d7183;
+  --tint: #f3f6f8;
+  --tint-border: #e2e8ec;
+}
+.peach {
+  --tone: #d9a27f;
+  --ink: #a56d4f;
+  --tint: #fff6f0;
+  --tint-border: #f2e4d9;
+}
+.moss {
+  --tone: #8eb294;
+  --ink: #557b5c;
+  --tint: #f1f7f1;
+  --tint-border: #dfebdf;
+}
+.berry {
+  --tone: #d18d9d;
+  --ink: #9a586a;
+  --tint: #fcf3f5;
+  --tint-border: #f0e0e5;
+}
+
+.blue,
+.amber,
+.green,
+.rose,
+.violet,
+.teal,
+.coral,
+.cyan,
+.lime,
+.plum,
+.indigo,
+.mint,
+.rust,
+.sky,
+.olive,
+.orchid,
+.slate,
+.peach,
+.moss,
+.berry {
+  --subject-color: var(--ink);
+  --subject-bg: var(--tint);
+  --subject-border: var(--tint-border);
+}

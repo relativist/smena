@@ -1,0 +1,16 @@
+.russian-time-input { min-width: 0; width: 100%; }
+.ru-time-control { display: flex; height: 31px; overflow: hidden; border: 1px solid #dfe4ed; border-radius: 6px; background: #fff; }
+.ru-time-control:focus-within { border-color: #4660dd; box-shadow: 0 0 0 2px #4660dd20; }
+.russian-time-input .ru-time-control input { min-height: 0; border: 0; border-radius: 0; outline: 0; font-variant-numeric: tabular-nums; }
+.ru-time-toggle { display: grid; place-items: center; flex: 0 0 33px; padding: 0; border: 0; border-left: 1px solid #e7eaf1; background: #f8faff; color: #68758c; cursor: pointer; }
+.ru-time-toggle:hover { background: #eef2ff; color: #354cc1; }
+.ru-time-toggle svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.ru-time-popover { position: fixed; z-index: 100; box-sizing: border-box; width: min(280px, calc(100vw - 16px)); padding: 14px; border: 1px solid #dfe4ee; border-radius: 10px; color: #344157; background: #fff; box-shadow: 0 8px 28px #1c294026; }
+.ru-time-heading { text-align: center; margin-bottom: 12px; }
+.ru-time-heading strong { font-size: 24px; font-variant-numeric: tabular-nums; }
+.ru-time-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.russian-time-input .ru-time-columns label { gap: 6px; font-size: 12px; }
+.russian-time-input .ru-time-columns select { height: 180px; padding: 4px; font-size: 16px; font-variant-numeric: tabular-nums; }
+.ru-time-columns option { padding: 6px 12px; border-radius: 4px; }
+.ru-time-done { width: 100%; margin-top: 12px; padding: 9px; border: 0; border-radius: 6px; color: #fff; background: #4660dd; font: inherit; font-size: 13px; cursor: pointer; }
+.ru-time-done:hover { background: #354cc1; }

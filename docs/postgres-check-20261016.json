@@ -1,0 +1,88 @@
+{
+  "postgres": "18.6 (Debian 18.6-1.pgdg13+2)",
+  "import": {
+    "tables": 33,
+    "rows": 525706,
+    "sha256Matched": true
+  },
+  "revision": 434,
+  "counts": {
+    "lessons": 181325,
+    "schedule_days": 44548,
+    "schedule_slots": 278124,
+    "catalog_groups": 74,
+    "catalog_teachers": 131,
+    "catalog_rooms": 177,
+    "quarters": 10,
+    "curricula": 110,
+    "study_plans": 10262,
+    "published_quarters": 10
+  },
+  "apiChecks": [
+    {
+      "url": "/api/admin/state?view=bootstrap",
+      "status": 200,
+      "bytes": 93713,
+      "pgMs": 23,
+      "matchesSqlite": true
+    },
+    {
+      "url": "/api/admin/state?view=plans&quarterId=quarter-2024-1",
+      "status": 200,
+      "bytes": 428496,
+      "pgMs": 40,
+      "matchesSqlite": true
+    },
+    {
+      "url": "/api/editor/week?groupId=grade-1-%D0%90&quarterId=quarter-2024-1&weekOffset=-109",
+      "status": 200,
+      "bytes": 768988,
+      "pgMs": 74,
+      "matchesSqlite": true
+    },
+    {
+      "url": "/api/plan-coverage?quarterId=quarter-2024-1",
+      "status": 200,
+      "bytes": 12281,
+      "pgMs": 53,
+      "matchesSqlite": true
+    },
+    {
+      "url": "/api/plan-coverage/details?quarterId=quarter-2024-1&groupId=grade-1-%D0%90",
+      "status": 200,
+      "bytes": 1961,
+      "pgMs": 18,
+      "matchesSqlite": true
+    },
+    {
+      "url": "/api/public/students",
+      "status": 200,
+      "bytes": 490708,
+      "pgMs": 630,
+      "matchesSqlite": true
+    },
+    {
+      "url": "/api/public/teachers",
+      "status": 200,
+      "bytes": 889238,
+      "pgMs": 930,
+      "matchesSqlite": true
+    }
+  ],
+  "checks": {
+    "existingTests": 339,
+    "postgresIntegrationTests": 4,
+    "failures": 0,
+    "buildPassed": true,
+    "browserPages": [
+      "/",
+      "/schedule",
+      "/plans",
+      "/teacher-replacements",
+      "/display-settings",
+      "/teachers"
+    ],
+    "browserErrors": 0,
+    "browserScreenshot": "artifacts/postgres-schedule-20261016.png"
+  }
+}

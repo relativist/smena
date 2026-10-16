@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="320" viewBox="0 0 420 320" fill="none" stroke="#8192b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <g opacity=".13">
+    <g transform="translate(30 28) rotate(-12 20 20)"><path d="M9 31h24l-4-6V15a8 8 0 0 0-16 0v10zM17 35a4 4 0 0 0 8 0M19 5h4"/></g>
+    <g transform="translate(138 54) rotate(9 20 20)"><path d="M2 6q10-4 19 2q9-6 19-2v28q-10-4-19 2q-9-6-19-2zM21 8v28M7 13l8 1M7 20l8 1M27 13l8-1M27 20l8-1"/></g>
+    <g transform="translate(294 27) rotate(-8 20 20)"><path d="M19 3v7M16 10h7M19 10L6 38M21 10l13 28M9 31q12 7 22 0M15 20h9"/><circle cx="20" cy="12" r="3"/></g>
+    <g transform="translate(75 133) rotate(8 20 20)"><path d="M1 15l20-10 20 10-20 9zM9 20v10q12 8 24 0V20M41 15v17"/></g>
+    <g transform="translate(226 132)"><circle cx="20" cy="20" r="18"/><ellipse cx="20" cy="20" rx="8" ry="18"/><path d="M2 20h36M5 10q15 7 30 0M5 30q15-7 30 0"/></g>
+    <g transform="translate(333 209) rotate(12 20 20)"><path d="M15 3h11M17 3v16L7 36q-2 5 5 5h18q7 0 5-5L24 19V3M13 29h16"/><circle cx="20" cy="34" r="1"/></g>
+    <g transform="translate(168 240) rotate(-18 20 20)"><path d="M2 13h38v16H2zM8 13v6M15 13v10M22 13v6M29 13v10M36 13v6"/></g>
+    <g transform="translate(36 247) rotate(22 20 20)"><path d="M10 29L29 4l8 6-19 25-11 6zM10 29l8 6M26 8l8 6M7 41l3-9"/></g>
+    <g transform="translate(368 94)"><circle cx="0" cy="20" r="16"/><path d="M-16 20h32M0 4v32M-10 7q21 13 0 26M10 7q-21 13 0 26"/></g>
+  </g>
+</svg>

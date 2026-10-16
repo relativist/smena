@@ -1,0 +1,185 @@
+.russian-date-input {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+}
+.ru-date-control {
+  display: flex;
+  min-width: 0;
+  height: 34px;
+  border: 1px solid #dce2ef;
+  border-radius: 7px;
+  background: #fff;
+  overflow: hidden;
+}
+.ru-date-control:focus-within {
+  border-color: #4660dd;
+  box-shadow: 0 0 0 2px #4660dd20;
+}
+.russian-date-input .ru-date-control input {
+  width: 100%;
+  min-width: 0;
+  padding: 0 9px;
+  border: 0;
+  outline: 0;
+  color: #253047;
+  background: transparent;
+  font: inherit;
+}
+.russian-date-input .ru-date-control input::placeholder {
+  color: #9aa4b6;
+}
+.russian-date-input .ru-date-control input[aria-invalid="true"] {
+  color: #a13d36;
+}
+.ru-date-toggle {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  border: 0;
+  border-left: 1px solid #e7eaf1;
+  color: #68758c;
+  background: #fbfcfe;
+  cursor: pointer;
+}
+.ru-date-toggle:hover,
+.ru-date-nav:hover {
+  color: #354cc1;
+  background: #f0f3ff;
+}
+.ru-date-toggle svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ru-date-error {
+  display: block;
+  margin-top: 3px;
+  color: #a13d36;
+  font-size: 11px;
+}
+.ru-date-popover {
+  position: fixed;
+  z-index: 30;
+  width: min(284px, calc(100vw - 32px));
+  max-height: calc(100vh - 16px);
+  overflow-y: auto;
+  padding: 9px;
+  border: 1px solid #dfe4ee;
+  border-radius: 10px;
+  color: #253047;
+  background: #fff;
+  box-shadow: 0 10px 28px #1c29401f, 0 2px 5px #1c29400d;
+  font-family: inherit;
+  font-size: 12px;
+}
+.ru-date-monthbar {
+  display: grid;
+  grid-template-columns: 27px minmax(0, 1fr) 65px 27px;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.ru-date-monthbar select, .ru-date-year-toggle {
+  width: 100%;
+  height: 29px;
+  padding: 0 4px;
+  border: 1px solid #e2e6ee;
+  border-radius: 6px;
+  color: #35415a;
+  background: #fff;
+  font: inherit;
+}
+.ru-date-nav {
+  width: 27px;
+  height: 27px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #53617a;
+  background: #f7f8fb;
+  font: inherit;
+  font-size: 20px;
+  line-height: 20px;
+  cursor: pointer;
+}
+.ru-date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+.ru-date-weekday,
+.ru-date-blank,
+.ru-date-day {
+  display: grid;
+  width: 100%;
+  height: 30px;
+  place-items: center;
+}
+.ru-date-weekday {
+  height: 24px;
+  color: #8490a4;
+  font-size: 10px;
+  font-weight: 650;
+}
+.ru-date-day {
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: #35415a;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+.ru-date-day:hover {
+  background: #f0f3ff;
+}
+.ru-date-day.today {
+  border-color: #b8c4f7;
+  color: #354cc1;
+  font-weight: 700;
+}
+.ru-date-day.selected {
+  border-color: #4660dd;
+  color: #fff;
+  background: #4660dd;
+}
+.ru-date-day:focus-visible,
+.ru-date-monthbar select:focus-visible,
+.ru-date-footer button:focus-visible,
+.ru-date-toggle:focus-visible,
+.ru-date-nav:focus-visible {
+  outline: 2px solid #4660dd;
+  outline-offset: 1px;
+}
+.ru-date-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid #edf0f5;
+  margin-top: 7px;
+}
+.ru-date-footer button {
+  padding: 4px 7px;
+  border: 0;
+  border-radius: 5px;
+  color: #4656ad;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+.ru-date-footer button:hover {
+  background: #f0f3ff;
+}
+
+.ru-date-year-toggle { cursor: pointer; white-space: nowrap; }
+.ru-date-year-toggle[aria-expanded="true"] { border-color: #4660dd; background: #f0f3ff; }
+.ru-date-years-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 4px 0 8px; color: #66728a; }
+.ru-date-years-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+.ru-date-years-grid button { height: 34px; border: 1px solid #e2e6ee; border-radius: 6px; background: white; color: #35415a; font: inherit; cursor: pointer; }
+.ru-date-years-grid button:hover { background: #f0f3ff; }
+.ru-date-years-grid button.selected { background: #4660dd; border-color: #4660dd; color: white; }
+.ru-date-years button:focus-visible, .ru-date-year-toggle:focus-visible { outline: 2px solid #4660dd; outline-offset: 1px; }

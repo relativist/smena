@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-10-16",
+  "database": "PostgreSQL 18.6",
+  "scope": "Export from the working school; restore only into an owned schema in smena_pg_verify",
+  "archiveFormat": "smena-school-archive",
+  "formatVersion": 1,
+  "schemaVersions": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "tableCount": 31,
+  "rowCount": 525701,
+  "counts": {
+    "groups": 74,
+    "teachers": 131,
+    "rooms": 177,
+    "lessons": 181325
+  },
+  "archiveBytes": 5594883,
+  "expandedBytes": 135595191,
+  "exportMilliseconds": 5104,
+  "allTableRowsMatch": true,
+  "allTableHashesMatch": true,
+  "sourceUnchanged": true,
+  "changedTables": [],
+  "browser": {
+    "exportDownload": true,
+    "previewBeforeRestore": true,
+    "confirmationInitiallyDisabled": true,
+    "restoreAndReload": true,
+    "localAdministratorRetained": true,
+    "safetyBackupCreated": true,
+    "consoleErrors": 0,
+    "mobileWidth": 390,
+    "mobileHorizontalOverflow": false
+  },
+  "screenshots": [
+    "artifacts/archive-preview-20261016.png",
+    "artifacts/archive-restored-20261016.png",
+    "artifacts/archive-mobile-20261016.png"
+  ],
+  "validation": {
+    "checkPassed": true,
+    "buildPassed": true,
+    "regressionTestsPassed": 339,
+    "postgresTestsPassed": 12,
+    "archiveIntegrationTestsPassed": 8
+  }
+}

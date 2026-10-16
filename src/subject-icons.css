@@ -1,0 +1,31 @@
+.subject-icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  vertical-align: -5px;
+  overflow: visible;
+  color: #526780;
+}
+
+.subject-icon--russian { color: #5576aa; }
+.subject-icon--literature,
+.subject-icon--reading { color: #a96d39; }
+.subject-icon--math,
+.subject-icon--algebra,
+.subject-icon--geometry,
+.subject-icon--statistics { color: #4c70ad; }
+.subject-icon--history { color: #a16d43; }
+.subject-icon--society { color: #5d8870; }
+.subject-icon--geography,
+.subject-icon--biology,
+.subject-icon--world { color: #5a9367; }
+.subject-icon--physics { color: #5285ae; }
+.subject-icon--chemistry { color: #789349; }
+.subject-icon--informatics { color: #4d8f9d; }
+.subject-icon--technology { color: #bb7854; }
+.subject-icon--art { color: #a45c83; }
+.subject-icon--music { color: #825ca2; }
+.subject-icon--sport { color: #5e9663; }
+.subject-icon--safety,
+.subject-icon--ethics { color: #607bb1; }

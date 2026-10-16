@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.playwright-cli/
+artifacts/
+*.log
+data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+backups/
+*.sqlite-journal
+*.smena.gz
+
+.env
+.env.*
+!.env.example

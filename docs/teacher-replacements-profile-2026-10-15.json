@@ -1,0 +1,5267 @@
+{
+  "date": "2026-10-15T13:16:42.200Z",
+  "step": "8.1.2",
+  "source": "/tmp/smena-replacements-review-20261015-1ekJj8/before-apply.sqlite",
+  "dbPath": "/tmp/smena-replacements-profile-20261015-pld6yW/school.sqlite",
+  "sourceFileHashes": {
+    "server/app.ts": "174c67ef01095b3601c4d3b3d20518493939a226e6de9be21dcbf2d38fc61593",
+    "shared/teacherReassignment.ts": "627d14bdd5f8d2f18133fa0dbbdab9109a4d6872ae5780a80eb74501cb995fa4",
+    "shared/teacherConflicts.ts": "33ff1334be21ab404a2675255692b6cc067c623d19008e82fce53ad6f67f7a3f",
+    "shared/roomConflicts.ts": "9959a831af3f55a61376dbe140f9f811d01690ea09e575fe55457fd8b4bf45ea",
+    "shared/roomSuitability.ts": "ab3de629c881e54fac00d8a99d6a30a1a1136601912e80cd618baed694a55522",
+    "shared/unavailability.ts": "8ae448b6ffbb53ff8afbb7bceed7ccef7883ea52d3f01dc812ab90f5d6ec63f5"
+  },
+  "instrumentedFunctions": [
+    "server/app.ts:locatedLessons",
+    "server/app.ts:readCatalog",
+    "server/app.ts:replaceEditorDays",
+    "server/app.ts:readSchedule",
+    "server/app.ts:readQuarters",
+    "server/app.ts:readStudyPlans",
+    "server/app.ts:adminState",
+    "server/app.ts:persistScheduleDelta",
+    "server/app.ts:stableJson",
+    "server/app.ts:reassignmentDates",
+    "server/app.ts:readReassignmentState",
+    "server/app.ts:replaceSelectedLessons",
+    "server/app.ts:readTeacherLessonOrigins",
+    "server/app.ts:readTeacherTeachingAssignments",
+    "server/app.ts:roomResolvedSchedule",
+    "server/app.ts:validateSchedule",
+    "shared/teacherReassignment.ts:locate",
+    "shared/teacherReassignment.ts:buildUnits",
+    "shared/teacherReassignment.ts:validateTeacherReassignmentRequest",
+    "shared/teacherReassignment.ts:cloneSchedule",
+    "shared/teacherReassignment.ts:updateLessons",
+    "shared/teacherReassignment.ts:policyFor",
+    "shared/teacherReassignment.ts:unitMatchesStream",
+    "shared/teacherReassignment.ts:roomReason",
+    "shared/teacherReassignment.ts:mainReason",
+    "shared/teacherReassignment.ts:applyTeacher",
+    "shared/teacherReassignment.ts:assignPreview",
+    "shared/teacherReassignment.ts:previewTeacherReassignment",
+    "shared/teacherConflicts.ts:findTeacherConflicts",
+    "shared/teacherConflicts.ts:newTeacherConflict",
+    "shared/roomConflicts.ts:newRoomConflict",
+    "shared/roomSuitability.ts:roomSuitabilityReason",
+    "shared/roomSuitability.ts:newRoomSuitabilityViolation",
+    "shared/unavailability.ts:newUnavailabilityViolation"
+  ],
+  "initialRevision": 423,
+  "initialLessonCount": 181324,
+  "cases": [
+    {
+      "name": "lesson-common109",
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "sourceTeacherId": "teacher-106",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "lesson",
+        "lessonId": "grade-10-А-2-2026-10-19-1-0",
+        "targetTeacherId": "teacher-109",
+        "persist": false
+      }
+    },
+    {
+      "name": "week-row0-teacher110",
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "week",
+        "weekStart": "2026-10-19",
+        "lessonIds": [
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109",
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-10-19:grade-10-А-2-2026-10-19-1-0": "teacher-110"
+        }
+      }
+    },
+    {
+      "name": "period-first-open",
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "name": "period-common-teacher109",
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109"
+      }
+    },
+    {
+      "name": "period-row0-teacher110",
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109",
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-110"
+        }
+      }
+    },
+    {
+      "name": "period-row1-teacher111",
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109",
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-110",
+          "lesson:grade-10-А:2026-09-02:grade-10-А--5-2026-09-02-0-0": "teacher-111"
+        }
+      }
+    },
+    {
+      "name": "period-no-end-common109",
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": null,
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109"
+      }
+    },
+    {
+      "name": "period-no-end-row0-teacher110",
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": null,
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-110"
+        },
+        "targetTeacherId": "teacher-109"
+      }
+    }
+  ],
+  "runs": [
+    {
+      "name": "lesson-common109",
+      "instrumented": false,
+      "totalMs": 20.065007000000037,
+      "responseBytes": 2837,
+      "responseHash": "9ecc84ba96ab4f61cc5888c1eea3b845d827411a4011e7861601afcdbf3fa257",
+      "units": 1,
+      "candidates": 11
+    },
+    {
+      "name": "week-row0-teacher110",
+      "instrumented": false,
+      "totalMs": 71.43348300000002,
+      "responseBytes": 5360,
+      "responseHash": "ea1e324af86f077e02dc61d36056e09b0b891efd0a5e3d8720edadf52e986583",
+      "units": 3,
+      "candidates": 11
+    },
+    {
+      "name": "period-first-open",
+      "instrumented": false,
+      "totalMs": 1842.3138669999998,
+      "responseBytes": 10246,
+      "responseHash": "bbb4c7bc6b53aaba562098289e386a60baa333205fe79cade2b9606aef3b2271",
+      "units": 23,
+      "candidates": 11
+    },
+    {
+      "name": "period-common-teacher109",
+      "instrumented": false,
+      "totalMs": 3223.0109009999996,
+      "responseBytes": 22757,
+      "responseHash": "387eb44a48506069e870415c6c89cba4667b052adc9f4ed38cf245dc7e54f4b6",
+      "units": 23,
+      "candidates": 11
+    },
+    {
+      "name": "period-row0-teacher110",
+      "instrumented": false,
+      "totalMs": 3275.754008,
+      "responseBytes": 28169,
+      "responseHash": "1aeec1eefc019b4e3de6cadf6760c53bc52b7627aed3232f8e9c8b5e09ab3c65",
+      "units": 23,
+      "candidates": 11
+    },
+    {
+      "name": "period-row1-teacher111",
+      "instrumented": false,
+      "totalMs": 3191.7690220000004,
+      "responseBytes": 28169,
+      "responseHash": "c3b1eff679251e719a2fd95d8655e53bb459527e77a05d0a9d878abcb8572bb1",
+      "units": 23,
+      "candidates": 11
+    },
+    {
+      "name": "period-no-end-common109",
+      "instrumented": false,
+      "totalMs": 9220.598664,
+      "responseBytes": 44101,
+      "responseHash": "4e531854b4ac54804dbf7bd77d764675d87ceb1d9978927e4896513014e0ffdb",
+      "units": 47,
+      "candidates": 11
+    },
+    {
+      "name": "period-no-end-row0-teacher110",
+      "instrumented": false,
+      "totalMs": 7400.796756,
+      "responseBytes": 55431,
+      "responseHash": "57a41e7f8083a970b735d2d731792dc6246d407ea286c8e364af0ca2fb885cf5",
+      "units": 47,
+      "candidates": 11
+    },
+    {
+      "name": "lesson-common109",
+      "instrumented": true,
+      "totalMs": 19.291517999998177,
+      "responseBytes": 2837,
+      "responseHash": "9ecc84ba96ab4f61cc5888c1eea3b845d827411a4011e7861601afcdbf3fa257",
+      "units": 1,
+      "candidates": 11,
+      "functions": {
+        "JSON.stringify.object": {
+          "calls": 3,
+          "inclusiveMs": 0.08253700000204844,
+          "exclusiveMs": 0.08253700000204844,
+          "maxMs": 0.044870000001537846
+        },
+        "sqlite.prepare": {
+          "calls": 15,
+          "inclusiveMs": 0.5069619999921997,
+          "exclusiveMs": 0.5069619999921997,
+          "maxMs": 0.11188399999809917
+        },
+        "sqlite.get": {
+          "calls": 4,
+          "inclusiveMs": 0.25896300000022165,
+          "exclusiveMs": 0.25896300000022165,
+          "maxMs": 0.15625600000203121
+        },
+        "sqlite.all": {
+          "calls": 15,
+          "inclusiveMs": 2.3362420000012207,
+          "exclusiveMs": 2.3362420000012207,
+          "maxMs": 1.380847000000358
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 1,
+          "inclusiveMs": 1.2504960000005667,
+          "exclusiveMs": 0.38299699999697623,
+          "maxMs": 1.2504960000005667
+        },
+        "server/app.ts:reassignmentDates": {
+          "calls": 1,
+          "inclusiveMs": 0.11670200000298792,
+          "exclusiveMs": 0.012481000005209353,
+          "maxMs": 0.11670200000298792
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 1,
+          "inclusiveMs": 2.3888160000024072,
+          "exclusiveMs": 0.9248870000046736,
+          "maxMs": 2.3888160000024072
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 1,
+          "inclusiveMs": 0.15990900000178954,
+          "exclusiveMs": 0.15990900000178954,
+          "maxMs": 0.15990900000178954
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 1,
+          "inclusiveMs": 0.29508200000054785,
+          "exclusiveMs": 0.02710800000204472,
+          "maxMs": 0.29508200000054785
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 1,
+          "inclusiveMs": 0.12422200000219163,
+          "exclusiveMs": 0.012619000004633563,
+          "maxMs": 0.12422200000219163
+        },
+        "server/app.ts:readTeacherTeachingAssignments": {
+          "calls": 1,
+          "inclusiveMs": 0.027516000001924112,
+          "exclusiveMs": 0.005635000001348089,
+          "maxMs": 0.027516000001924112
+        },
+        "server/app.ts:readReassignmentState": {
+          "calls": 1,
+          "inclusiveMs": 4.854564000001119,
+          "exclusiveMs": 0.491820999988704,
+          "maxMs": 4.854564000001119
+        },
+        "shared/teacherReassignment.ts:locate": {
+          "calls": 53,
+          "inclusiveMs": 1.5269999999945867,
+          "exclusiveMs": 1.5269999999945867,
+          "maxMs": 0.175228000000061
+        },
+        "shared/teacherReassignment.ts:buildUnits": {
+          "calls": 3,
+          "inclusiveMs": 3.1793560000005527,
+          "exclusiveMs": 2.9938470000015514,
+          "maxMs": 1.4309570000004896
+        },
+        "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+          "calls": 2,
+          "inclusiveMs": 3.002881000003981,
+          "exclusiveMs": 0.30831900000339374,
+          "maxMs": 1.8507320000026084
+        },
+        "shared/teacherReassignment.ts:cloneSchedule": {
+          "calls": 12,
+          "inclusiveMs": 0.6422619999939343,
+          "exclusiveMs": 0.6422619999939343,
+          "maxMs": 0.12780500000008033
+        },
+        "shared/teacherConflicts.ts:findTeacherConflicts": {
+          "calls": 23,
+          "inclusiveMs": 0.22997599999871454,
+          "exclusiveMs": 0.22997599999871454,
+          "maxMs": 0.06807599999956437
+        },
+        "shared/teacherReassignment.ts:mainReason": {
+          "calls": 23,
+          "inclusiveMs": 2.4980410000061966,
+          "exclusiveMs": 1.001205000011396,
+          "maxMs": 0.3861379999980272
+        },
+        "shared/roomSuitability.ts:roomSuitabilityReason": {
+          "calls": 9,
+          "inclusiveMs": 0.1564929999949527,
+          "exclusiveMs": 0.1564929999949527,
+          "maxMs": 0.10360499999660533
+        },
+        "shared/teacherReassignment.ts:roomReason": {
+          "calls": 9,
+          "inclusiveMs": 0.22529499999654945,
+          "exclusiveMs": 0.06880200000159675,
+          "maxMs": 0.13388299999860465
+        },
+        "shared/teacherReassignment.ts:updateLessons": {
+          "calls": 5,
+          "inclusiveMs": 0.3688610000026529,
+          "exclusiveMs": 0.3688610000026529,
+          "maxMs": 0.18927500000063446
+        },
+        "shared/teacherReassignment.ts:policyFor": {
+          "calls": 1,
+          "inclusiveMs": 0.0007230000010167714,
+          "exclusiveMs": 0.0007230000010167714,
+          "maxMs": 0.0007230000010167714
+        },
+        "shared/teacherReassignment.ts:applyTeacher": {
+          "calls": 1,
+          "inclusiveMs": 0.39118299999972805,
+          "exclusiveMs": 0.19995100000232924,
+          "maxMs": 0.39118299999972805
+        },
+        "shared/teacherReassignment.ts:assignPreview": {
+          "calls": 1,
+          "inclusiveMs": 5.129120999998122,
+          "exclusiveMs": 0.6299129999970319,
+          "maxMs": 5.129120999998122
+        },
+        "shared/teacherReassignment.ts:previewTeacherReassignment": {
+          "calls": 1,
+          "inclusiveMs": 6.4655970000021625,
+          "exclusiveMs": 0.18432700000266777,
+          "maxMs": 6.4655970000021625
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 1,
+          "ms": 1.3832210000000487,
+          "rows": 467,
+          "changedRows": 0,
+          "maxRows": 467
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.16281399999934365,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.1581560000013269,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.14203099999940605,
+          "rows": 131,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.12114799999835668,
+          "rows": 177,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.10806800000136718,
+          "rows": 376,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.09920899999997346,
+          "rows": 28,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.07221999999819673,
+          "rows": 92,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 1,
+          "ms": 0.069723000000522,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06943300000057206,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 1,
+          "ms": 0.06170399999973597,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "get: SELECT d.date FROM lessons l JOIN schedule_slots s ON s.id=l.slot_id JOIN schedule_days d ON d.id=s.day_id WHERE l.id=?",
+          "calls": 1,
+          "ms": 0.055382999998982996,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT revision FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.03074399999968591,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 1,
+          "ms": 0.02827199999956065,
+          "rows": 11,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 1,
+          "ms": 0.02515999999741325,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 1,
+          "ms": 0.02084100000138278,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 1,
+          "ms": 0.01188199999887729,
+          "rows": 6,
+          "changedRows": 0,
+          "maxRows": 6
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 1,
+          "ms": 0.011207999999896856,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: SELECT assignment_json FROM teacher_teaching_assignments ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.005580999997619074,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        }
+      ],
+      "serializations": [],
+      "equivalentToPlain": true
+    },
+    {
+      "name": "week-row0-teacher110",
+      "instrumented": true,
+      "totalMs": 73.90858500000104,
+      "responseBytes": 5360,
+      "responseHash": "ea1e324af86f077e02dc61d36056e09b0b891efd0a5e3d8720edadf52e986583",
+      "units": 3,
+      "candidates": 11,
+      "functions": {
+        "JSON.stringify.object": {
+          "calls": 5,
+          "inclusiveMs": 0.05888100000083796,
+          "exclusiveMs": 0.05888100000083796,
+          "maxMs": 0.03971100000126171
+        },
+        "sqlite.prepare": {
+          "calls": 18,
+          "inclusiveMs": 0.6963220000106958,
+          "exclusiveMs": 0.6963220000106958,
+          "maxMs": 0.15282599999773083
+        },
+        "sqlite.get": {
+          "calls": 3,
+          "inclusiveMs": 0.05056700000204728,
+          "exclusiveMs": 0.05056700000204728,
+          "maxMs": 0.03102299999954994
+        },
+        "sqlite.all": {
+          "calls": 19,
+          "inclusiveMs": 6.5682659999984025,
+          "exclusiveMs": 6.5682659999984025,
+          "maxMs": 5.388504999998986
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 1,
+          "inclusiveMs": 0.8810069999999541,
+          "exclusiveMs": 0.29063599997971323,
+          "maxMs": 0.8810069999999541
+        },
+        "server/app.ts:reassignmentDates": {
+          "calls": 1,
+          "inclusiveMs": 0.17862199999945005,
+          "exclusiveMs": 0.10000199999922188,
+          "maxMs": 0.17862199999945005
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 1,
+          "inclusiveMs": 7.830958000002283,
+          "exclusiveMs": 2.362972000002628,
+          "maxMs": 7.830958000002283
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 1,
+          "inclusiveMs": 0.36328299999877345,
+          "exclusiveMs": 0.36328299999877345,
+          "maxMs": 0.36328299999877345
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 5,
+          "inclusiveMs": 2.61368599999696,
+          "exclusiveMs": 0.5106750000086322,
+          "maxMs": 1.528946000002179
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 1,
+          "inclusiveMs": 0.054233999999269145,
+          "exclusiveMs": 0.007685000000492437,
+          "maxMs": 0.054233999999269145
+        },
+        "server/app.ts:readTeacherTeachingAssignments": {
+          "calls": 1,
+          "inclusiveMs": 0.015005000001110602,
+          "exclusiveMs": 0.003691000001708744,
+          "maxMs": 0.015005000001110602
+        },
+        "server/app.ts:readReassignmentState": {
+          "calls": 1,
+          "inclusiveMs": 10.944547999999486,
+          "exclusiveMs": 0.0924929999964661,
+          "maxMs": 10.944547999999486
+        },
+        "shared/teacherReassignment.ts:locate": {
+          "calls": 163,
+          "inclusiveMs": 15.42423199998666,
+          "exclusiveMs": 15.42423199998666,
+          "maxMs": 0.8106299999999464
+        },
+        "shared/teacherReassignment.ts:buildUnits": {
+          "calls": 8,
+          "inclusiveMs": 31.418925999994826,
+          "exclusiveMs": 30.69622099999833,
+          "maxMs": 4.771409999997559
+        },
+        "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+          "calls": 2,
+          "inclusiveMs": 17.480618000001414,
+          "exclusiveMs": 0.9660700000058569,
+          "maxMs": 9.716047999998409
+        },
+        "shared/teacherReassignment.ts:cloneSchedule": {
+          "calls": 12,
+          "inclusiveMs": 1.6031830000065384,
+          "exclusiveMs": 1.6031830000065384,
+          "maxMs": 0.2024070000006759
+        },
+        "shared/teacherConflicts.ts:findTeacherConflicts": {
+          "calls": 69,
+          "inclusiveMs": 1.2052050000020245,
+          "exclusiveMs": 1.2052050000020245,
+          "maxMs": 0.02266099999906146
+        },
+        "shared/teacherReassignment.ts:mainReason": {
+          "calls": 69,
+          "inclusiveMs": 21.096985000011045,
+          "exclusiveMs": 7.033749000009266,
+          "maxMs": 1.022210000002815
+        },
+        "shared/roomSuitability.ts:roomSuitabilityReason": {
+          "calls": 31,
+          "inclusiveMs": 0.12373600000501028,
+          "exclusiveMs": 0.12373600000501028,
+          "maxMs": 0.011701999999786494
+        },
+        "shared/teacherReassignment.ts:roomReason": {
+          "calls": 31,
+          "inclusiveMs": 0.17266900000686292,
+          "exclusiveMs": 0.04893300000185263,
+          "maxMs": 0.024234000000433298
+        },
+        "shared/teacherReassignment.ts:updateLessons": {
+          "calls": 17,
+          "inclusiveMs": 2.45411399999648,
+          "exclusiveMs": 2.45411399999648,
+          "maxMs": 0.48933299999771407
+        },
+        "shared/teacherReassignment.ts:policyFor": {
+          "calls": 3,
+          "inclusiveMs": 1.0015649999986636,
+          "exclusiveMs": 0.4105229999986477,
+          "maxMs": 0.4906719999999041
+        },
+        "shared/teacherReassignment.ts:unitMatchesStream": {
+          "calls": 5733,
+          "inclusiveMs": 1.0683109999081353,
+          "exclusiveMs": 0.8067789999076922,
+          "maxMs": 0.12877600000138045
+        },
+        "shared/teacherReassignment.ts:applyTeacher": {
+          "calls": 1,
+          "inclusiveMs": 16.435686999997415,
+          "exclusiveMs": 1.1547270000919525,
+          "maxMs": 16.435686999997415
+        },
+        "shared/teacherReassignment.ts:assignPreview": {
+          "calls": 1,
+          "inclusiveMs": 44.83417399999962,
+          "exclusiveMs": 0.37653199999112985,
+          "maxMs": 44.83417399999962
+        },
+        "shared/teacherReassignment.ts:previewTeacherReassignment": {
+          "calls": 1,
+          "inclusiveMs": 52.60284500000125,
+          "exclusiveMs": 0.0041009999986272305,
+          "maxMs": 52.60284500000125
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?…) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 1,
+          "ms": 5.3910350000005565,
+          "rows": 3267,
+          "changedRows": 0,
+          "maxRows": 3267
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 4,
+          "ms": 0.673227000002953,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.1006840000009106,
+          "rows": 131,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.08653400000184774,
+          "rows": 376,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06567699999868637,
+          "rows": 177,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "all: SELECT DISTINCT date FROM schedule_days WHERE date BETWEEN ? AND ? ORDER BY date",
+          "calls": 1,
+          "ms": 0.048768000000563916,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 1,
+          "ms": 0.042422000002261484,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.04113900000083959,
+          "rows": 92,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.03352600000289385,
+          "rows": 28,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.03245000000242726,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.03195699999923818,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 1,
+          "ms": 0.027794000001449604,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 1,
+          "ms": 0.01315700000122888,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 1,
+          "ms": 0.012846999998146202,
+          "rows": 11,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 1,
+          "ms": 0.012664999998378335,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT revision FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.007740000000922009,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 1,
+          "ms": 0.007348999999521766,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 1,
+          "ms": 0.005933000000368338,
+          "rows": 6,
+          "changedRows": 0,
+          "maxRows": 6
+        },
+        {
+          "query": "all: SELECT assignment_json FROM teacher_teaching_assignments ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.0026870000001508743,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        }
+      ],
+      "serializations": [],
+      "equivalentToPlain": true
+    },
+    {
+      "name": "period-first-open",
+      "instrumented": true,
+      "totalMs": 2486.22336,
+      "responseBytes": 10246,
+      "responseHash": "bbb4c7bc6b53aaba562098289e386a60baa333205fe79cade2b9606aef3b2271",
+      "units": 23,
+      "candidates": 11,
+      "functions": {
+        "JSON.stringify.object": {
+          "calls": 2,
+          "inclusiveMs": 0.0667109999958484,
+          "exclusiveMs": 0.0667109999958484,
+          "maxMs": 0.037183999997068895
+        },
+        "sqlite.prepare": {
+          "calls": 49,
+          "inclusiveMs": 2.496218000022054,
+          "exclusiveMs": 2.496218000022054,
+          "maxMs": 0.19707700000071782
+        },
+        "sqlite.get": {
+          "calls": 3,
+          "inclusiveMs": 0.051085999999486376,
+          "exclusiveMs": 0.051085999999486376,
+          "maxMs": 0.0346510000017588
+        },
+        "sqlite.all": {
+          "calls": 50,
+          "inclusiveMs": 48.60639200001242,
+          "exclusiveMs": 48.60639200001242,
+          "maxMs": 42.13197299999956
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 1,
+          "inclusiveMs": 0.816462999999203,
+          "exclusiveMs": 0.2927599999929953,
+          "maxMs": 0.816462999999203
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 2,
+          "inclusiveMs": 0.08379799999966053,
+          "exclusiveMs": 0.01513399999748799,
+          "maxMs": 0.048318000001017936
+        },
+        "server/app.ts:reassignmentDates": {
+          "calls": 1,
+          "inclusiveMs": 0.3091569999996864,
+          "exclusiveMs": 0.05006399999911082,
+          "maxMs": 0.3091569999996864
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 1,
+          "inclusiveMs": 60.71124200000122,
+          "exclusiveMs": 18.488274000003003,
+          "maxMs": 60.71124200000122
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 1,
+          "inclusiveMs": 4.931969999997818,
+          "exclusiveMs": 4.931969999997818,
+          "maxMs": 4.931969999997818
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 35,
+          "inclusiveMs": 20.176855999994586,
+          "exclusiveMs": 3.823599999974249,
+          "maxMs": 11.812173999998777
+        },
+        "server/app.ts:readTeacherTeachingAssignments": {
+          "calls": 1,
+          "inclusiveMs": 0.013310000002093147,
+          "exclusiveMs": 0.0030049999986658804,
+          "maxMs": 0.013310000002093147
+        },
+        "server/app.ts:readReassignmentState": {
+          "calls": 1,
+          "inclusiveMs": 79.19174700000076,
+          "exclusiveMs": 0.5491130000009434,
+          "maxMs": 79.19174700000076
+        },
+        "shared/teacherReassignment.ts:locate": {
+          "calls": 1062,
+          "inclusiveMs": 1053.6433609999767,
+          "exclusiveMs": 1053.6433609999767,
+          "maxMs": 7.6172609999994165
+        },
+        "shared/teacherReassignment.ts:buildUnits": {
+          "calls": 3,
+          "inclusiveMs": 107.52518500000224,
+          "exclusiveMs": 104.85946800000602,
+          "maxMs": 37.11746399999902
+        },
+        "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+          "calls": 2,
+          "inclusiveMs": 118.4853750000002,
+          "exclusiveMs": 7.496507999996538,
+          "maxMs": 61.157515999999305
+        },
+        "shared/teacherReassignment.ts:cloneSchedule": {
+          "calls": 11,
+          "inclusiveMs": 28.387860000002547,
+          "exclusiveMs": 28.387860000002547,
+          "maxMs": 3.80984399999943
+        },
+        "shared/teacherConflicts.ts:findTeacherConflicts": {
+          "calls": 506,
+          "inclusiveMs": 187.7915309999953,
+          "exclusiveMs": 187.7915309999953,
+          "maxMs": 0.9329709999983606
+        },
+        "shared/teacherReassignment.ts:mainReason": {
+          "calls": 506,
+          "inclusiveMs": 2075.110486000016,
+          "exclusiveMs": 875.3039490000374,
+          "maxMs": 14.256993999999395
+        },
+        "shared/roomSuitability.ts:roomSuitabilityReason": {
+          "calls": 218,
+          "inclusiveMs": 2.073969000026409,
+          "exclusiveMs": 2.073969000026409,
+          "maxMs": 0.030851999999867985
+        },
+        "shared/teacherReassignment.ts:roomReason": {
+          "calls": 218,
+          "inclusiveMs": 2.842355000004318,
+          "exclusiveMs": 0.7683859999779088,
+          "maxMs": 0.037484000000404194
+        },
+        "shared/teacherReassignment.ts:updateLessons": {
+          "calls": 109,
+          "inclusiveMs": 140.68306099999245,
+          "exclusiveMs": 140.68306099999245,
+          "maxMs": 3.096052000000782
+        },
+        "shared/teacherReassignment.ts:assignPreview": {
+          "calls": 1,
+          "inclusiveMs": 2286.0605719999985,
+          "exclusiveMs": 3.5378539999874192,
+          "maxMs": 2286.0605719999985
+        },
+        "shared/teacherReassignment.ts:previewTeacherReassignment": {
+          "calls": 1,
+          "inclusiveMs": 2347.2281220000004,
+          "exclusiveMs": 0.010034000002633547,
+          "maxMs": 2347.2281220000004
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?…) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 1,
+          "ms": 42.13601700000072,
+          "rows": 24780,
+          "changedRows": 0,
+          "maxRows": 24780
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 34,
+          "ms": 5.838443000000552,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT DISTINCT date FROM schedule_days WHERE date BETWEEN ? AND ? ORDER BY date",
+          "calls": 1,
+          "ms": 0.1951919999992242,
+          "rows": 53,
+          "changedRows": 0,
+          "maxRows": 53
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.09591399999771966,
+          "rows": 131,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.07924700000148732,
+          "rows": 177,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06741799999872455,
+          "rows": 376,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 1,
+          "ms": 0.041393999999854714,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 2,
+          "ms": 0.04077399999732734,
+          "rows": 20,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.039901000000099884,
+          "rows": 92,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.03585499999826425,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.031901999998808606,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.030190000001312,
+          "rows": 28,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 1,
+          "ms": 0.011858000001666369,
+          "rows": 11,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 1,
+          "ms": 0.010676000001694774,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 1,
+          "ms": 0.009514999997918494,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT revision FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.007910000000265427,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 1,
+          "ms": 0.006491000000096392,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 1,
+          "ms": 0.005585999999311753,
+          "rows": 6,
+          "changedRows": 0,
+          "maxRows": 6
+        },
+        {
+          "query": "all: SELECT assignment_json FROM teacher_teaching_assignments ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.0022200000021257438,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        }
+      ],
+      "serializations": [],
+      "equivalentToPlain": true
+    },
+    {
+      "name": "period-common-teacher109",
+      "instrumented": true,
+      "totalMs": 3907.033812999998,
+      "responseBytes": 22757,
+      "responseHash": "387eb44a48506069e870415c6c89cba4667b052adc9f4ed38cf245dc7e54f4b6",
+      "units": 23,
+      "candidates": 11,
+      "functions": {
+        "JSON.stringify.object": {
+          "calls": 25,
+          "inclusiveMs": 0.26798400000916445,
+          "exclusiveMs": 0.26798400000916445,
+          "maxMs": 0.09584900000481866
+        },
+        "sqlite.prepare": {
+          "calls": 49,
+          "inclusiveMs": 2.5809529999933147,
+          "exclusiveMs": 2.5809529999933147,
+          "maxMs": 0.19495399999868823
+        },
+        "sqlite.get": {
+          "calls": 3,
+          "inclusiveMs": 0.11301700000331039,
+          "exclusiveMs": 0.11301700000331039,
+          "maxMs": 0.07457700000304612
+        },
+        "sqlite.all": {
+          "calls": 50,
+          "inclusiveMs": 47.85746599999766,
+          "exclusiveMs": 47.85746599999766,
+          "maxMs": 40.802708999999595
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 1,
+          "inclusiveMs": 1.0856110000022454,
+          "exclusiveMs": 0.3044010000085109,
+          "maxMs": 1.0856110000022454
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 2,
+          "inclusiveMs": 0.2299410000014177,
+          "exclusiveMs": 0.020436000002518995,
+          "maxMs": 0.12528300000121817
+        },
+        "server/app.ts:reassignmentDates": {
+          "calls": 1,
+          "inclusiveMs": 0.4223299999976007,
+          "exclusiveMs": 0.10947699999815086,
+          "maxMs": 0.4223299999976007
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 1,
+          "inclusiveMs": 55.588081999998394,
+          "exclusiveMs": 14.702460999997129,
+          "maxMs": 55.588081999998394
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 1,
+          "inclusiveMs": 2.3887720000020636,
+          "exclusiveMs": 2.3887720000020636,
+          "maxMs": 2.3887720000020636
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 35,
+          "inclusiveMs": 20.925308000001678,
+          "exclusiveMs": 4.016411000004155,
+          "maxMs": 12.292606000002706
+        },
+        "server/app.ts:readTeacherTeachingAssignments": {
+          "calls": 1,
+          "inclusiveMs": 0.02263899999888963,
+          "exclusiveMs": 0.0048920000008365605,
+          "maxMs": 0.02263899999888963
+        },
+        "server/app.ts:readReassignmentState": {
+          "calls": 1,
+          "inclusiveMs": 72.60670000000027,
+          "exclusiveMs": 0.6813769999971555,
+          "maxMs": 72.60670000000027
+        },
+        "shared/teacherReassignment.ts:locate": {
+          "calls": 1706,
+          "inclusiveMs": 1738.412359999893,
+          "exclusiveMs": 1738.412359999893,
+          "maxMs": 11.680555999999342
+        },
+        "shared/teacherReassignment.ts:buildUnits": {
+          "calls": 26,
+          "inclusiveMs": 904.6428339999984,
+          "exclusiveMs": 879.4681900000323,
+          "maxMs": 41.05576700000529
+        },
+        "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+          "calls": 2,
+          "inclusiveMs": 120.02888400000302,
+          "exclusiveMs": 5.793090000002849,
+          "maxMs": 63.07366400000319
+        },
+        "shared/teacherReassignment.ts:cloneSchedule": {
+          "calls": 12,
+          "inclusiveMs": 31.455080999996426,
+          "exclusiveMs": 31.455080999996426,
+          "maxMs": 5.924495999999635
+        },
+        "shared/teacherConflicts.ts:findTeacherConflicts": {
+          "calls": 529,
+          "inclusiveMs": 167.37655900001482,
+          "exclusiveMs": 167.37655900001482,
+          "maxMs": 0.9481369999994058
+        },
+        "shared/teacherReassignment.ts:mainReason": {
+          "calls": 529,
+          "inclusiveMs": 2024.0530970000655,
+          "exclusiveMs": 763.1752220001181,
+          "maxMs": 13.40104699999938
+        },
+        "shared/roomSuitability.ts:roomSuitabilityReason": {
+          "calls": 241,
+          "inclusiveMs": 2.282941000037681,
+          "exclusiveMs": 2.282941000037681,
+          "maxMs": 0.03507000000536209
+        },
+        "shared/teacherReassignment.ts:roomReason": {
+          "calls": 241,
+          "inclusiveMs": 3.059008999967773,
+          "exclusiveMs": 0.7760679999300919,
+          "maxMs": 0.03906500000448432
+        },
+        "shared/teacherReassignment.ts:updateLessons": {
+          "calls": 132,
+          "inclusiveMs": 123.39526700002898,
+          "exclusiveMs": 123.39526700002898,
+          "maxMs": 3.4892319999999017
+        },
+        "shared/teacherReassignment.ts:policyFor": {
+          "calls": 23,
+          "inclusiveMs": 38.22806600001786,
+          "exclusiveMs": 16.6729720000003,
+          "maxMs": 2.32091699999728
+        },
+        "shared/teacherReassignment.ts:unitMatchesStream": {
+          "calls": 381846,
+          "inclusiveMs": 591.4045459977206,
+          "exclusiveMs": 59.31377999775577,
+          "maxMs": 11.783359000000928
+        },
+        "shared/teacherReassignment.ts:applyTeacher": {
+          "calls": 1,
+          "inclusiveMs": 1592.9430429999993,
+          "exclusiveMs": 35.38343700223777,
+          "maxMs": 1592.9430429999993
+        },
+        "shared/teacherReassignment.ts:assignPreview": {
+          "calls": 1,
+          "inclusiveMs": 3707.2306869999993,
+          "exclusiveMs": 3.5901539999504166,
+          "maxMs": 3707.2306869999993
+        },
+        "shared/teacherReassignment.ts:previewTeacherReassignment": {
+          "calls": 1,
+          "inclusiveMs": 3764.191035,
+          "exclusiveMs": 0.005128000000695465,
+          "maxMs": 3764.191035
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?…) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 1,
+          "ms": 40.80531200000041,
+          "rows": 24780,
+          "changedRows": 0,
+          "maxRows": 24780
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 34,
+          "ms": 6.071718999988661,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT DISTINCT date FROM schedule_days WHERE date BETWEEN ? AND ? ORDER BY date",
+          "calls": 1,
+          "ms": 0.1769349999995029,
+          "rows": 53,
+          "changedRows": 0,
+          "maxRows": 53
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 2,
+          "ms": 0.16636300000027404,
+          "rows": 20,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.13818600000013248,
+          "rows": 131,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.10072899999795482,
+          "rows": 376,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.09649300000091898,
+          "rows": 177,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.08895699999993667,
+          "rows": 28,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.07619599999816273,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.07349900000190246,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06733299999905284,
+          "rows": 92,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 1,
+          "ms": 0.0581110000020999,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "get: SELECT revision FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.02472199999829172,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 1,
+          "ms": 0.021805000000313157,
+          "rows": 11,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 1,
+          "ms": 0.014810000000579748,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 1,
+          "ms": 0.012117000002035638,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 1,
+          "ms": 0.0071470000002591405,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 1,
+          "ms": 0.005595000002358574,
+          "rows": 6,
+          "changedRows": 0,
+          "maxRows": 6
+        },
+        {
+          "query": "all: SELECT assignment_json FROM teacher_teaching_assignments ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.00335099999938393,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        }
+      ],
+      "serializations": [],
+      "equivalentToPlain": true
+    },
+    {
+      "name": "period-row0-teacher110",
+      "instrumented": true,
+      "totalMs": 4098.209984000001,
+      "responseBytes": 28169,
+      "responseHash": "1aeec1eefc019b4e3de6cadf6760c53bc52b7627aed3232f8e9c8b5e09ab3c65",
+      "units": 23,
+      "candidates": 11,
+      "functions": {
+        "JSON.stringify.object": {
+          "calls": 25,
+          "inclusiveMs": 0.2670190000135335,
+          "exclusiveMs": 0.2670190000135335,
+          "maxMs": 0.10574199999973644
+        },
+        "sqlite.prepare": {
+          "calls": 49,
+          "inclusiveMs": 2.589077999989968,
+          "exclusiveMs": 2.589077999989968,
+          "maxMs": 0.2040290000004461
+        },
+        "sqlite.get": {
+          "calls": 3,
+          "inclusiveMs": 0.11258400000224356,
+          "exclusiveMs": 0.11258400000224356,
+          "maxMs": 0.07105799999408191
+        },
+        "sqlite.all": {
+          "calls": 50,
+          "inclusiveMs": 48.81176600000617,
+          "exclusiveMs": 48.81176600000617,
+          "maxMs": 42.00646300000517
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 1,
+          "inclusiveMs": 1.0609739999999874,
+          "exclusiveMs": 0.2901609999971697,
+          "maxMs": 1.0609739999999874
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 2,
+          "inclusiveMs": 0.17698899999959394,
+          "exclusiveMs": 0.0213590000057593,
+          "maxMs": 0.1244109999970533
+        },
+        "server/app.ts:reassignmentDates": {
+          "calls": 1,
+          "inclusiveMs": 0.4333520000000135,
+          "exclusiveMs": 0.09312800000770949,
+          "maxMs": 0.4333520000000135
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 1,
+          "inclusiveMs": 64.20385600000009,
+          "exclusiveMs": 22.083536999998614,
+          "maxMs": 64.20385600000009
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 1,
+          "inclusiveMs": 1.5913020000007236,
+          "exclusiveMs": 1.5913020000007236,
+          "maxMs": 1.5913020000007236
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 35,
+          "inclusiveMs": 20.625019000013708,
+          "exclusiveMs": 4.136272999996436,
+          "maxMs": 12.2037810000038
+        },
+        "server/app.ts:readTeacherTeachingAssignments": {
+          "calls": 1,
+          "inclusiveMs": 0.01856200000474928,
+          "exclusiveMs": 0.003956000000471249,
+          "maxMs": 0.01856200000474928
+        },
+        "server/app.ts:readReassignmentState": {
+          "calls": 1,
+          "inclusiveMs": 80.41632599999866,
+          "exclusiveMs": 0.8519209999867599,
+          "maxMs": 80.41632599999866
+        },
+        "shared/teacherReassignment.ts:locate": {
+          "calls": 1203,
+          "inclusiveMs": 1469.3562949998814,
+          "exclusiveMs": 1469.3562949998814,
+          "maxMs": 7.5600760000015725
+        },
+        "shared/teacherReassignment.ts:buildUnits": {
+          "calls": 28,
+          "inclusiveMs": 1058.0737070000032,
+          "exclusiveMs": 1016.4391060000344,
+          "maxMs": 56.43681900000229
+        },
+        "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+          "calls": 2,
+          "inclusiveMs": 194.44288199999573,
+          "exclusiveMs": 11.716744999990624,
+          "maxMs": 100.7683560000005
+        },
+        "shared/teacherReassignment.ts:cloneSchedule": {
+          "calls": 12,
+          "inclusiveMs": 35.175233000016306,
+          "exclusiveMs": 35.175233000016306,
+          "maxMs": 5.020853000001807
+        },
+        "shared/teacherConflicts.ts:findTeacherConflicts": {
+          "calls": 529,
+          "inclusiveMs": 217.18229599999177,
+          "exclusiveMs": 217.18229599999177,
+          "maxMs": 0.9439989999955287
+        },
+        "shared/teacherReassignment.ts:mainReason": {
+          "calls": 529,
+          "inclusiveMs": 2451.8126870000415,
+          "exclusiveMs": 957.4542080001702,
+          "maxMs": 14.573449000003166
+        },
+        "shared/roomSuitability.ts:roomSuitabilityReason": {
+          "calls": 241,
+          "inclusiveMs": 2.1360270000004675,
+          "exclusiveMs": 2.1360270000004675,
+          "maxMs": 0.03290199999901233
+        },
+        "shared/teacherReassignment.ts:roomReason": {
+          "calls": 241,
+          "inclusiveMs": 2.9095979999765405,
+          "exclusiveMs": 0.7735709999760729,
+          "maxMs": 0.0367709999991348
+        },
+        "shared/teacherReassignment.ts:updateLessons": {
+          "calls": 132,
+          "inclusiveMs": 186.3322030000054,
+          "exclusiveMs": 186.3322030000054,
+          "maxMs": 8.3935380000039
+        },
+        "shared/teacherReassignment.ts:policyFor": {
+          "calls": 23,
+          "inclusiveMs": 56.9401130000042,
+          "exclusiveMs": 19.52927600001567,
+          "maxMs": 4.80511000000115
+        },
+        "shared/teacherReassignment.ts:unitMatchesStream": {
+          "calls": 381846,
+          "inclusiveMs": 95.54380899944954,
+          "exclusiveMs": 54.530294999429316,
+          "maxMs": 5.053033999996842
+        },
+        "shared/teacherReassignment.ts:applyTeacher": {
+          "calls": 1,
+          "inclusiveMs": 1235.8559909999967,
+          "exclusiveMs": 37.624005000528996,
+          "maxMs": 1235.8559909999967
+        },
+        "shared/teacherReassignment.ts:assignPreview": {
+          "calls": 1,
+          "inclusiveMs": 3817.493797999996,
+          "exclusiveMs": 3.535959999935585,
+          "maxMs": 3817.493797999996
+        },
+        "shared/teacherReassignment.ts:previewTeacherReassignment": {
+          "calls": 1,
+          "inclusiveMs": 3911.175997999999,
+          "exclusiveMs": 0.00767400000768248,
+          "maxMs": 3911.175997999999
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?…) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 1,
+          "ms": 42.0105309999999,
+          "rows": 24780,
+          "changedRows": 0,
+          "maxRows": 24780
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 34,
+          "ms": 5.8799200000139535,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT DISTINCT date FROM schedule_days WHERE date BETWEEN ? AND ? ORDER BY date",
+          "calls": 1,
+          "ms": 0.18269300000247313,
+          "rows": 53,
+          "changedRows": 0,
+          "maxRows": 53
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.12963000000308966,
+          "rows": 131,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 2,
+          "ms": 0.10048200000892393,
+          "rows": 20,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.09940800000185845,
+          "rows": 376,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.09472700000333134,
+          "rows": 177,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.08772599999792874,
+          "rows": 28,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.07269400000222959,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06824300000153016,
+          "rows": 92,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06398300000000745,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 1,
+          "ms": 0.059150000000954606,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "get: SELECT revision FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.026750000004540198,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 1,
+          "ms": 0.022779999999329448,
+          "rows": 11,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 1,
+          "ms": 0.01897300000564428,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 1,
+          "ms": 0.015573999997286592,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 1,
+          "ms": 0.007042000004730653,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 1,
+          "ms": 0.005672999999660533,
+          "rows": 6,
+          "changedRows": 0,
+          "maxRows": 6
+        },
+        {
+          "query": "all: SELECT assignment_json FROM teacher_teaching_assignments ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.00298800000018673,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        }
+      ],
+      "serializations": [],
+      "equivalentToPlain": true
+    },
+    {
+      "name": "period-row1-teacher111",
+      "instrumented": true,
+      "totalMs": 3696.916312000001,
+      "responseBytes": 28169,
+      "responseHash": "c3b1eff679251e719a2fd95d8655e53bb459527e77a05d0a9d878abcb8572bb1",
+      "units": 23,
+      "candidates": 11,
+      "functions": {
+        "JSON.stringify.object": {
+          "calls": 25,
+          "inclusiveMs": 0.27126599998155143,
+          "exclusiveMs": 0.27126599998155143,
+          "maxMs": 0.1171119999999064
+        },
+        "sqlite.prepare": {
+          "calls": 49,
+          "inclusiveMs": 2.6296350000047823,
+          "exclusiveMs": 2.6296350000047823,
+          "maxMs": 0.19939599999634083
+        },
+        "sqlite.get": {
+          "calls": 3,
+          "inclusiveMs": 0.10512599999492522,
+          "exclusiveMs": 0.10512599999492522,
+          "maxMs": 0.06723599999531871
+        },
+        "sqlite.all": {
+          "calls": 50,
+          "inclusiveMs": 48.98020299997734,
+          "exclusiveMs": 48.98020299997734,
+          "maxMs": 42.05900200000178
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 1,
+          "inclusiveMs": 1.0466249999954016,
+          "exclusiveMs": 0.27279199998883996,
+          "maxMs": 1.0466249999954016
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 2,
+          "inclusiveMs": 0.15146699999604607,
+          "exclusiveMs": 0.020266000006813556,
+          "maxMs": 0.09625499999674503
+        },
+        "server/app.ts:reassignmentDates": {
+          "calls": 1,
+          "inclusiveMs": 0.39786699999967823,
+          "exclusiveMs": 0.08904400000756141,
+          "maxMs": 0.39786699999967823
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 1,
+          "inclusiveMs": 53.62300899999536,
+          "exclusiveMs": 11.48078899999382,
+          "maxMs": 53.62300899999536
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 1,
+          "inclusiveMs": 2.0196890000006533,
+          "exclusiveMs": 2.0196890000006533,
+          "maxMs": 2.0196890000006533
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 35,
+          "inclusiveMs": 20.880433999998786,
+          "exclusiveMs": 3.9391230000182986,
+          "maxMs": 12.217969999997877
+        },
+        "server/app.ts:readTeacherTeachingAssignments": {
+          "calls": 1,
+          "inclusiveMs": 0.018500000005587935,
+          "exclusiveMs": 0.003948000005038921,
+          "maxMs": 0.018500000005587935
+        },
+        "server/app.ts:readReassignmentState": {
+          "calls": 1,
+          "inclusiveMs": 70.02674999999726,
+          "exclusiveMs": 0.6478780000034021,
+          "maxMs": 70.02674999999726
+        },
+        "shared/teacherReassignment.ts:locate": {
+          "calls": 1203,
+          "inclusiveMs": 1448.2065929999808,
+          "exclusiveMs": 1448.2065929999808,
+          "maxMs": 9.447917999998026
+        },
+        "shared/teacherReassignment.ts:buildUnits": {
+          "calls": 28,
+          "inclusiveMs": 1013.0412909999941,
+          "exclusiveMs": 973.178680999983,
+          "maxMs": 57.99159199999849
+        },
+        "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+          "calls": 2,
+          "inclusiveMs": 195.12949600000138,
+          "exclusiveMs": 9.47849400000996,
+          "maxMs": 102.7289579999997
+        },
+        "shared/teacherReassignment.ts:cloneSchedule": {
+          "calls": 12,
+          "inclusiveMs": 31.61444399999891,
+          "exclusiveMs": 31.61444399999891,
+          "maxMs": 3.2175479999932577
+        },
+        "shared/teacherConflicts.ts:findTeacherConflicts": {
+          "calls": 529,
+          "inclusiveMs": 170.70003200002975,
+          "exclusiveMs": 170.70003200002975,
+          "maxMs": 0.7420619999975315
+        },
+        "shared/teacherReassignment.ts:mainReason": {
+          "calls": 529,
+          "inclusiveMs": 2183.951379999984,
+          "exclusiveMs": 754.4223689999999,
+          "maxMs": 15.60265100000106
+        },
+        "shared/roomSuitability.ts:roomSuitabilityReason": {
+          "calls": 241,
+          "inclusiveMs": 2.9761660000367556,
+          "exclusiveMs": 2.9761660000367556,
+          "maxMs": 0.035847999999532476
+        },
+        "shared/teacherReassignment.ts:roomReason": {
+          "calls": 241,
+          "inclusiveMs": 3.737896999962686,
+          "exclusiveMs": 0.7617309999259305,
+          "maxMs": 0.03942100000131177
+        },
+        "shared/teacherReassignment.ts:updateLessons": {
+          "calls": 132,
+          "inclusiveMs": 132.55904000000737,
+          "exclusiveMs": 132.55904000000737,
+          "maxMs": 2.4531300000016927
+        },
+        "shared/teacherReassignment.ts:policyFor": {
+          "calls": 23,
+          "inclusiveMs": 55.412399000015284,
+          "exclusiveMs": 15.537645000040357,
+          "maxMs": 5.256264000003284
+        },
+        "shared/teacherReassignment.ts:unitMatchesStream": {
+          "calls": 381846,
+          "inclusiveMs": 86.11552500018297,
+          "exclusiveMs": 46.6799120001815,
+          "maxMs": 4.586538000003202
+        },
+        "shared/teacherReassignment.ts:applyTeacher": {
+          "calls": 1,
+          "inclusiveMs": 1139.0424830000047,
+          "exclusiveMs": 31.473757999825466,
+          "maxMs": 1139.0424830000047
+        },
+        "shared/teacherReassignment.ts:assignPreview": {
+          "calls": 1,
+          "inclusiveMs": 3426.072967,
+          "exclusiveMs": 3.4681689999997616,
+          "maxMs": 3426.072967
+        },
+        "shared/teacherReassignment.ts:previewTeacherReassignment": {
+          "calls": 1,
+          "inclusiveMs": 3518.481040999999,
+          "exclusiveMs": 0.007535999997344334,
+          "maxMs": 3518.481040999999
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?…) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 1,
+          "ms": 42.063654000005045,
+          "rows": 24780,
+          "changedRows": 0,
+          "maxRows": 24780
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 34,
+          "ms": 6.002079999976559,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT DISTINCT date FROM schedule_days WHERE date BETWEEN ? AND ? ORDER BY date",
+          "calls": 1,
+          "ms": 0.18329599999560742,
+          "rows": 53,
+          "changedRows": 0,
+          "maxRows": 53
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.13305699999909848,
+          "rows": 131,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.10458400000061374,
+          "rows": 376,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.10135100000479724,
+          "rows": 177,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 2,
+          "ms": 0.09197400000266498,
+          "rows": 20,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.08481200000096578,
+          "rows": 28,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.06834399999934249,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06561299999884795,
+          "rows": 92,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 1,
+          "ms": 0.060751999997592065,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06040200000279583,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "get: SELECT revision FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.025113000003329944,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 1,
+          "ms": 0.021733999994467013,
+          "rows": 11,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 1,
+          "ms": 0.013791999997920357,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 1,
+          "ms": 0.013485999996191822,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 1,
+          "ms": 0.007341999997152016,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 1,
+          "ms": 0.0055630000060773455,
+          "rows": 6,
+          "changedRows": 0,
+          "maxRows": 6
+        },
+        {
+          "query": "all: SELECT assignment_json FROM teacher_teaching_assignments ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.002939000005426351,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        }
+      ],
+      "serializations": [],
+      "equivalentToPlain": true
+    },
+    {
+      "name": "period-no-end-common109",
+      "instrumented": true,
+      "totalMs": 9592.848706999997,
+      "responseBytes": 44101,
+      "responseHash": "4e531854b4ac54804dbf7bd77d764675d87ceb1d9978927e4896513014e0ffdb",
+      "units": 47,
+      "candidates": 11,
+      "functions": {
+        "JSON.stringify.object": {
+          "calls": 49,
+          "inclusiveMs": 0.4391150000010384,
+          "exclusiveMs": 0.4391150000010384,
+          "maxMs": 0.14987399999517947
+        },
+        "sqlite.prepare": {
+          "calls": 54,
+          "inclusiveMs": 2.81075499997678,
+          "exclusiveMs": 2.81075499997678,
+          "maxMs": 0.19837299999926472
+        },
+        "sqlite.get": {
+          "calls": 3,
+          "inclusiveMs": 0.10598900001059519,
+          "exclusiveMs": 0.10598900001059519,
+          "maxMs": 0.0683850000059465
+        },
+        "sqlite.all": {
+          "calls": 55,
+          "inclusiveMs": 52.03985699995974,
+          "exclusiveMs": 52.03985699995974,
+          "maxMs": 43.47424499999761
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 1,
+          "inclusiveMs": 1.058433000005607,
+          "exclusiveMs": 0.27638800002023345,
+          "maxMs": 1.058433000005607
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 2,
+          "inclusiveMs": 0.13911799999914365,
+          "exclusiveMs": 0.01903899999888381,
+          "maxMs": 0.08242500000051223
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 39,
+          "inclusiveMs": 21.82655200001318,
+          "exclusiveMs": 4.1049680000433,
+          "maxMs": 12.751605999997992
+        },
+        "server/app.ts:reassignmentDates": {
+          "calls": 1,
+          "inclusiveMs": 1.8928180000002612,
+          "exclusiveMs": 0.1404349999866099,
+          "maxMs": 1.8928180000002612
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 1,
+          "inclusiveMs": 55.43908399999782,
+          "exclusiveMs": 11.879148000007262,
+          "maxMs": 55.43908399999782
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 1,
+          "inclusiveMs": 1.5462679999982356,
+          "exclusiveMs": 1.5462679999982356,
+          "maxMs": 1.5462679999982356
+        },
+        "server/app.ts:readTeacherTeachingAssignments": {
+          "calls": 1,
+          "inclusiveMs": 0.0204200000007404,
+          "exclusiveMs": 0.0042620000094757415,
+          "maxMs": 0.0204200000007404
+        },
+        "server/app.ts:readReassignmentState": {
+          "calls": 1,
+          "inclusiveMs": 73.59097299999848,
+          "exclusiveMs": 0.8256509999991977,
+          "maxMs": 73.59097299999848
+        },
+        "shared/teacherReassignment.ts:locate": {
+          "calls": 4562,
+          "inclusiveMs": 4711.969976999826,
+          "exclusiveMs": 4711.969976999826,
+          "maxMs": 14.626325999997789
+        },
+        "shared/teacherReassignment.ts:buildUnits": {
+          "calls": 50,
+          "inclusiveMs": 1909.324075000026,
+          "exclusiveMs": 1867.6105830000597,
+          "maxMs": 51.7001120000059
+        },
+        "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+          "calls": 2,
+          "inclusiveMs": 127.0351559999981,
+          "exclusiveMs": 7.398226999983308,
+          "maxMs": 67.01408399999491
+        },
+        "shared/teacherReassignment.ts:cloneSchedule": {
+          "calls": 12,
+          "inclusiveMs": 39.93536699999095,
+          "exclusiveMs": 39.93536699999095,
+          "maxMs": 6.238012000001618
+        },
+        "shared/teacherConflicts.ts:findTeacherConflicts": {
+          "calls": 1081,
+          "inclusiveMs": 360.25068899993494,
+          "exclusiveMs": 360.25068899993494,
+          "maxMs": 1.1093840000030468
+        },
+        "shared/teacherReassignment.ts:mainReason": {
+          "calls": 1081,
+          "inclusiveMs": 4792.332964999863,
+          "exclusiveMs": 1782.9222750001572,
+          "maxMs": 20.896849999997357
+        },
+        "shared/roomSuitability.ts:roomSuitabilityReason": {
+          "calls": 489,
+          "inclusiveMs": 3.521125999854121,
+          "exclusiveMs": 3.521125999854121,
+          "maxMs": 0.0295029999979306
+        },
+        "shared/teacherReassignment.ts:roomReason": {
+          "calls": 489,
+          "inclusiveMs": 5.208566000008432,
+          "exclusiveMs": 1.6874400001543108,
+          "maxMs": 0.03413899999577552
+        },
+        "shared/teacherReassignment.ts:updateLessons": {
+          "calls": 268,
+          "inclusiveMs": 425.3187260000268,
+          "exclusiveMs": 425.3187260000268,
+          "maxMs": 4.133916000006138
+        },
+        "shared/teacherReassignment.ts:policyFor": {
+          "calls": 47,
+          "inclusiveMs": 96.32022400000278,
+          "exclusiveMs": 33.239811000014015,
+          "maxMs": 2.4774150000012014
+        },
+        "shared/teacherReassignment.ts:unitMatchesStream": {
+          "calls": 863954,
+          "inclusiveMs": 2073.410675999796,
+          "exclusiveMs": 199.09226899967325,
+          "maxMs": 14.758399999998801
+        },
+        "shared/teacherReassignment.ts:applyTeacher": {
+          "calls": 1,
+          "inclusiveMs": 4334.183956000001,
+          "exclusiveMs": 72.00447800022812,
+          "maxMs": 4334.183956000001
+        },
+        "shared/teacherReassignment.ts:assignPreview": {
+          "calls": 1,
+          "inclusiveMs": 9386.609091999999,
+          "exclusiveMs": 8.412128000083612,
+          "maxMs": 9386.609091999999
+        },
+        "shared/teacherReassignment.ts:previewTeacherReassignment": {
+          "calls": 1,
+          "inclusiveMs": 9446.640067999993,
+          "exclusiveMs": 0.009903999991365708,
+          "maxMs": 9446.640067999993
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?…) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 1,
+          "ms": 43.477937000003294,
+          "rows": 21997,
+          "changedRows": 0,
+          "maxRows": 21997
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 37,
+          "ms": 6.2807100000136415,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT DISTINCT d.date FROM schedule_days d JOIN schedule_slots s ON s.day_id=d.id JOIN lessons l ON l.slot_id=s.id WHERE d.date>=? AND d.group_id IN (?) AND l.subject_id=? AND (l.teacher_ref IN (?)) ORDER BY d.date",
+          "calls": 1,
+          "ms": 1.4376870000050985,
+          "rows": 47,
+          "changedRows": 0,
+          "maxRows": 47
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.13644100000237813,
+          "rows": 131,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.11683399999310495,
+          "rows": 376,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT d.group_id AS groupId,d.date,l.teacher_ref AS teacherId FROM lessons l JOIN schedule_slots s ON s.id=l.slot_id JOIN schedule_days d ON d.id=s.day_id WHERE l.id IN (?…)",
+          "calls": 1,
+          "ms": 0.11092700000153854,
+          "rows": 23,
+          "changedRows": 0,
+          "maxRows": 23
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.09614299999520881,
+          "rows": 177,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.08838900000409922,
+          "rows": 28,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 2,
+          "ms": 0.08125200000358745,
+          "rows": 20,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.06952799999999115,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06462000000465196,
+          "rows": 92,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.05831400000170106,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 1,
+          "ms": 0.05731300000479678,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "get: SELECT revision FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.024416000000201166,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 1,
+          "ms": 0.022005999999237247,
+          "rows": 11,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 1,
+          "ms": 0.014574000000720844,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 1,
+          "ms": 0.014164000000164378,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 1,
+          "ms": 0.007352000000537373,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.005689000005077105,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 1,
+          "ms": 0.0056390000027022325,
+          "rows": 6,
+          "changedRows": 0,
+          "maxRows": 6
+        },
+        {
+          "query": "all: SELECT assignment_json FROM teacher_teaching_assignments ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.0031899999958113767,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        }
+      ],
+      "serializations": [],
+      "equivalentToPlain": true
+    },
+    {
+      "name": "period-no-end-row0-teacher110",
+      "instrumented": true,
+      "totalMs": 7724.544110000003,
+      "responseBytes": 55431,
+      "responseHash": "57a41e7f8083a970b735d2d731792dc6246d407ea286c8e364af0ca2fb885cf5",
+      "units": 47,
+      "candidates": 11,
+      "functions": {
+        "JSON.stringify.object": {
+          "calls": 49,
+          "inclusiveMs": 0.5762900000117952,
+          "exclusiveMs": 0.5762900000117952,
+          "maxMs": 0.18833699999959208
+        },
+        "sqlite.prepare": {
+          "calls": 54,
+          "inclusiveMs": 2.849228999999468,
+          "exclusiveMs": 2.849228999999468,
+          "maxMs": 0.20593599999847356
+        },
+        "sqlite.get": {
+          "calls": 3,
+          "inclusiveMs": 0.10525300000153948,
+          "exclusiveMs": 0.10525300000153948,
+          "maxMs": 0.06817000000592088
+        },
+        "sqlite.all": {
+          "calls": 55,
+          "inclusiveMs": 46.92778299999918,
+          "exclusiveMs": 46.92778299999918,
+          "maxMs": 38.6667310000048
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 1,
+          "inclusiveMs": 1.0559419999990496,
+          "exclusiveMs": 0.3079530000250088,
+          "maxMs": 1.0559419999990496
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 2,
+          "inclusiveMs": 0.14885700000013458,
+          "exclusiveMs": 0.019640999984403607,
+          "maxMs": 0.09421699999802513
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 39,
+          "inclusiveMs": 29.81408200001897,
+          "exclusiveMs": 7.8458990000071935,
+          "maxMs": 16.791234000003897
+        },
+        "server/app.ts:reassignmentDates": {
+          "calls": 1,
+          "inclusiveMs": 1.325118000000657,
+          "exclusiveMs": 0.10202399999980116,
+          "maxMs": 1.325118000000657
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 1,
+          "inclusiveMs": 50.944777999997314,
+          "exclusiveMs": 12.198440999993181,
+          "maxMs": 50.944777999997314
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 1,
+          "inclusiveMs": 2.2556770000010147,
+          "exclusiveMs": 2.2556770000010147,
+          "maxMs": 2.2556770000010147
+        },
+        "server/app.ts:readTeacherTeachingAssignments": {
+          "calls": 1,
+          "inclusiveMs": 0.0225979999959236,
+          "exclusiveMs": 0.004662999999709427,
+          "maxMs": 0.0225979999959236
+        },
+        "server/app.ts:readReassignmentState": {
+          "calls": 1,
+          "inclusiveMs": 73.1928870000047,
+          "exclusiveMs": 0.7429000000047381,
+          "maxMs": 73.1928870000047
+        },
+        "shared/teacherReassignment.ts:locate": {
+          "calls": 2403,
+          "inclusiveMs": 2819.4573839999794,
+          "exclusiveMs": 2819.4573839999794,
+          "maxMs": 15.242822999993223
+        },
+        "shared/teacherReassignment.ts:buildUnits": {
+          "calls": 52,
+          "inclusiveMs": 2051.849823000004,
+          "exclusiveMs": 1980.721235999983,
+          "maxMs": 63.327674000000115
+        },
+        "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+          "calls": 2,
+          "inclusiveMs": 203.04625400000077,
+          "exclusiveMs": 9.755514000025869,
+          "maxMs": 105.36635600000591
+        },
+        "shared/teacherReassignment.ts:cloneSchedule": {
+          "calls": 12,
+          "inclusiveMs": 50.072032000003674,
+          "exclusiveMs": 50.072032000003674,
+          "maxMs": 6.859957000000577
+        },
+        "shared/teacherConflicts.ts:findTeacherConflicts": {
+          "calls": 1081,
+          "inclusiveMs": 328.25190399995336,
+          "exclusiveMs": 328.25190399995336,
+          "maxMs": 0.8373869999995804
+        },
+        "shared/teacherReassignment.ts:mainReason": {
+          "calls": 1081,
+          "inclusiveMs": 4666.95998099992,
+          "exclusiveMs": 1817.1737229998762,
+          "maxMs": 22.322407999999996
+        },
+        "shared/roomSuitability.ts:roomSuitabilityReason": {
+          "calls": 489,
+          "inclusiveMs": 3.612113999995927,
+          "exclusiveMs": 3.612113999995927,
+          "maxMs": 0.03507499999977881
+        },
+        "shared/teacherReassignment.ts:roomReason": {
+          "calls": 489,
+          "inclusiveMs": 5.206826000139699,
+          "exclusiveMs": 1.5947120001437725,
+          "maxMs": 0.039429000004020054
+        },
+        "shared/teacherReassignment.ts:updateLessons": {
+          "calls": 268,
+          "inclusiveMs": 385.75292700009595,
+          "exclusiveMs": 385.75292700009595,
+          "maxMs": 4.12335300000268
+        },
+        "shared/teacherReassignment.ts:policyFor": {
+          "calls": 47,
+          "inclusiveMs": 115.03041100002156,
+          "exclusiveMs": 39.173911000012595,
+          "maxMs": 3.8973259999984293
+        },
+        "shared/teacherReassignment.ts:unitMatchesStream": {
+          "calls": 863954,
+          "inclusiveMs": 183.35967999923014,
+          "exclusiveMs": 110.19859899920993,
+          "maxMs": 3.8100589999958174
+        },
+        "shared/teacherReassignment.ts:applyTeacher": {
+          "calls": 1,
+          "inclusiveMs": 2594.151850000002,
+          "exclusiveMs": 87.67713500071841,
+          "maxMs": 2594.151850000002
+        },
+        "shared/teacherReassignment.ts:assignPreview": {
+          "calls": 1,
+          "inclusiveMs": 7442.334174999996,
+          "exclusiveMs": 11.559694999989006,
+          "maxMs": 7442.334174999996
+        },
+        "shared/teacherReassignment.ts:previewTeacherReassignment": {
+          "calls": 1,
+          "inclusiveMs": 7540.029102,
+          "exclusiveMs": 0.01502900000923546,
+          "maxMs": 7540.029102
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?…) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 1,
+          "ms": 38.66968600000109,
+          "rows": 21997,
+          "changedRows": 0,
+          "maxRows": 21997
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 37,
+          "ms": 6.5108239999826765,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT DISTINCT d.date FROM schedule_days d JOIN schedule_slots s ON s.day_id=d.id JOIN lessons l ON l.slot_id=s.id WHERE d.date>=? AND d.group_id IN (?) AND l.subject_id=? AND (l.teacher_ref IN (?)) ORDER BY d.date",
+          "calls": 1,
+          "ms": 0.9356920000063838,
+          "rows": 47,
+          "changedRows": 0,
+          "maxRows": 47
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.13049599999794737,
+          "rows": 131,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.09823200000391807,
+          "rows": 376,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.09555700000055367,
+          "rows": 177,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "all: SELECT d.group_id AS groupId,d.date,l.teacher_ref AS teacherId FROM lessons l JOIN schedule_slots s ON s.id=l.slot_id JOIN schedule_days d ON d.id=s.day_id WHERE l.id IN (?…)",
+          "calls": 1,
+          "ms": 0.09366899999440648,
+          "rows": 23,
+          "changedRows": 0,
+          "maxRows": 23
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 2,
+          "ms": 0.08910099999775412,
+          "rows": 20,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.08646399999997811,
+          "rows": 28,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.07025199999770848,
+          "rows": 92,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.06930500000453321,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 1,
+          "ms": 0.05847699999867473,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.057437000003119465,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "get: SELECT revision FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.02461599999514874,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 1,
+          "ms": 0.02157900000020163,
+          "rows": 11,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 1,
+          "ms": 0.015593000003718771,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 1,
+          "ms": 0.013193999999202788,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 1,
+          "ms": 0.007136000000173226,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 1,
+          "ms": 0.005510999995749444,
+          "rows": 6,
+          "changedRows": 0,
+          "maxRows": 6
+        },
+        {
+          "query": "all: SELECT assignment_json FROM teacher_teaching_assignments ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.0037709999960497953,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.0034060000034514815,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        }
+      ],
+      "serializations": [],
+      "equivalentToPlain": true
+    },
+    {
+      "name": "page-english-quarter",
+      "instrumented": true,
+      "totalMs": 89.74303099999815,
+      "responseBytes": 1574299,
+      "functions": {
+        "sqlite.prepare": {
+          "calls": 47,
+          "inclusiveMs": 2.412886999976763,
+          "exclusiveMs": 2.412886999976763,
+          "maxMs": 0.174142000003485
+        },
+        "sqlite.get": {
+          "calls": 3,
+          "inclusiveMs": 0.15516000000934582,
+          "exclusiveMs": 0.15516000000934582,
+          "maxMs": 0.07538800000475021
+        },
+        "sqlite.all": {
+          "calls": 48,
+          "inclusiveMs": 52.17557400001533,
+          "exclusiveMs": 52.17557400001533,
+          "maxMs": 45.462358000004315
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 1,
+          "inclusiveMs": 1.1298620000015944,
+          "exclusiveMs": 0.2888970000349218,
+          "maxMs": 1.1298620000015944
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 1,
+          "inclusiveMs": 0.07265000000188593,
+          "exclusiveMs": 0.008543999996618368,
+          "maxMs": 0.07265000000188593
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 1,
+          "inclusiveMs": 56.08301200000278,
+          "exclusiveMs": 10.528707999998005,
+          "maxMs": 56.08301200000278
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 3,
+          "inclusiveMs": 5.280491000004986,
+          "exclusiveMs": 5.280491000004986,
+          "maxMs": 4.167074000004504
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 35,
+          "inclusiveMs": 17.161193999992975,
+          "exclusiveMs": 1.1843629999711993,
+          "maxMs": 8.994167999997444
+        },
+        "JSON.stringify.object": {
+          "calls": 1,
+          "inclusiveMs": 4.967949999998382,
+          "exclusiveMs": 4.967949999998382,
+          "maxMs": 4.967949999998382
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?…) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 1,
+          "ms": 45.46658500000194,
+          "rows": 24780,
+          "changedRows": 0,
+          "maxRows": 24780
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 34,
+          "ms": 5.796036999992793,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT DISTINCT date FROM schedule_days WHERE date BETWEEN ? AND ? ORDER BY date",
+          "calls": 1,
+          "ms": 0.18183400000270922,
+          "rows": 53,
+          "changedRows": 0,
+          "maxRows": 53
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.146309999996447,
+          "rows": 131,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.13596600000164472,
+          "rows": 376,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.09816200000204844,
+          "rows": 177,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.08580599999550031,
+          "rows": 28,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "get: SELECT revision,updated_at FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.07719299999735085,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.0676579999999376,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06582799999887357,
+          "rows": 92,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.06143200000224169,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 1,
+          "ms": 0.06077000000368571,
+          "rows": 74,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 1,
+          "ms": 0.04518099999404512,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 1,
+          "ms": 0.02332600000227103,
+          "rows": 11,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 1,
+          "ms": 0.013536000005842652,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 1,
+          "ms": 0.011754999999538995,
+          "rows": 10,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 1,
+          "ms": 0.009477999999944586,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 1,
+          "ms": 0.005945999997493345,
+          "rows": 6,
+          "changedRows": 0,
+          "maxRows": 6
+        }
+      ],
+      "serializations": [
+        {
+          "chars": 1539871,
+          "ms": 4.982893000000331
+        }
+      ]
+    },
+    {
+      "name": "apply23",
+      "instrumented": true,
+      "totalMs": 4402.462114000009,
+      "responseBytes": 5182175,
+      "responseHash": "a2ec06e19120ebbef4636eaf246ca48f1f42a0a075a4a64eb5780f455c3849fc",
+      "functions": {
+        "JSON.stringify.object": {
+          "calls": 101,
+          "inclusiveMs": 39.92182399999001,
+          "exclusiveMs": 39.92182399999001,
+          "maxMs": 15.455488999999943
+        },
+        "sqlite.prepare": {
+          "calls": 231,
+          "inclusiveMs": 7.870434000011301,
+          "exclusiveMs": 7.870434000011301,
+          "maxMs": 0.22581400000490248
+        },
+        "sqlite.get": {
+          "calls": 41,
+          "inclusiveMs": 0.750930000009248,
+          "exclusiveMs": 0.750930000009248,
+          "maxMs": 0.10245299999951385
+        },
+        "sqlite.all": {
+          "calls": 156,
+          "inclusiveMs": 105.73718500001996,
+          "exclusiveMs": 105.73718500001996,
+          "maxMs": 43.355292000007466
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 7,
+          "inclusiveMs": 6.328012999991188,
+          "exclusiveMs": 2.0472089999821037,
+          "maxMs": 1.2275310000113677
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 3,
+          "inclusiveMs": 0.2528220000094734,
+          "exclusiveMs": 0.03174700001545716,
+          "maxMs": 0.0946609999955399
+        },
+        "server/app.ts:reassignmentDates": {
+          "calls": 1,
+          "inclusiveMs": 0.38686100000631995,
+          "exclusiveMs": 0.08463399999891408,
+          "maxMs": 0.38686100000631995
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 2,
+          "inclusiveMs": 114.7305090000009,
+          "exclusiveMs": 29.333083999998053,
+          "maxMs": 60.00104000000283
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 4,
+          "inclusiveMs": 15.622801000004984,
+          "exclusiveMs": 15.622801000004984,
+          "maxMs": 6.339804000002914
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 71,
+          "inclusiveMs": 48.44237799997791,
+          "exclusiveMs": 9.148334000012255,
+          "maxMs": 15.331951000000117
+        },
+        "server/app.ts:readTeacherTeachingAssignments": {
+          "calls": 3,
+          "inclusiveMs": 0.13336500000150409,
+          "exclusiveMs": 0.05402200001117308,
+          "maxMs": 0.08929799999168608
+        },
+        "server/app.ts:readReassignmentState": {
+          "calls": 1,
+          "inclusiveMs": 84.16651400001138,
+          "exclusiveMs": 0.9604969999927562,
+          "maxMs": 84.16651400001138
+        },
+        "shared/teacherReassignment.ts:locate": {
+          "calls": 1203,
+          "inclusiveMs": 1259.3663610000367,
+          "exclusiveMs": 1259.3663610000367,
+          "maxMs": 8.557063999993261
+        },
+        "shared/teacherReassignment.ts:buildUnits": {
+          "calls": 28,
+          "inclusiveMs": 1031.41230799997,
+          "exclusiveMs": 993.6771319999389,
+          "maxMs": 48.65274799999315
+        },
+        "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+          "calls": 2,
+          "inclusiveMs": 209.42560899999808,
+          "exclusiveMs": 11.744167999946512,
+          "maxMs": 108.89977299999737
+        },
+        "shared/teacherReassignment.ts:cloneSchedule": {
+          "calls": 12,
+          "inclusiveMs": 29.410571000000346,
+          "exclusiveMs": 29.410571000000346,
+          "maxMs": 3.3437140000023646
+        },
+        "shared/teacherConflicts.ts:findTeacherConflicts": {
+          "calls": 529,
+          "inclusiveMs": 216.38412200000312,
+          "exclusiveMs": 216.38412200000312,
+          "maxMs": 1.0412990000040736
+        },
+        "shared/teacherReassignment.ts:mainReason": {
+          "calls": 529,
+          "inclusiveMs": 2254.116332000005,
+          "exclusiveMs": 946.4482490000082,
+          "maxMs": 14.394499000001815
+        },
+        "shared/roomSuitability.ts:roomSuitabilityReason": {
+          "calls": 241,
+          "inclusiveMs": 1.7791909998777555,
+          "exclusiveMs": 1.7791909998777555,
+          "maxMs": 0.028557000012369826
+        },
+        "shared/teacherReassignment.ts:roomReason": {
+          "calls": 241,
+          "inclusiveMs": 2.5262540000258014,
+          "exclusiveMs": 0.7470630001480458,
+          "maxMs": 0.03186300001107156
+        },
+        "shared/teacherReassignment.ts:updateLessons": {
+          "calls": 132,
+          "inclusiveMs": 172.20427999996173,
+          "exclusiveMs": 172.20427999996173,
+          "maxMs": 7.69285600000876
+        },
+        "shared/teacherReassignment.ts:policyFor": {
+          "calls": 23,
+          "inclusiveMs": 48.31072500004666,
+          "exclusiveMs": 20.75241800006188,
+          "maxMs": 3.569029000005685
+        },
+        "shared/teacherReassignment.ts:unitMatchesStream": {
+          "calls": 381846,
+          "inclusiveMs": 85.39242000205559,
+          "exclusiveMs": 50.47679000205244,
+          "maxMs": 3.5528880000056233
+        },
+        "shared/teacherReassignment.ts:applyTeacher": {
+          "calls": 1,
+          "inclusiveMs": 1174.8957939999964,
+          "exclusiveMs": 38.951504997952725,
+          "maxMs": 1174.8957939999964
+        },
+        "shared/teacherReassignment.ts:assignPreview": {
+          "calls": 1,
+          "inclusiveMs": 3536.3914480000094,
+          "exclusiveMs": 3.698668000055477,
+          "maxMs": 3536.3914480000094
+        },
+        "shared/teacherReassignment.ts:previewTeacherReassignment": {
+          "calls": 1,
+          "inclusiveMs": 3636.9281330000085,
+          "exclusiveMs": 0.01084899999841582,
+          "maxMs": 3636.9281330000085
+        },
+        "server/app.ts:replaceSelectedLessons": {
+          "calls": 1,
+          "inclusiveMs": 7.156719000005978,
+          "exclusiveMs": 5.456574000010733,
+          "maxMs": 7.156719000005978
+        },
+        "server/app.ts:readStudyPlans": {
+          "calls": 1,
+          "inclusiveMs": 3.7588010000035865,
+          "exclusiveMs": 0.7077679999929387,
+          "maxMs": 3.7588010000035865
+        },
+        "server/app.ts:validateSchedule": {
+          "calls": 1,
+          "inclusiveMs": 33.058294000002206,
+          "exclusiveMs": 33.058294000002206,
+          "maxMs": 33.058294000002206
+        },
+        "server/app.ts:roomResolvedSchedule": {
+          "calls": 2,
+          "inclusiveMs": 77.56795000001148,
+          "exclusiveMs": 77.56795000001148,
+          "maxMs": 38.980733000003966
+        },
+        "shared/unavailability.ts:newUnavailabilityViolation": {
+          "calls": 1,
+          "inclusiveMs": 54.650448000000324,
+          "exclusiveMs": 54.650448000000324,
+          "maxMs": 54.650448000000324
+        },
+        "shared/roomConflicts.ts:newRoomConflict": {
+          "calls": 1,
+          "inclusiveMs": 19.11399299999175,
+          "exclusiveMs": 19.11399299999175,
+          "maxMs": 19.11399299999175
+        },
+        "shared/roomSuitability.ts:newRoomSuitabilityViolation": {
+          "calls": 1,
+          "inclusiveMs": 47.49977199999557,
+          "exclusiveMs": 47.49977199999557,
+          "maxMs": 47.49977199999557
+        },
+        "shared/teacherConflicts.ts:newTeacherConflict": {
+          "calls": 1,
+          "inclusiveMs": 18.375302000000374,
+          "exclusiveMs": 18.375302000000374,
+          "maxMs": 18.375302000000374
+        },
+        "sqlite.run": {
+          "calls": 406,
+          "inclusiveMs": 26.207430000024033,
+          "exclusiveMs": 26.207430000024033,
+          "maxMs": 15.924912000002223
+        },
+        "server/app.ts:stableJson": {
+          "calls": 634328,
+          "inclusiveMs": 452.32797799416585,
+          "exclusiveMs": 132.3403480007255,
+          "maxMs": 0.6312440000037896
+        },
+        "server/app.ts:replaceEditorDays": {
+          "calls": 1,
+          "inclusiveMs": 12.502627999987453,
+          "exclusiveMs": 6.2389759999205125,
+          "maxMs": 12.502627999987453
+        },
+        "server/app.ts:persistScheduleDelta": {
+          "calls": 1,
+          "inclusiveMs": 148.18112400000973,
+          "exclusiveMs": 3.3381479992967797,
+          "maxMs": 148.18112400000973
+        },
+        "server/app.ts:adminState": {
+          "calls": 1,
+          "inclusiveMs": 77.725918000011,
+          "exclusiveMs": 1.1419200000236742,
+          "maxMs": 77.725918000011
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?…) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 2,
+          "ms": 85.25034899999446,
+          "rows": 49560,
+          "changedRows": 0,
+          "maxRows": 24780
+        },
+        {
+          "query": "run: INSERT INTO teacher_reassignment_operations(operation_id,apply_request_id,apply_fingerprint,apply_response_json,applied_revision,previous_schedule_json,previous_catalog_json,previous_origins_json,previous_assignments_json,previous_policies_json) VALUES(?…)",
+          "calls": 1,
+          "ms": 15.929378999993787,
+          "rows": 0,
+          "changedRows": 1,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 68,
+          "ms": 13.89495599991642,
+          "rows": 23,
+          "changedRows": 0,
+          "maxRows": 21
+        },
+        {
+          "query": "run: COMMIT",
+          "calls": 1,
+          "ms": 8.288602000000537,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT id,plan_id,subgroup_id AS subgroupId,target FROM plan_assignments WHERE plan_id IN (?…) ORDER BY rowid",
+          "calls": 1,
+          "ms": 2.0836100000014994,
+          "rows": 1011,
+          "changedRows": 0,
+          "maxRows": 1011
+        },
+        {
+          "query": "run: INSERT INTO lessons(id,slot_id,subject_id,subgroup,teacher,room,event,note,teacher_ref,room_ref,subgroup_ref,lesson_kind,joint_id,event_remainder_json) VALUES(@id,@slotId,@subjectId,@subgroup,@teacher,@room,@event,@note,@teacherRef,@roomRef,@subgroupRef,@lessonKind,@jointId,@eventRemainderJson)",
+          "calls": 146,
+          "ms": 0.9900760000018636,
+          "rows": 0,
+          "changedRows": 146,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 7,
+          "ms": 0.758343999972567,
+          "rows": 917,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT id,quarter_id AS quarterId,group_id AS groupId,subject_id AS subjectId,mode,lesson_kind AS lessonKind FROM study_plans WHERE quarter_id=? ORDER BY quarter_id,group_id,subject_id,lesson_kind",
+          "calls": 1,
+          "ms": 0.6639870000071824,
+          "rows": 1011,
+          "changedRows": 0,
+          "maxRows": 1011
+        },
+        {
+          "query": "run: DELETE FROM schedule_slots WHERE day_id=?",
+          "calls": 23,
+          "ms": 0.6169380000064848,
+          "rows": 0,
+          "changedRows": 161,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 7,
+          "ms": 0.5754129999841098,
+          "rows": 2632,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 7,
+          "ms": 0.5194130000018049,
+          "rows": 1239,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 7,
+          "ms": 0.3711089999997057,
+          "rows": 196,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 7,
+          "ms": 0.3420089999999618,
+          "rows": 644,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 7,
+          "ms": 0.3386080000200309,
+          "rows": 518,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 7,
+          "ms": 0.28333600002224557,
+          "rows": 518,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "run: INSERT INTO schedule_slots(day_id,slot_index,start_minute,duration) VALUES(?…)",
+          "calls": 161,
+          "ms": 0.2513769999932265,
+          "rows": 0,
+          "changedRows": 161,
+          "maxRows": 0
+        },
+        {
+          "query": "get: SELECT id,week_offset,bell_profile_json FROM schedule_days WHERE group_id=? AND date=?",
+          "calls": 23,
+          "ms": 0.1997160000319127,
+          "rows": 23,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT DISTINCT date FROM schedule_days WHERE date BETWEEN ? AND ? ORDER BY date",
+          "calls": 1,
+          "ms": 0.17831899999873713,
+          "rows": 53,
+          "changedRows": 0,
+          "maxRows": 53
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 7,
+          "ms": 0.16381499999260996,
+          "rows": 77,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 3,
+          "ms": 0.16360200000053737,
+          "rows": 30,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT revision,updated_at FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.10430099999939557,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 7,
+          "ms": 0.07892300002276897,
+          "rows": 7,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT revision FROM draft_metadata WHERE id=1",
+          "calls": 2,
+          "ms": 0.0772209999995539,
+          "rows": 2,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT calendar_json FROM school_calendar WHERE id=1",
+          "calls": 1,
+          "ms": 0.07321600000432227,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.07224199999473058,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "run: INSERT INTO teacher_lesson_origins(id,lesson_id,origin_json) VALUES(?…)",
+          "calls": 23,
+          "ms": 0.0695160000177566,
+          "rows": 0,
+          "changedRows": 23,
+          "maxRows": 0
+        },
+        {
+          "query": "run: UPDATE schedule_days SET base_start=?,nominal_duration=?,holiday=?,note=?,bell_profile_json=? WHERE id=?",
+          "calls": 23,
+          "ms": 0.0596810000424739,
+          "rows": 0,
+          "changedRows": 23,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT id,lesson_id,origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…)",
+          "calls": 1,
+          "ms": 0.05894900001294445,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "get: SELECT settings_json FROM bell_settings WHERE id=1",
+          "calls": 1,
+          "ms": 0.04911100000026636,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "run: INSERT INTO teacher_teaching_assignments(id,assignment_json) VALUES(?…)",
+          "calls": 23,
+          "ms": 0.048397999998996966,
+          "rows": 0,
+          "changedRows": 23,
+          "maxRows": 0
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='teacher_lesson_origins'",
+          "calls": 2,
+          "ms": 0.04441799999040086,
+          "rows": 2,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 7,
+          "ms": 0.0436619999964023,
+          "rows": 49,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: SELECT assignment_json FROM teacher_teaching_assignments ORDER BY rowid",
+          "calls": 3,
+          "ms": 0.04365800000960007,
+          "rows": 23,
+          "changedRows": 0,
+          "maxRows": 23
+        },
+        {
+          "query": "get: SELECT settings_json,revision FROM school_display_settings WHERE id=1",
+          "calls": 1,
+          "ms": 0.04037999999127351,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 7,
+          "ms": 0.03406900000118185,
+          "rows": 42,
+          "changedRows": 0,
+          "maxRows": 6
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 2,
+          "ms": 0.021275000006426126,
+          "rows": 20,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "all: SELECT policy_json FROM temporary_teacher_replacements ORDER BY rowid",
+          "calls": 3,
+          "ms": 0.019551999983377755,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='bell_settings'",
+          "calls": 1,
+          "ms": 0.017525999995996244,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.017508999997517094,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "get: SELECT apply_fingerprint,apply_response_json FROM teacher_reassignment_operations WHERE apply_request_id=?",
+          "calls": 1,
+          "ms": 0.01269000000320375,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "run: DELETE FROM teacher_lesson_origins",
+          "calls": 1,
+          "ms": 0.011171999998623505,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "run: BEGIN",
+          "calls": 1,
+          "ms": 0.006637000013142824,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "run: DELETE FROM teacher_teaching_assignments",
+          "calls": 1,
+          "ms": 0.00453600000764709,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "run: UPDATE draft_metadata SET revision=?,updated_at=? WHERE id=1",
+          "calls": 1,
+          "ms": 0.0032470000005559996,
+          "rows": 0,
+          "changedRows": 1,
+          "maxRows": 0
+        },
+        {
+          "query": "run: DELETE FROM temporary_teacher_replacements",
+          "calls": 1,
+          "ms": 0.0026879999932134524,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        }
+      ],
+      "serializations": [
+        {
+          "chars": 4752141,
+          "ms": 15.50509299999976
+        },
+        {
+          "chars": 4648071,
+          "ms": 13.073701000001165
+        },
+        {
+          "chars": 4752141,
+          "ms": 10.994094000008772
+        }
+      ]
+    },
+    {
+      "name": "undo23",
+      "instrumented": true,
+      "totalMs": 477.51443400001153,
+      "responseBytes": 5165842,
+      "responseHash": "6933dc88e29049011bf4d9ae9b83ba305c4a06e5a2ac9ca4c4a9e2aa7ac2b8ae",
+      "functions": {
+        "JSON.stringify.object": {
+          "calls": 204,
+          "inclusiveMs": 21.923561999981757,
+          "exclusiveMs": 21.923561999981757,
+          "maxMs": 11.113440999994054
+        },
+        "sqlite.prepare": {
+          "calls": 178,
+          "inclusiveMs": 5.528699000104098,
+          "exclusiveMs": 5.528699000104098,
+          "maxMs": 1.4231929999950808
+        },
+        "sqlite.get": {
+          "calls": 39,
+          "inclusiveMs": 18.468980999983614,
+          "exclusiveMs": 18.468980999983614,
+          "maxMs": 18.0515779999987
+        },
+        "sqlite.all": {
+          "calls": 98,
+          "inclusiveMs": 110.73978499995428,
+          "exclusiveMs": 110.73978499995428,
+          "maxMs": 44.32332500000484
+        },
+        "server/app.ts:readSchedule": {
+          "calls": 2,
+          "inclusiveMs": 128.11322899999504,
+          "exclusiveMs": 41.68875199998729,
+          "maxMs": 74.40689600000042
+        },
+        "server/app.ts:roomResolvedSchedule": {
+          "calls": 1,
+          "inclusiveMs": 36.636647999999695,
+          "exclusiveMs": 36.636647999999695,
+          "maxMs": 36.636647999999695
+        },
+        "server/app.ts:readQuarters": {
+          "calls": 2,
+          "inclusiveMs": 0.2150580000015907,
+          "exclusiveMs": 0.026719999994384125,
+          "maxMs": 0.1836639999964973
+        },
+        "server/app.ts:readStudyPlans": {
+          "calls": 1,
+          "inclusiveMs": 23.226001999995788,
+          "exclusiveMs": 5.386326999985613,
+          "maxMs": 23.226001999995788
+        },
+        "server/app.ts:validateSchedule": {
+          "calls": 1,
+          "inclusiveMs": 42.89974300000176,
+          "exclusiveMs": 42.89974300000176,
+          "maxMs": 42.89974300000176
+        },
+        "sqlite.run": {
+          "calls": 514,
+          "inclusiveMs": 26.611386000033235,
+          "exclusiveMs": 26.611386000033235,
+          "maxMs": 13.76583699999901
+        },
+        "server/app.ts:stableJson": {
+          "calls": 634328,
+          "inclusiveMs": 408.04323899590236,
+          "exclusiveMs": 120.18277200018929,
+          "maxMs": 0.6549079999967944
+        },
+        "server/app.ts:readCatalog": {
+          "calls": 5,
+          "inclusiveMs": 3.9872990000149002,
+          "exclusiveMs": 1.3733570000331383,
+          "maxMs": 1.0454440000030445
+        },
+        "server/app.ts:locatedLessons": {
+          "calls": 3,
+          "inclusiveMs": 6.0053830000106245,
+          "exclusiveMs": 6.0053830000106245,
+          "maxMs": 4.063739000004716
+        },
+        "server/app.ts:readTeacherTeachingAssignments": {
+          "calls": 2,
+          "inclusiveMs": 0.056068999983835965,
+          "exclusiveMs": 0.021789999984321184,
+          "maxMs": 0.047674999994342215
+        },
+        "server/app.ts:readTeacherLessonOrigins": {
+          "calls": 36,
+          "inclusiveMs": 20.232188999987557,
+          "exclusiveMs": 4.0744650000706315,
+          "maxMs": 11.951646000001347
+        },
+        "server/app.ts:replaceEditorDays": {
+          "calls": 1,
+          "inclusiveMs": 11.712241000001086,
+          "exclusiveMs": 5.0590579999407055,
+          "maxMs": 11.712241000001086
+        },
+        "server/app.ts:persistScheduleDelta": {
+          "calls": 1,
+          "inclusiveMs": 135.1340729999938,
+          "exclusiveMs": 3.2390599998034304,
+          "maxMs": 135.1340729999938
+        },
+        "server/app.ts:adminState": {
+          "calls": 1,
+          "inclusiveMs": 72.99204899999313,
+          "exclusiveMs": 0.7912059999798657,
+          "maxMs": 72.99204899999313
+        }
+      },
+      "sql": [
+        {
+          "query": "all: SELECT d.id AS day_id,d.group_id,d.date,d.week_offset,d.base_start,d.nominal_duration,d.holiday,d.note,d.bell_profile_json, s.id AS slot_id,s.slot_index,s.start_minute,s.duration AS slot_duration, l.id AS lesson_id,l.subject_id,l.subgroup,l.teacher,l.room,l.event,l.note AS lesson_note, l.teacher_ref,l.room_ref,l.subgroup_ref,l.lesson_kind,l.joint_id,l.event_remainder_json FROM schedule_days d LEFT JOIN schedule_slots s ON s.day_id=d.id LEFT JOIN lessons l ON l.slot_id=s.id WHERE d.date IN (?…) ORDER BY d.group_id,d.week_offset,d.day_index,s.slot_index,l.rowid",
+          "calls": 2,
+          "ms": 86.19860399999015,
+          "rows": 49560,
+          "changedRows": 0,
+          "maxRows": 24780
+        },
+        {
+          "query": "get: SELECT * FROM teacher_reassignment_operations WHERE operation_id=?",
+          "calls": 1,
+          "ms": 18.054331999999704,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "run: UPDATE teacher_reassignment_operations SET undo_request_id=?,undo_fingerprint=?,undo_response_json=? WHERE operation_id=?",
+          "calls": 1,
+          "ms": 13.770336000001407,
+          "rows": 0,
+          "changedRows": 1,
+          "maxRows": 0
+        },
+        {
+          "query": "run: COMMIT",
+          "calls": 1,
+          "ms": 10.95251200000348,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT id,plan_id,subgroup_id AS subgroupId,target FROM plan_assignments WHERE plan_id IN (?…) ORDER BY rowid",
+          "calls": 1,
+          "ms": 8.405421000003116,
+          "rows": 10262,
+          "changedRows": 0,
+          "maxRows": 10262
+        },
+        {
+          "query": "all: SELECT id,quarter_id AS quarterId,group_id AS groupId,subject_id AS subjectId,mode,lesson_kind AS lessonKind FROM study_plans ORDER BY quarter_id,group_id,subject_id,lesson_kind",
+          "calls": 1,
+          "ms": 7.986833000002662,
+          "rows": 10262,
+          "changedRows": 0,
+          "maxRows": 10262
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…) ORDER BY rowid",
+          "calls": 34,
+          "ms": 5.739490000007208,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "run: INSERT INTO lessons(id,slot_id,subject_id,subgroup,teacher,room,event,note,teacher_ref,room_ref,subgroup_ref,lesson_kind,joint_id,event_remainder_json) VALUES(@id,@slotId,@subjectId,@subgroup,@teacher,@room,@event,@note,@teacherRef,@roomRef,@subgroupRef,@lessonKind,@jointId,@eventRemainderJson)",
+          "calls": 146,
+          "ms": 0.844072999942,
+          "rows": 0,
+          "changedRows": 146,
+          "maxRows": 0
+        },
+        {
+          "query": "run: DELETE FROM schedule_slots WHERE day_id=?",
+          "calls": 23,
+          "ms": 0.5662389999924926,
+          "rows": 0,
+          "changedRows": 161,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json FROM catalog_teachers ORDER BY rowid",
+          "calls": 5,
+          "ms": 0.4838970000128029,
+          "rows": 655,
+          "changedRows": 0,
+          "maxRows": 131
+        },
+        {
+          "query": "all: SELECT teacher_id,subject_id FROM catalog_teacher_subjects ORDER BY rowid",
+          "calls": 5,
+          "ms": 0.3796580000052927,
+          "rows": 1880,
+          "changedRows": 0,
+          "maxRows": 376
+        },
+        {
+          "query": "all: SELECT id,name,capacity,kind,archived,unavailability_json FROM catalog_rooms ORDER BY rowid",
+          "calls": 5,
+          "ms": 0.3399079999944661,
+          "rows": 885,
+          "changedRows": 0,
+          "maxRows": 177
+        },
+        {
+          "query": "run: INSERT INTO schedule_slots(day_id,slot_index,start_minute,duration) VALUES(?…)",
+          "calls": 161,
+          "ms": 0.23135600006207824,
+          "rows": 0,
+          "changedRows": 161,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT group_id,room_id FROM catalog_group_auto_rooms ORDER BY group_id,position,room_id",
+          "calls": 5,
+          "ms": 0.20506200000818353,
+          "rows": 370,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "all: SELECT id,group_id,name,students,archived FROM catalog_subgroups ORDER BY rowid",
+          "calls": 5,
+          "ms": 0.20450100001471583,
+          "rows": 460,
+          "changedRows": 0,
+          "maxRows": 92
+        },
+        {
+          "query": "run: UPDATE catalog_teachers SET unavailability_json=? WHERE id=?",
+          "calls": 131,
+          "ms": 0.19390500002191402,
+          "rows": 0,
+          "changedRows": 131,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT id,lesson_id,origin_json FROM teacher_lesson_origins WHERE lesson_id IN (?…)",
+          "calls": 1,
+          "ms": 0.1888710000057472,
+          "rows": 23,
+          "changedRows": 0,
+          "maxRows": 23
+        },
+        {
+          "query": "all: SELECT id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived FROM catalog_subjects ORDER BY rowid",
+          "calls": 5,
+          "ms": 0.16922700000577606,
+          "rows": 140,
+          "changedRows": 0,
+          "maxRows": 28
+        },
+        {
+          "query": "all: SELECT id,name,students,leader_id,room_id,archived FROM catalog_groups ORDER BY rowid",
+          "calls": 5,
+          "ms": 0.16295399999944493,
+          "rows": 370,
+          "changedRows": 0,
+          "maxRows": 74
+        },
+        {
+          "query": "get: SELECT id,week_offset,bell_profile_json FROM schedule_days WHERE group_id=? AND date=?",
+          "calls": 23,
+          "ms": 0.11764199999743141,
+          "rows": 23,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_subjects)",
+          "calls": 5,
+          "ms": 0.0902429999987362,
+          "rows": 55,
+          "changedRows": 0,
+          "maxRows": 11
+        },
+        {
+          "query": "all: SELECT id,name,start_date AS startDate,end_date AS endDate,archived FROM quarters ORDER BY start_date,id",
+          "calls": 2,
+          "ms": 0.0810839999903692,
+          "rows": 20,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT csrf_token, expires_at, username FROM sessions WHERE token_hash = ?",
+          "calls": 1,
+          "ms": 0.0768370000005234,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "run: UPDATE teacher_lesson_origins SET origin_json=? WHERE id=?",
+          "calls": 23,
+          "ms": 0.062178000021958724,
+          "rows": 0,
+          "changedRows": 23,
+          "maxRows": 0
+        },
+        {
+          "query": "run: UPDATE schedule_days SET base_start=?,nominal_duration=?,holiday=?,note=?,bell_profile_json=? WHERE id=?",
+          "calls": 23,
+          "ms": 0.04822899997816421,
+          "rows": 0,
+          "changedRows": 23,
+          "maxRows": 0
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'",
+          "calls": 5,
+          "ms": 0.04725300002610311,
+          "rows": 5,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT calendar_json FROM school_calendar WHERE id=1",
+          "calls": 1,
+          "ms": 0.045923999990918674,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(schedule_days)",
+          "calls": 2,
+          "ms": 0.04241300000285264,
+          "rows": 20,
+          "changedRows": 0,
+          "maxRows": 10
+        },
+        {
+          "query": "get: SELECT revision,updated_at FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.037393999999039806,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='teacher_lesson_origins'",
+          "calls": 2,
+          "ms": 0.03291199999512173,
+          "rows": 2,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT revision FROM draft_metadata WHERE id=1",
+          "calls": 1,
+          "ms": 0.02891500000259839,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_teachers)",
+          "calls": 5,
+          "ms": 0.028168000004370697,
+          "rows": 35,
+          "changedRows": 0,
+          "maxRows": 7
+        },
+        {
+          "query": "all: PRAGMA table_info(catalog_rooms)",
+          "calls": 5,
+          "ms": 0.023438000018359162,
+          "rows": 30,
+          "changedRows": 0,
+          "maxRows": 6
+        },
+        {
+          "query": "all: SELECT assignment_json FROM teacher_teaching_assignments ORDER BY rowid",
+          "calls": 2,
+          "ms": 0.02235300000756979,
+          "rows": 23,
+          "changedRows": 0,
+          "maxRows": 23
+        },
+        {
+          "query": "all: SELECT origin_json FROM teacher_lesson_origins ORDER BY rowid",
+          "calls": 1,
+          "ms": 0.02000400000542868,
+          "rows": 23,
+          "changedRows": 0,
+          "maxRows": 23
+        },
+        {
+          "query": "get: SELECT settings_json,revision FROM school_display_settings WHERE id=1",
+          "calls": 1,
+          "ms": 0.012989000009838492,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT settings_json FROM bell_settings WHERE id=1",
+          "calls": 1,
+          "ms": 0.01206100000126753,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "run: BEGIN",
+          "calls": 1,
+          "ms": 0.010051000004750676,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "get: SELECT 1 FROM sqlite_master WHERE type='table' AND name='bell_settings'",
+          "calls": 1,
+          "ms": 0.008994999996502884,
+          "rows": 1,
+          "changedRows": 0,
+          "maxRows": 1
+        },
+        {
+          "query": "get: SELECT operation_id,undo_fingerprint,undo_response_json FROM teacher_reassignment_operations WHERE undo_request_id=?",
+          "calls": 1,
+          "ms": 0.00684200000250712,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "run: DELETE FROM teacher_lesson_origins",
+          "calls": 1,
+          "ms": 0.006005999995977618,
+          "rows": 0,
+          "changedRows": 23,
+          "maxRows": 0
+        },
+        {
+          "query": "all: SELECT policy_json FROM temporary_teacher_replacements ORDER BY rowid",
+          "calls": 2,
+          "ms": 0.003337000001920387,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        },
+        {
+          "query": "run: UPDATE draft_metadata SET revision=?,updated_at=? WHERE id=1",
+          "calls": 1,
+          "ms": 0.0028679999959422275,
+          "rows": 0,
+          "changedRows": 1,
+          "maxRows": 0
+        },
+        {
+          "query": "run: DELETE FROM teacher_teaching_assignments",
+          "calls": 1,
+          "ms": 0.002383999992161989,
+          "rows": 0,
+          "changedRows": 23,
+          "maxRows": 0
+        },
+        {
+          "query": "run: DELETE FROM temporary_teacher_replacements",
+          "calls": 1,
+          "ms": 0.00128900000709109,
+          "rows": 0,
+          "changedRows": 0,
+          "maxRows": 0
+        }
+      ],
+      "serializations": [
+        {
+          "chars": 4735815,
+          "ms": 10.736415999999736
+        },
+        {
+          "chars": 4735815,
+          "ms": 11.116532000000007
+        }
+      ]
+    }
+  ],
+  "cpuSummary": {
+    "totalMs": 7322.516579999996,
+    "topSelfTime": [
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:142",
+        "ms": 1280.6259999999995
+      },
+      {
+        "functionLocation": "(garbage collector) :0",
+        "ms": 948.1169999999989
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:188",
+        "ms": 859.3169999999988
+      },
+      {
+        "functionLocation": "locate shared/teacherReassignment.ts:138",
+        "ms": 532.6679999999998
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:386",
+        "ms": 473.25700000000035
+      },
+      {
+        "functionLocation": "mainReason shared/teacherReassignment.ts:375",
+        "ms": 439.2870000000003
+      },
+      {
+        "functionLocation": "buildUnits shared/teacherReassignment.ts:164",
+        "ms": 383.09299999999996
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:384",
+        "ms": 380.9489999999996
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:174",
+        "ms": 354.46899999999965
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:376",
+        "ms": 302.75900000000024
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:145",
+        "ms": 295.0580000000002
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherConflicts.ts:59",
+        "ms": 285.7570000000002
+      },
+      {
+        "functionLocation": "updateLessons shared/teacherReassignment.ts:291",
+        "ms": 123.55700000000013
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:292",
+        "ms": 101.33100000000005
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:294",
+        "ms": 92.91900000000005
+      },
+      {
+        "functionLocation": "post node:inspector:115",
+        "ms": 79.246
+      },
+      {
+        "functionLocation": "findTeacherConflicts shared/teacherConflicts.ts:52",
+        "ms": 70.92000000000002
+      },
+      {
+        "functionLocation": "unitKey shared/teacherReassignment.ts:151",
+        "ms": 57.02
+      },
+      {
+        "functionLocation": "(anonymous) :0",
+        "ms": 47.708
+      },
+      {
+        "functionLocation": "applyTeacher shared/teacherReassignment.ts:391",
+        "ms": 45.325999999999986
+      },
+      {
+        "functionLocation": "unitMatchesStream shared/teacherReassignment.ts:355",
+        "ms": 35.92199999999999
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:176",
+        "ms": 24.343999999999998
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:288",
+        "ms": 21.099999999999994
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:327",
+        "ms": 18.941000000000003
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:334",
+        "ms": 15.839999999999998
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:177",
+        "ms": 14.764000000000001
+      },
+      {
+        "functionLocation": "cloneSchedule shared/teacherReassignment.ts:287",
+        "ms": 10.559
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:423",
+        "ms": 10.548
+      },
+      {
+        "functionLocation": "readSchedule server/app.ts:1954",
+        "ms": 8.466
+      },
+      {
+        "functionLocation": "(anonymous) shared/teacherReassignment.ts:357",
+        "ms": 8.441
+      }
+    ]
+  },
+  "methodology": {
+    "transport": "Fastify.inject, real auth/CSRF/API/database; no TCP overhead",
+    "sql": "better-sqlite3 all/get/run native call time including result materialization; bound parameters never logged",
+    "functions": "Temporary AST-instrumented source snapshot; inclusive and exclusive times; original application sources unchanged",
+    "equivalence": "All eight preview responses hash-equal to uninstrumented requests",
+    "caveat": "Timings include probe overhead and JIT/cache differences; percentages describe each measured request, not universal guarantees"
+  },
+  "browserChecks": {
+    "requests": [
+      {
+        "url": "/api/admin/state?view=bootstrap",
+        "start": 362.3999999985099,
+        "wallStart": 1792070342751,
+        "status": 200,
+        "done": true,
+        "end": 373.6000000014901,
+        "wallEnd": 1792070342762
+      },
+      {
+        "url": "/api/admin/reassignments?quarterId=quarter-2026-1",
+        "start": 448.8999999985099,
+        "wallStart": 1792070342838,
+        "status": 200,
+        "done": true,
+        "end": 683.1000000014901,
+        "wallEnd": 1792070343072
+      },
+      {
+        "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=school%3Aalgebra",
+        "start": 695.2000000029802,
+        "wallStart": 1792070343084,
+        "status": 200,
+        "done": true,
+        "end": 797.7000000029802,
+        "wallEnd": 1792070343187
+      },
+      {
+        "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=english",
+        "start": 950.1000000014901,
+        "wallStart": 1792070343339,
+        "status": 200,
+        "done": true,
+        "end": 1057,
+        "wallEnd": 1792070343446
+      },
+      {
+        "url": "/api/teacher-reassignments/preview?response=compact",
+        "start": 1510.2000000029802,
+        "wallStart": 1792070343899,
+        "status": 200,
+        "done": true,
+        "end": 3524,
+        "wallEnd": 1792070345913,
+        "units": 23
+      },
+      {
+        "url": "/api/teacher-reassignments/preview?response=compact",
+        "start": 3549.7999999970198,
+        "wallStart": 1792070345939,
+        "status": 200,
+        "done": true,
+        "end": 7105.20000000298,
+        "wallEnd": 1792070349494,
+        "units": 23
+      },
+      {
+        "url": "/api/teacher-reassignments/preview?response=compact",
+        "start": 7129.29999999702,
+        "wallStart": 1792070349518,
+        "status": 200,
+        "done": true,
+        "end": 10235.5,
+        "wallEnd": 1792070352624,
+        "units": 23
+      },
+      {
+        "url": "/api/teacher-reassignments/preview?response=compact",
+        "start": 10613,
+        "wallStart": 1792070353002,
+        "error": "AbortError: signal is aborted without reason",
+        "end": 10733.29999999702,
+        "wallEnd": 1792070353122,
+        "done": true
+      },
+      {
+        "url": "/api/teacher-reassignments/preview?response=compact",
+        "start": 10732.89999999851,
+        "wallStart": 1792070353122,
+        "status": 200,
+        "done": true,
+        "end": 17806.39999999851,
+        "wallEnd": 1792070360195,
+        "units": 23
+      },
+      {
+        "url": "/api/teacher-reassignments/preview?response=compact",
+        "start": 17832.29999999702,
+        "wallStart": 1792070360221,
+        "error": "AbortError: signal is aborted without reason",
+        "end": 18012,
+        "wallEnd": 1792070360401,
+        "done": true
+      }
+    ],
+    "commits": [
+      {
+        "at": 38.399999998509884,
+        "wall": 1792070342427
+      },
+      {
+        "at": 47.100000001490116,
+        "wall": 1792070342436
+      },
+      {
+        "at": 340.5,
+        "wall": 1792070342729
+      },
+      {
+        "at": 363.5,
+        "wall": 1792070342752
+      },
+      {
+        "at": 402.79999999701977,
+        "wall": 1792070342792
+      },
+      {
+        "at": 452.6000000014901,
+        "wall": 1792070342841
+      },
+      {
+        "at": 600,
+        "wall": 1792070342989
+      },
+      {
+        "at": 686.2999999970198,
+        "wall": 1792070343075
+      },
+      {
+        "at": 691.2999999970198,
+        "wall": 1792070343080
+      },
+      {
+        "at": 824.1000000014901,
+        "wall": 1792070343213
+      },
+      {
+        "at": 891.7000000029802,
+        "wall": 1792070343281
+      },
+      {
+        "at": 898.1000000014901,
+        "wall": 1792070343287
+      },
+      {
+        "at": 948.7999999970198,
+        "wall": 1792070343338
+      },
+      {
+        "at": 953,
+        "wall": 1792070343342
+      },
+      {
+        "at": 1079,
+        "wall": 1792070343468
+      },
+      {
+        "at": 1289.8999999985099,
+        "wall": 1792070343679
+      },
+      {
+        "at": 1325.2999999970198,
+        "wall": 1792070343714
+      },
+      {
+        "at": 1398.3999999985099,
+        "wall": 1792070343787
+      },
+      {
+        "at": 1452.3999999985099,
+        "wall": 1792070343841
+      },
+      {
+        "at": 1506.2000000029802,
+        "wall": 1792070343895
+      },
+      {
+        "at": 1513.8999999985099,
+        "wall": 1792070343903
+      },
+      {
+        "at": 3532.89999999851,
+        "wall": 1792070345922
+      },
+      {
+        "at": 3549.5,
+        "wall": 1792070345938
+      },
+      {
+        "at": 3557.5,
+        "wall": 1792070345946
+      },
+      {
+        "at": 7110.29999999702,
+        "wall": 1792070349499
+      },
+      {
+        "at": 7129.20000000298,
+        "wall": 1792070349518
+      },
+      {
+        "at": 7138.20000000298,
+        "wall": 1792070349527
+      },
+      {
+        "at": 10242.5,
+        "wall": 1792070352631
+      },
+      {
+        "at": 10271.29999999702,
+        "wall": 1792070352660
+      },
+      {
+        "at": 10612.79999999702,
+        "wall": 1792070353002
+      },
+      {
+        "at": 10622.39999999851,
+        "wall": 1792070353011
+      },
+      {
+        "at": 10732.79999999702,
+        "wall": 1792070353122
+      },
+      {
+        "at": 10740.79999999702,
+        "wall": 1792070353130
+      },
+      {
+        "at": 17810.89999999851,
+        "wall": 1792070360200
+      },
+      {
+        "at": 17832.20000000298,
+        "wall": 1792070360221
+      },
+      {
+        "at": 17840,
+        "wall": 1792070360229
+      },
+      {
+        "at": 18011.39999999851,
+        "wall": 1792070360400
+      }
+    ],
+    "mutations": [
+      {
+        "at": 7129.79999999702,
+        "disabled": 23,
+        "rows": 23
+      },
+      {
+        "at": 10242.5,
+        "disabled": 0,
+        "rows": 23
+      },
+      {
+        "at": 10613.60000000149,
+        "disabled": 23,
+        "rows": 23
+      },
+      {
+        "at": 17810.89999999851,
+        "disabled": 0,
+        "rows": 23
+      },
+      {
+        "at": 17832.79999999702,
+        "disabled": 23,
+        "rows": 23
+      },
+      {
+        "at": 18012,
+        "disabled": 0,
+        "rows": 0
+      }
+    ],
+    "longTasks": [
+      {
+        "start": 1079.1000000014901,
+        "duration": 57
+      }
+    ],
+    "errors": [],
+    "actions": [
+      {
+        "name": "row-edit",
+        "requests": 1,
+        "reactRootCommits": 3,
+        "ms": 3136.7999999970198,
+        "firstRows": [
+          "teacher-110",
+          "__default__"
+        ]
+      },
+      {
+        "name": "same-value",
+        "newRequests": 0,
+        "reactRootCommits": 1
+      },
+      {
+        "name": "rapid-common-change",
+        "requests": [
+          {
+            "url": "/api/teacher-reassignments/preview?response=compact",
+            "start": 10613,
+            "wallStart": 1792070353002,
+            "error": "AbortError: signal is aborted without reason",
+            "end": 10733.29999999702,
+            "wallEnd": 1792070353122,
+            "done": true
+          },
+          {
+            "url": "/api/teacher-reassignments/preview?response=compact",
+            "start": 10732.89999999851,
+            "wallStart": 1792070353122,
+            "status": 200,
+            "done": true,
+            "end": 17806.39999999851,
+            "wallEnd": 1792070360195,
+            "units": 23
+          }
+        ],
+        "selected": "teacher-110",
+        "resultTeachers": [
+          "teacher-110"
+        ]
+      },
+      {
+        "name": "close-during-preview",
+        "closeWall": 1792070360381,
+        "ping": {
+          "status": 200,
+          "ms": 2698.39999999851,
+          "wallStart": 1792070360405,
+          "wallEnd": 1792070363104
+        },
+        "dialogPresent": false,
+        "requests": [
+          {
+            "url": "/api/teacher-reassignments/preview?response=compact",
+            "start": 17832.29999999702,
+            "wallStart": 1792070360221,
+            "error": "AbortError: signal is aborted without reason",
+            "end": 18012,
+            "wallEnd": 1792070360401,
+            "done": true
+          }
+        ]
+      }
+    ]
+  },
+  "filterChecks": {
+    "filterResult": {
+      "subject": "Английский язык",
+      "toolbar": "1350 занятий по предмету\nПереназначить четверть",
+      "requests": [
+        {
+          "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=school%3Aalgebra",
+          "start": 116235,
+          "wallStart": 1792070458624,
+          "error": "AbortError: signal is aborted without reason",
+          "end": 116309,
+          "wallEnd": 1792070458698,
+          "done": true
+        },
+        {
+          "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=english",
+          "start": 116308.60000000149,
+          "wallStart": 1792070458697,
+          "status": 200,
+          "done": true,
+          "end": 116448,
+          "wallEnd": 1792070458837
+        }
+      ]
+    },
+    "groupResult": {
+      "newRequests": 0,
+      "toolbar": "23 занятий по предмету\nПереназначить четверть"
+    },
+    "errors": []
+  },
+  "sqlPlans": {
+    "period-row0-teacher110": {
+      "dates": 53,
+      "plan": [
+        [
+          8,
+          0,
+          0,
+          "SEARCH d USING INDEX schedule_days_date_group (date=?)"
+        ],
+        [
+          180,
+          0,
+          0,
+          "SEARCH s USING INDEX sqlite_autoindex_schedule_slots_1 (day_id=?) LEFT-JOIN"
+        ],
+        [
+          187,
+          0,
+          0,
+          "SEARCH l USING INDEX lessons_slot_id (slot_id=?) LEFT-JOIN"
+        ],
+        [
+          237,
+          0,
+          0,
+          "USE TEMP B-TREE FOR ORDER BY"
+        ]
+      ],
+      "contextLessons": 16602
+    },
+    "period-no-end-row0-teacher110": {
+      "dates": 47,
+      "plan": [
+        [
+          8,
+          0,
+          0,
+          "SEARCH d USING INDEX schedule_days_date_group (date=?)"
+        ],
+        [
+          162,
+          0,
+          0,
+          "SEARCH s USING INDEX sqlite_autoindex_schedule_slots_1 (day_id=?) LEFT-JOIN"
+        ],
+        [
+          169,
+          0,
+          0,
+          "SEARCH l USING INDEX lessons_slot_id (slot_id=?) LEFT-JOIN"
+        ],
+        [
+          219,
+          0,
+          0,
+          "USE TEMP B-TREE FOR ORDER BY"
+        ]
+      ],
+      "contextLessons": 18382
+    }
+  },
+  "integrity": {
+    "copyLessonCount": 181324,
+    "teacherDifferencesAfterUndo": 0,
+    "copyRevision": 425,
+    "integrity": "ok",
+    "foreignKeyErrors": 0,
+    "workingSourceLessonCount": 181324,
+    "workingSourceRevision": 423
+  },
+  "storedOperationBytes": {
+    "apply_response_json": 5182175,
+    "previous_schedule_json": 5072038,
+    "previous_catalog_json": 89458,
+    "previous_origins_json": 2,
+    "previous_assignments_json": 2,
+    "undo_response_json": 5165842,
+    "previous_policies_json": 2,
+    "totalBytes": 15509519
+  },
+  "serverPreviewAndPingEvents": [
+    {
+      "event": "start",
+      "id": "req-j",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "wall": 1792070343900,
+      "mono": 112706.505162
+    },
+    {
+      "event": "send",
+      "id": "req-j",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "ms": 2011.8173589999933,
+      "wall": 1792070345912,
+      "mono": 114718.323182
+    },
+    {
+      "event": "finish",
+      "id": "req-j",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "status": 200,
+      "ms": 2012.1199400000041,
+      "wall": 1792070345912,
+      "mono": 114718.623756
+    },
+    {
+      "event": "start",
+      "id": "req-k",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "wall": 1792070345940,
+      "mono": 114746.437919
+    },
+    {
+      "event": "send",
+      "id": "req-k",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "ms": 3552.5215219999955,
+      "wall": 1792070349492,
+      "mono": 118298.954312
+    },
+    {
+      "event": "finish",
+      "id": "req-k",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "status": 200,
+      "ms": 3552.9778309999965,
+      "wall": 1792070349493,
+      "mono": 118299.407674
+    },
+    {
+      "event": "start",
+      "id": "req-l",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "wall": 1792070349519,
+      "mono": 118325.760772
+    },
+    {
+      "event": "send",
+      "id": "req-l",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "ms": 3103.023742000005,
+      "wall": 1792070352622,
+      "mono": 121428.781728
+    },
+    {
+      "event": "finish",
+      "id": "req-l",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "status": 200,
+      "ms": 3103.445240999994,
+      "wall": 1792070352623,
+      "mono": 121429.201225
+    },
+    {
+      "event": "start",
+      "id": "req-m",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "wall": 1792070353003,
+      "mono": 121809.817748
+    },
+    {
+      "event": "send",
+      "id": "req-m",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "ms": 3718.878422000009,
+      "wall": 1792070356722,
+      "mono": 125528.691182
+    },
+    {
+      "event": "finish",
+      "id": "req-m",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "status": 200,
+      "ms": 3719.3955780000106,
+      "wall": 1792070356723,
+      "mono": 125529.207407
+    },
+    {
+      "event": "start",
+      "id": "req-n",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "wall": 1792070356724,
+      "mono": 125530.501708
+    },
+    {
+      "event": "send",
+      "id": "req-n",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "ms": 3470.0649649999978,
+      "wall": 1792070360194,
+      "mono": 129000.568282
+    },
+    {
+      "event": "finish",
+      "id": "req-n",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "status": 200,
+      "ms": 3470.5482099999936,
+      "wall": 1792070360194,
+      "mono": 129001.049594
+    },
+    {
+      "event": "start",
+      "id": "req-o",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "wall": 1792070360223,
+      "mono": 129029.509126
+    },
+    {
+      "event": "send",
+      "id": "req-o",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "ms": 2878.3474839999835,
+      "wall": 1792070363101,
+      "mono": 131907.853276
+    },
+    {
+      "event": "finish",
+      "id": "req-o",
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "status": 200,
+      "ms": 2878.866739999983,
+      "wall": 1792070363102,
+      "mono": 131908.370705
+    },
+    {
+      "event": "start",
+      "id": "req-p",
+      "url": "/__qa/ping",
+      "wall": 1792070363103,
+      "mono": 131909.644206
+    },
+    {
+      "event": "send",
+      "id": "req-p",
+      "url": "/__qa/ping",
+      "ms": 0.18424600001890212,
+      "wall": 1792070363103,
+      "mono": 131909.825308
+    },
+    {
+      "event": "finish",
+      "id": "req-p",
+      "url": "/__qa/ping",
+      "status": 200,
+      "ms": 0.3500270000076853,
+      "wall": 1792070363103,
+      "mono": 131909.99092
+    }
+  ],
+  "browserMethodology": {
+    "reactCommits": "Production React DevTools onCommitFiberRoot hook, root commits only, not per-component render invocation count",
+    "requestAborts": "Browser AbortError timestamps correlated with isolated HTTP onRequest/onSend/onResponse events and queued ping",
+    "longTasks": "PerformanceObserver(longtask)",
+    "http": "Original uninstrumented application on127.0.0.1:3182; temporary hooks and QA ping in external server driver only"
+  },
+  "summary": [
+    {
+      "name": "lesson-common109",
+      "totalMs": 19.291517999998177,
+      "sqlCalls": 19,
+      "sqlMs": 2.636797999992268,
+      "prepareMs": 0.5069619999921997,
+      "returnedRows": 1467,
+      "readStateMs": 4.854564000001119,
+      "previewMs": 6.4655970000021625,
+      "locateCalls": 53,
+      "mainReasonCalls": 23,
+      "buildUnitsCalls": 3,
+      "streamMatchCalls": 0
+    },
+    {
+      "name": "week-row0-teacher110",
+      "totalMs": 73.90858500000104,
+      "sqlCalls": 22,
+      "sqlMs": 6.6375910000133445,
+      "prepareMs": 0.6963220000106958,
+      "returnedRows": 4273,
+      "readStateMs": 10.944547999999486,
+      "previewMs": 52.60284500000125,
+      "locateCalls": 163,
+      "mainReasonCalls": 69,
+      "buildUnitsCalls": 8,
+      "streamMatchCalls": 5733
+    },
+    {
+      "name": "period-first-open",
+      "totalMs": 2486.22336,
+      "sqlCalls": 53,
+      "sqlMs": 48.686502999997174,
+      "prepareMs": 2.496218000022054,
+      "returnedRows": 25842,
+      "readStateMs": 79.19174700000076,
+      "previewMs": 2347.2281220000004,
+      "locateCalls": 1062,
+      "mainReasonCalls": 506,
+      "buildUnitsCalls": 3,
+      "streamMatchCalls": 0
+    },
+    {
+      "name": "period-common-teacher109",
+      "totalMs": 3907.033812999998,
+      "sqlCalls": 53,
+      "sqlMs": 48.009379999992234,
+      "prepareMs": 2.5809529999933147,
+      "returnedRows": 25842,
+      "readStateMs": 72.60670000000027,
+      "previewMs": 3764.191035,
+      "locateCalls": 1706,
+      "mainReasonCalls": 529,
+      "buildUnitsCalls": 26,
+      "streamMatchCalls": 381846
+    },
+    {
+      "name": "period-row0-teacher110",
+      "totalMs": 4098.209984000001,
+      "sqlCalls": 53,
+      "sqlMs": 48.94896700004756,
+      "prepareMs": 2.589077999989968,
+      "returnedRows": 25842,
+      "readStateMs": 80.41632599999866,
+      "previewMs": 3911.175997999999,
+      "locateCalls": 1203,
+      "mainReasonCalls": 529,
+      "buildUnitsCalls": 28,
+      "streamMatchCalls": 381846
+    },
+    {
+      "name": "period-row1-teacher111",
+      "totalMs": 3696.916312000001,
+      "sqlCalls": 53,
+      "sqlMs": 49.109887999984494,
+      "prepareMs": 2.6296350000047823,
+      "returnedRows": 25842,
+      "readStateMs": 70.02674999999726,
+      "previewMs": 3518.481040999999,
+      "locateCalls": 1203,
+      "mainReasonCalls": 529,
+      "buildUnitsCalls": 28,
+      "streamMatchCalls": 381846
+    },
+    {
+      "name": "period-no-end-common109",
+      "totalMs": 9592.848706999997,
+      "sqlCalls": 58,
+      "sqlMs": 52.173125000037544,
+      "prepareMs": 2.81075499997678,
+      "returnedRows": 23076,
+      "readStateMs": 73.59097299999848,
+      "previewMs": 9446.640067999993,
+      "locateCalls": 4562,
+      "mainReasonCalls": 1081,
+      "buildUnitsCalls": 50,
+      "streamMatchCalls": 863954
+    },
+    {
+      "name": "period-no-end-row0-teacher110",
+      "totalMs": 7724.544110000003,
+      "sqlCalls": 58,
+      "sqlMs": 47.05999799998244,
+      "prepareMs": 2.849228999999468,
+      "returnedRows": 23076,
+      "readStateMs": 73.1928870000047,
+      "previewMs": 7540.029102,
+      "locateCalls": 2403,
+      "mainReasonCalls": 1081,
+      "buildUnitsCalls": 52,
+      "streamMatchCalls": 863954
+    },
+    {
+      "name": "page-english-quarter",
+      "totalMs": 89.74303099999815,
+      "sqlCalls": 51,
+      "sqlMs": 52.35280299999431,
+      "prepareMs": 2.412886999976763,
+      "returnedRows": 25832,
+      "readStateMs": 0,
+      "previewMs": 0,
+      "locateCalls": 0,
+      "mainReasonCalls": 0,
+      "buildUnitsCalls": 0,
+      "streamMatchCalls": 0
+    },
+    {
+      "name": "apply23",
+      "totalMs": 4402.462114000009,
+      "sqlCalls": 603,
+      "sqlMs": 132.87753500002145,
+      "prepareMs": 7.870434000011301,
+      "returnedRows": 58603,
+      "readStateMs": 84.16651400001138,
+      "previewMs": 3636.9281330000085,
+      "locateCalls": 1203,
+      "mainReasonCalls": 529,
+      "buildUnitsCalls": 28,
+      "streamMatchCalls": 381846
+    },
+    {
+      "name": "undo23",
+      "totalMs": 477.51443400001153,
+      "sqlCalls": 651,
+      "sqlMs": 155.94898800012015,
+      "prepareMs": 5.528699000104098,
+      "returnedRows": 75111,
+      "readStateMs": 0,
+      "previewMs": 0,
+      "locateCalls": 0,
+      "mainReasonCalls": 0,
+      "buildUnitsCalls": 0,
+      "streamMatchCalls": 0
+    }
+  ],
+  "diagnosticScriptSha256": "e09c5dd623f547222e82cd4a7bbaccd310bac1a192c7fadbecbe52d84448c56c"
+}

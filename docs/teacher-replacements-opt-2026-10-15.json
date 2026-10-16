@@ -1,0 +1,2073 @@
+{
+  "generatedAt": "2026-10-15T14:05:58.277Z",
+  "step": "8.1.4",
+  "dataset": {
+    "baseline": "/tmp/smena-replacements-review-20261015-1ekJj8/school.sqlite",
+    "initialRevision": 423,
+    "lessonCount": 181324
+  },
+  "cases": [
+    "lesson-common109",
+    "week-row0-teacher110",
+    "period-first-open",
+    "period-common-teacher109",
+    "period-row0-teacher110",
+    "period-row1-teacher111",
+    "period-no-end-common109",
+    "period-no-end-row0-teacher110"
+  ],
+  "measurements": [
+    {
+      "branch": "old",
+      "name": "lesson-common109",
+      "totalMs": 19.659484999999904,
+      "responseBytes": 2837,
+      "responseHash": "9ecc84ba96ab4f61cc5888c1eea3b845d827411a4011e7861601afcdbf3fa257"
+    },
+    {
+      "branch": "new",
+      "name": "lesson-common109",
+      "totalMs": 11.717501000000084,
+      "responseBytes": 2837,
+      "responseHash": "9ecc84ba96ab4f61cc5888c1eea3b845d827411a4011e7861601afcdbf3fa257"
+    },
+    {
+      "branch": "old",
+      "name": "week-row0-teacher110",
+      "totalMs": 91.80614300000002,
+      "responseBytes": 5360,
+      "responseHash": "ea1e324af86f077e02dc61d36056e09b0b891efd0a5e3d8720edadf52e986583"
+    },
+    {
+      "branch": "new",
+      "name": "week-row0-teacher110",
+      "totalMs": 25.09614799999997,
+      "responseBytes": 5360,
+      "responseHash": "ea1e324af86f077e02dc61d36056e09b0b891efd0a5e3d8720edadf52e986583"
+    },
+    {
+      "branch": "old",
+      "name": "period-first-open",
+      "totalMs": 1953.6057070000002,
+      "responseBytes": 10246,
+      "responseHash": "bbb4c7bc6b53aaba562098289e386a60baa333205fe79cade2b9606aef3b2271"
+    },
+    {
+      "branch": "new",
+      "name": "period-first-open",
+      "totalMs": 183.66861800000015,
+      "responseBytes": 10246,
+      "responseHash": "bbb4c7bc6b53aaba562098289e386a60baa333205fe79cade2b9606aef3b2271"
+    },
+    {
+      "branch": "old",
+      "name": "period-common-teacher109",
+      "totalMs": 3649.6340889999997,
+      "responseBytes": 22757,
+      "responseHash": "387eb44a48506069e870415c6c89cba4667b052adc9f4ed38cf245dc7e54f4b6"
+    },
+    {
+      "branch": "new",
+      "name": "period-common-teacher109",
+      "totalMs": 16.863720000000285,
+      "responseBytes": 22757,
+      "responseHash": "387eb44a48506069e870415c6c89cba4667b052adc9f4ed38cf245dc7e54f4b6"
+    },
+    {
+      "branch": "old",
+      "name": "period-row0-teacher110",
+      "totalMs": 3383.753992,
+      "responseBytes": 28169,
+      "responseHash": "1aeec1eefc019b4e3de6cadf6760c53bc52b7627aed3232f8e9c8b5e09ab3c65"
+    },
+    {
+      "branch": "new",
+      "name": "period-row0-teacher110",
+      "totalMs": 12.43709300000046,
+      "responseBytes": 28169,
+      "responseHash": "1aeec1eefc019b4e3de6cadf6760c53bc52b7627aed3232f8e9c8b5e09ab3c65"
+    },
+    {
+      "branch": "old",
+      "name": "period-row1-teacher111",
+      "totalMs": 3133.079922000001,
+      "responseBytes": 28169,
+      "responseHash": "c3b1eff679251e719a2fd95d8655e53bb459527e77a05d0a9d878abcb8572bb1"
+    },
+    {
+      "branch": "new",
+      "name": "period-row1-teacher111",
+      "totalMs": 12.694542999999612,
+      "responseBytes": 28169,
+      "responseHash": "c3b1eff679251e719a2fd95d8655e53bb459527e77a05d0a9d878abcb8572bb1"
+    },
+    {
+      "branch": "old",
+      "name": "period-no-end-common109",
+      "totalMs": 8453.278506999999,
+      "responseBytes": 44101,
+      "responseHash": "4e531854b4ac54804dbf7bd77d764675d87ceb1d9978927e4896513014e0ffdb"
+    },
+    {
+      "branch": "new",
+      "name": "period-no-end-common109",
+      "totalMs": 188.9854430000014,
+      "responseBytes": 44101,
+      "responseHash": "4e531854b4ac54804dbf7bd77d764675d87ceb1d9978927e4896513014e0ffdb"
+    },
+    {
+      "branch": "old",
+      "name": "period-no-end-row0-teacher110",
+      "totalMs": 6822.013476999997,
+      "responseBytes": 55431,
+      "responseHash": "57a41e7f8083a970b735d2d731792dc6246d407ea286c8e364af0ca2fb885cf5"
+    },
+    {
+      "branch": "new",
+      "name": "period-no-end-row0-teacher110",
+      "totalMs": 21.566358000000037,
+      "responseBytes": 55431,
+      "responseHash": "57a41e7f8083a970b735d2d731792dc6246d407ea286c8e364af0ca2fb885cf5"
+    },
+    {
+      "branch": "old",
+      "name": "identical-request-1",
+      "totalMs": 3015.389665999999,
+      "responseBytes": 28169,
+      "responseHash": "1aeec1eefc019b4e3de6cadf6760c53bc52b7627aed3232f8e9c8b5e09ab3c65"
+    },
+    {
+      "branch": "old",
+      "name": "identical-request-2",
+      "totalMs": 3380.7249179999963,
+      "responseBytes": 28169,
+      "responseHash": "1aeec1eefc019b4e3de6cadf6760c53bc52b7627aed3232f8e9c8b5e09ab3c65"
+    },
+    {
+      "branch": "new",
+      "name": "identical-request-1",
+      "totalMs": 189.54471200000262,
+      "responseBytes": 28169,
+      "responseHash": "1aeec1eefc019b4e3de6cadf6760c53bc52b7627aed3232f8e9c8b5e09ab3c65"
+    },
+    {
+      "branch": "new",
+      "name": "identical-request-2",
+      "totalMs": 3.5211989999952493,
+      "responseBytes": 28169,
+      "responseHash": "1aeec1eefc019b4e3de6cadf6760c53bc52b7627aed3232f8e9c8b5e09ab3c65"
+    },
+    {
+      "branch": "old",
+      "name": "canonical-read-before-apply",
+      "totalMs": 86.48391499999707,
+      "responseBytes": 1574299,
+      "responseHash": "c0a0a7d1f0a341c1f14e9010064e419426205acf3bcafc966ecfef415320ba7d"
+    },
+    {
+      "branch": "new",
+      "name": "canonical-read-before-apply",
+      "totalMs": 83.68136599999707,
+      "responseBytes": 1574299,
+      "responseHash": "c0a0a7d1f0a341c1f14e9010064e419426205acf3bcafc966ecfef415320ba7d"
+    },
+    {
+      "branch": "old",
+      "name": "apply",
+      "totalMs": 3345.191555999998,
+      "responseBytes": 5182175,
+      "responseHash": "bd1b751afb85cdf72ef90113989b27eb8496a8ab41d96f9ca6fd885bec7e5761"
+    },
+    {
+      "branch": "new",
+      "name": "apply",
+      "totalMs": 498.960619999998,
+      "responseBytes": 96,
+      "responseHash": "e1e1c57076eaeac4d3e2aaff7b828af29f4c8bdc423bdd5c83b2c5293d0ae200"
+    },
+    {
+      "branch": "old",
+      "name": "canonical-read-after-apply",
+      "totalMs": 85.91882500000065,
+      "responseBytes": 1584934,
+      "responseHash": "1bf26aefa2fbaeccf54975e83333c7739a9f63e01d3cfb98e078bb49252543d9"
+    },
+    {
+      "branch": "new",
+      "name": "canonical-read-after-apply",
+      "totalMs": 86.43961199999467,
+      "responseBytes": 1584934,
+      "responseHash": "9b275115a9ae770bb8ac1b06e7bfdcd7252d9d2caf7ec528eba3dba905f4d843"
+    },
+    {
+      "branch": "old",
+      "name": "apply-replay",
+      "totalMs": 44.070831000004546,
+      "responseBytes": 5182175,
+      "responseHash": "bd1b751afb85cdf72ef90113989b27eb8496a8ab41d96f9ca6fd885bec7e5761"
+    },
+    {
+      "branch": "new",
+      "name": "apply-replay",
+      "totalMs": 0.582843000003777,
+      "responseBytes": 96,
+      "responseHash": "e1e1c57076eaeac4d3e2aaff7b828af29f4c8bdc423bdd5c83b2c5293d0ae200"
+    },
+    {
+      "branch": "old",
+      "name": "undo",
+      "totalMs": 403.8987749999942,
+      "responseBytes": 5165842,
+      "responseHash": "b1bf9a13c433c79f87bc701e0552ee2683139c134d99fe8aef9d90f80093b532"
+    },
+    {
+      "branch": "new",
+      "name": "undo",
+      "totalMs": 125.66169700000319,
+      "responseBytes": 55,
+      "responseHash": "b423adf6725ab9d70b529422cf9190d97911426ab98ed596f24fadf841ab93ef"
+    },
+    {
+      "branch": "old",
+      "name": "canonical-read-after-undo",
+      "totalMs": 79.17337399999815,
+      "responseBytes": 1574299,
+      "responseHash": "4a82a501e627a498a95a57b2db6037152a47458032b7e2f0162964d6fe67cb51"
+    },
+    {
+      "branch": "new",
+      "name": "canonical-read-after-undo",
+      "totalMs": 81.35482000000047,
+      "responseBytes": 1574299,
+      "responseHash": "d0a89bd7e3fd804e336591a7fe006a7d658e2f0419a7ec04d5cd992192f8d9eb"
+    },
+    {
+      "branch": "old",
+      "name": "undo-replay",
+      "totalMs": 37.305577999999514,
+      "responseBytes": 5165842,
+      "responseHash": "b1bf9a13c433c79f87bc701e0552ee2683139c134d99fe8aef9d90f80093b532"
+    },
+    {
+      "branch": "new",
+      "name": "undo-replay",
+      "totalMs": 0.5448909999977332,
+      "responseBytes": 55,
+      "responseHash": "b423adf6725ab9d70b529422cf9190d97911426ab98ed596f24fadf841ab93ef"
+    }
+  ],
+  "apply": {
+    "selectedUnits": 23,
+    "oldResponseBytes": 5182175,
+    "newReceiptBytes": 96,
+    "oldStoredBytes": {
+      "apply_response_json": 5182175,
+      "previous_schedule_json": 5072038,
+      "previous_catalog_json": 89458,
+      "previous_origins_json": 2,
+      "previous_assignments_json": 2,
+      "undo_response_json": 5165842,
+      "previous_policies_json": 2
+    },
+    "newStoredBytes": {
+      "apply_response_json": 96,
+      "previous_schedule_json": 3040,
+      "previous_catalog_json": 89458,
+      "previous_origins_json": 2,
+      "previous_assignments_json": 2,
+      "undo_response_json": 55,
+      "previous_policies_json": 2
+    },
+    "canonicalScheduleEqual": true,
+    "publishedDataUnchanged": true,
+    "oldUndoRestoredCanonicalSchedule": true,
+    "newUndoRestoredExactRows": true
+  },
+  "checks": {
+    "previewsDeepEqual": true,
+    "identicalRequestDeepEqual": true,
+    "replayDeepEqual": true,
+    "staleRevisionRejected": true
+  },
+  "method": "Fastify.inject on separate online SQLite backups; same eight captured requests and revision; separate fresh QA auth; high-resolution wall time; JSON byte length; persisted operation column lengths. Timings are one-run observations and should be compared by workload, not treated as guarantees.",
+  "browser": {
+    "firstOpenMs": 317,
+    "row23": {
+      "samples": [
+        {
+          "ms": 94,
+          "target": "teacher-110",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-110"
+        },
+        {
+          "ms": 115,
+          "target": "teacher-111",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-111"
+        },
+        {
+          "ms": 89,
+          "target": "teacher-110",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-110"
+        },
+        {
+          "ms": 112,
+          "target": "teacher-111",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-111"
+        },
+        {
+          "ms": 89,
+          "target": "teacher-110",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-110"
+        },
+        {
+          "ms": 110,
+          "target": "teacher-111",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-111"
+        },
+        {
+          "ms": 92,
+          "target": "teacher-110",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-110"
+        },
+        {
+          "ms": 122,
+          "target": "teacher-111",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-111"
+        },
+        {
+          "ms": 86,
+          "target": "teacher-110",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-110"
+        },
+        {
+          "ms": 112,
+          "target": "teacher-111",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-111"
+        },
+        {
+          "ms": 86,
+          "target": "teacher-110",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-110"
+        },
+        {
+          "ms": 113,
+          "target": "teacher-111",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-111"
+        },
+        {
+          "ms": 86,
+          "target": "teacher-110",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-110"
+        },
+        {
+          "ms": 113,
+          "target": "teacher-111",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-111"
+        },
+        {
+          "ms": 88,
+          "target": "teacher-110",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-110"
+        },
+        {
+          "ms": 118,
+          "target": "teacher-111",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-111"
+        },
+        {
+          "ms": 109,
+          "target": "teacher-110",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-110"
+        },
+        {
+          "ms": 86,
+          "target": "teacher-111",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-111"
+        },
+        {
+          "ms": 113,
+          "target": "teacher-110",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-110"
+        },
+        {
+          "ms": 116,
+          "target": "teacher-111",
+          "disabled": 0,
+          "checking": 1,
+          "selected": "teacher-111"
+        }
+      ],
+      "medianMs": 109.5,
+      "p95Ms": 118,
+      "maxMs": 122
+    },
+    "noEndRowMs": 103,
+    "latestRapidChoicePreserved": true,
+    "applyUndoReceipts": [
+      {
+        "url": "/api/teacher-reassignments/apply?response=receipt",
+        "bytes": 96,
+        "ms": 523.5
+      },
+      {
+        "url": "/api/teacher-reassignments/wjWO9_MzLMq_ho1ac4Qlmp3W/undo?response=receipt",
+        "bytes": 55,
+        "ms": 100.20000000298023
+      }
+    ],
+    "errors": [],
+    "longTasks": [
+      {
+        "start": 1111.6000000014901,
+        "ms": 70
+      }
+    ]
+  },
+  "cancellation": {
+    "closeMs": 59,
+    "ping": {
+      "status": 200,
+      "ms": 109.10000000149012
+    },
+    "closeResult": {
+      "dialogs": 0,
+      "errors": [],
+      "request": [
+        {
+          "error": "AbortError: signal is aborted without reason",
+          "ms": 59.80000000447035
+        }
+      ]
+    },
+    "cold": {
+      "transport": {
+        "error": "AbortError",
+        "ms": 16.30000000447035
+      },
+      "abortedMs": 16.200000002980232,
+      "pingStatus": 200,
+      "pingMs": 172.20000000298023,
+      "totalMs": 203.30000000447035
+    }
+  },
+  "profile": {
+    "sourceFileHashes": {
+      "server/app.ts": "dd7b60be51f43b9cc318b9f4c0695ecada73fa4a8d0a219a7caca861c35b8cbb",
+      "shared/teacherReassignment.ts": "d75b5c5a5c6370dc83741a0cc3ce3c5c3b653b55ae02ca0a59d346b4b697e0c7",
+      "shared/teacherConflicts.ts": "33ff1334be21ab404a2675255692b6cc067c623d19008e82fce53ad6f67f7a3f",
+      "shared/roomConflicts.ts": "9959a831af3f55a61376dbe140f9f811d01690ea09e575fe55457fd8b4bf45ea",
+      "shared/roomSuitability.ts": "ab3de629c881e54fac00d8a99d6a30a1a1136601912e80cd618baed694a55522",
+      "shared/unavailability.ts": "8ae448b6ffbb53ff8afbb7bceed7ccef7883ea52d3f01dc812ab90f5d6ec63f5"
+    },
+    "runs": [
+      {
+        "name": "lesson-common109",
+        "instrumented": true,
+        "totalMs": 10.897233000000142,
+        "responseBytes": 2837,
+        "responseHash": "9ecc84ba96ab4f61cc5888c1eea3b845d827411a4011e7861601afcdbf3fa257",
+        "units": 1,
+        "candidates": 11,
+        "functions": {
+          "JSON.stringify.object": {
+            "calls": 5,
+            "inclusiveMs": 0.04645300000015595,
+            "exclusiveMs": 0.04645300000015595,
+            "maxMs": 0.019768999999996595
+          },
+          "sqlite.prepare": {
+            "calls": 15,
+            "inclusiveMs": 0.4309480000003987,
+            "exclusiveMs": 0.4309480000003987,
+            "maxMs": 0.08787600000005114
+          },
+          "sqlite.get": {
+            "calls": 4,
+            "inclusiveMs": 0.16943700000001627,
+            "exclusiveMs": 0.16943700000001627,
+            "maxMs": 0.10027900000000045
+          },
+          "server/app.ts:stableJson": {
+            "calls": 23,
+            "inclusiveMs": 0.09231300000010378,
+            "exclusiveMs": 0.06771299999991243,
+            "maxMs": 0.04877000000010412
+          },
+          "sqlite.all": {
+            "calls": 15,
+            "inclusiveMs": 1.9931170000004386,
+            "exclusiveMs": 1.9931170000004386,
+            "maxMs": 1.336182000000008
+          },
+          "server/app.ts:readCatalog": {
+            "calls": 1,
+            "inclusiveMs": 0.9622640000000047,
+            "exclusiveMs": 0.357422999999244,
+            "maxMs": 0.9622640000000047
+          },
+          "server/app.ts:reassignmentDates": {
+            "calls": 1,
+            "inclusiveMs": 0.08806699999990997,
+            "exclusiveMs": 0.010138999999981024,
+            "maxMs": 0.08806699999990997
+          },
+          "server/app.ts:readSchedule": {
+            "calls": 1,
+            "inclusiveMs": 2.206809999999905,
+            "exclusiveMs": 0.7933209999996507,
+            "maxMs": 2.206809999999905
+          },
+          "server/app.ts:locatedLessons": {
+            "calls": 1,
+            "inclusiveMs": 0.15511100000003353,
+            "exclusiveMs": 0.15511100000003353,
+            "maxMs": 0.15511100000003353
+          },
+          "server/app.ts:readTeacherLessonOrigins": {
+            "calls": 1,
+            "inclusiveMs": 0.2646150000000489,
+            "exclusiveMs": 0.024879999999939173,
+            "maxMs": 0.2646150000000489
+          },
+          "server/app.ts:readQuarters": {
+            "calls": 1,
+            "inclusiveMs": 0.058894999999893116,
+            "exclusiveMs": 0.012915000000020882,
+            "maxMs": 0.058894999999893116
+          },
+          "server/app.ts:readTeacherTeachingAssignments": {
+            "calls": 1,
+            "inclusiveMs": 0.026826999999912005,
+            "exclusiveMs": 0.005586999999877662,
+            "maxMs": 0.026826999999912005
+          },
+          "server/app.ts:readReassignmentState": {
+            "calls": 1,
+            "inclusiveMs": 4.253326999999899,
+            "exclusiveMs": 0.4907380000001922,
+            "maxMs": 4.253326999999899
+          },
+          "shared/teacherReassignment.ts:locate": {
+            "calls": 1,
+            "inclusiveMs": 0.1630689999999504,
+            "exclusiveMs": 0.1630689999999504,
+            "maxMs": 0.1630689999999504
+          },
+          "shared/teacherReassignment.ts:buildUnitsFromLocated": {
+            "calls": 1,
+            "inclusiveMs": 1.2016319999997904,
+            "exclusiveMs": 1.2016319999997904,
+            "maxMs": 1.2016319999997904
+          },
+          "shared/teacherReassignment.ts:createIndex": {
+            "calls": 1,
+            "inclusiveMs": 2.135340000000042,
+            "exclusiveMs": 0.7706390000003012,
+            "maxMs": 2.135340000000042
+          },
+          "shared/teacherReassignment.ts:requestIndex": {
+            "calls": 5,
+            "inclusiveMs": 2.211096000000225,
+            "exclusiveMs": 0.07575600000018312,
+            "maxMs": 2.2081210000001192
+          },
+          "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+            "calls": 2,
+            "inclusiveMs": 2.43080400000008,
+            "exclusiveMs": 0.22078299999998308,
+            "maxMs": 2.370343000000048
+          },
+          "shared/teacherConflicts.ts:findTeacherConflicts": {
+            "calls": 23,
+            "inclusiveMs": 0.08839500000021872,
+            "exclusiveMs": 0.08839500000021872,
+            "maxMs": 0.04408100000000559
+          },
+          "shared/teacherReassignment.ts:mainReason": {
+            "calls": 23,
+            "inclusiveMs": 0.7315330000003541,
+            "exclusiveMs": 0.4267320000003565,
+            "maxMs": 0.174773999999843
+          },
+          "shared/roomSuitability.ts:roomSuitabilityReason": {
+            "calls": 9,
+            "inclusiveMs": 0.1562509999998838,
+            "exclusiveMs": 0.1562509999998838,
+            "maxMs": 0.09829199999990124
+          },
+          "shared/teacherReassignment.ts:roomReason": {
+            "calls": 9,
+            "inclusiveMs": 0.21640599999977894,
+            "exclusiveMs": 0.06015499999989515,
+            "maxMs": 0.12654799999995703
+          },
+          "shared/teacherReassignment.ts:cloneSchedule": {
+            "calls": 1,
+            "inclusiveMs": 0.13555700000006254,
+            "exclusiveMs": 0.13555700000006254,
+            "maxMs": 0.13555700000006254
+          },
+          "shared/teacherReassignment.ts:updateIndexedLessons": {
+            "calls": 1,
+            "inclusiveMs": 0.01915099999996528,
+            "exclusiveMs": 0.01915099999996528,
+            "maxMs": 0.01915099999996528
+          },
+          "shared/teacherReassignment.ts:policyFor": {
+            "calls": 1,
+            "inclusiveMs": 0.000757000000021435,
+            "exclusiveMs": 0.000757000000021435,
+            "maxMs": 0.000757000000021435
+          },
+          "shared/teacherReassignment.ts:applyTeacher": {
+            "calls": 1,
+            "inclusiveMs": 0.38080300000001444,
+            "exclusiveMs": 0.19552599999974518,
+            "maxMs": 0.38080300000001444
+          },
+          "shared/teacherReassignment.ts:assignPreview": {
+            "calls": 1,
+            "inclusiveMs": 2.059330999999929,
+            "exclusiveMs": 0.9602819999995518,
+            "maxMs": 2.059330999999929
+          },
+          "shared/teacherReassignment.ts:previewTeacherReassignment": {
+            "calls": 1,
+            "inclusiveMs": 2.3403079999998226,
+            "exclusiveMs": 0.22051599999986138,
+            "maxMs": 2.3403079999998226
+          }
+        },
+        "equivalentToPlain": true
+      },
+      {
+        "name": "week-row0-teacher110",
+        "instrumented": true,
+        "totalMs": 26.03384200000005,
+        "responseBytes": 5360,
+        "responseHash": "ea1e324af86f077e02dc61d36056e09b0b891efd0a5e3d8720edadf52e986583",
+        "units": 3,
+        "candidates": 11,
+        "functions": {
+          "JSON.stringify.object": {
+            "calls": 9,
+            "inclusiveMs": 0.07097199999998338,
+            "exclusiveMs": 0.07097199999998338,
+            "maxMs": 0.029999000000088927
+          },
+          "sqlite.prepare": {
+            "calls": 18,
+            "inclusiveMs": 0.5947329999999056,
+            "exclusiveMs": 0.5947329999999056,
+            "maxMs": 0.13211900000010246
+          },
+          "sqlite.get": {
+            "calls": 3,
+            "inclusiveMs": 0.04567199999996774,
+            "exclusiveMs": 0.04567199999996774,
+            "maxMs": 0.02983000000017455
+          },
+          "server/app.ts:stableJson": {
+            "calls": 31,
+            "inclusiveMs": 0.06640199999992547,
+            "exclusiveMs": 0.04170299999987037,
+            "maxMs": 0.024429999999938445
+          },
+          "sqlite.all": {
+            "calls": 19,
+            "inclusiveMs": 7.917712000000392,
+            "exclusiveMs": 7.917712000000392,
+            "maxMs": 6.876979000000119
+          },
+          "server/app.ts:readCatalog": {
+            "calls": 1,
+            "inclusiveMs": 0.7565620000000308,
+            "exclusiveMs": 0.2559740000003785,
+            "maxMs": 0.7565620000000308
+          },
+          "server/app.ts:reassignmentDates": {
+            "calls": 1,
+            "inclusiveMs": 0.1366849999999431,
+            "exclusiveMs": 0.07336699999996199,
+            "maxMs": 0.1366849999999431
+          },
+          "server/app.ts:readSchedule": {
+            "calls": 1,
+            "inclusiveMs": 10.599394999999959,
+            "exclusiveMs": 3.644578999999794,
+            "maxMs": 10.599394999999959
+          },
+          "server/app.ts:locatedLessons": {
+            "calls": 1,
+            "inclusiveMs": 0.3937039999998433,
+            "exclusiveMs": 0.3937039999998433,
+            "maxMs": 0.3937039999998433
+          },
+          "server/app.ts:readTeacherLessonOrigins": {
+            "calls": 5,
+            "inclusiveMs": 2.24025599999959,
+            "exclusiveMs": 0.39192199999956756,
+            "maxMs": 1.2836359999998876
+          },
+          "server/app.ts:readQuarters": {
+            "calls": 1,
+            "inclusiveMs": 0.04662400000006528,
+            "exclusiveMs": 0.007971999999881518,
+            "maxMs": 0.04662400000006528
+          },
+          "server/app.ts:readTeacherTeachingAssignments": {
+            "calls": 1,
+            "inclusiveMs": 0.015083000000004176,
+            "exclusiveMs": 0.00413299999991068,
+            "maxMs": 0.015083000000004176
+          },
+          "server/app.ts:readReassignmentState": {
+            "calls": 1,
+            "inclusiveMs": 13.336210000000165,
+            "exclusiveMs": 0.10452100000043174,
+            "maxMs": 13.336210000000165
+          },
+          "shared/teacherReassignment.ts:locate": {
+            "calls": 1,
+            "inclusiveMs": 0.34477300000003197,
+            "exclusiveMs": 0.34477300000003197,
+            "maxMs": 0.34477300000003197
+          },
+          "shared/teacherReassignment.ts:buildUnitsFromLocated": {
+            "calls": 1,
+            "inclusiveMs": 4.16576299999997,
+            "exclusiveMs": 4.16576299999997,
+            "maxMs": 4.16576299999997
+          },
+          "shared/teacherReassignment.ts:createIndex": {
+            "calls": 1,
+            "inclusiveMs": 7.290381000000025,
+            "exclusiveMs": 2.779845000000023,
+            "maxMs": 7.290381000000025
+          },
+          "shared/teacherReassignment.ts:requestIndex": {
+            "calls": 11,
+            "inclusiveMs": 7.313738000000285,
+            "exclusiveMs": 0.023357000000260086,
+            "maxMs": 7.3060199999999895
+          },
+          "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+            "calls": 2,
+            "inclusiveMs": 8.091870000000199,
+            "exclusiveMs": 0.7784180000001015,
+            "maxMs": 7.876275000000078
+          },
+          "shared/teacherConflicts.ts:findTeacherConflicts": {
+            "calls": 69,
+            "inclusiveMs": 0.057116000000178246,
+            "exclusiveMs": 0.057116000000178246,
+            "maxMs": 0.0030500000000301952
+          },
+          "shared/teacherReassignment.ts:mainReason": {
+            "calls": 69,
+            "inclusiveMs": 0.6047550000005231,
+            "exclusiveMs": 0.42274599999927887,
+            "maxMs": 0.029450999999880878
+          },
+          "shared/roomSuitability.ts:roomSuitabilityReason": {
+            "calls": 31,
+            "inclusiveMs": 0.08850800000027448,
+            "exclusiveMs": 0.08850800000027448,
+            "maxMs": 0.011756000000104905
+          },
+          "shared/teacherReassignment.ts:roomReason": {
+            "calls": 31,
+            "inclusiveMs": 0.12489300000106596,
+            "exclusiveMs": 0.03638500000079148,
+            "maxMs": 0.02185500000018692
+          },
+          "shared/teacherReassignment.ts:cloneSchedule": {
+            "calls": 1,
+            "inclusiveMs": 0.34035000000017135,
+            "exclusiveMs": 0.34035000000017135,
+            "maxMs": 0.34035000000017135
+          },
+          "shared/teacherReassignment.ts:updateIndexedLessons": {
+            "calls": 3,
+            "inclusiveMs": 0.012780000000020664,
+            "exclusiveMs": 0.012780000000020664,
+            "maxMs": 0.008852999999817257
+          },
+          "shared/teacherReassignment.ts:policyFor": {
+            "calls": 3,
+            "inclusiveMs": 0.13384199999995872,
+            "exclusiveMs": 0.13384199999995872,
+            "maxMs": 0.11443899999994755
+          },
+          "shared/teacherReassignment.ts:unitsForStream": {
+            "calls": 3,
+            "inclusiveMs": 0.014169000000038068,
+            "exclusiveMs": 0.014169000000038068,
+            "maxMs": 0.010888000000022657
+          },
+          "shared/teacherReassignment.ts:applyTeacher": {
+            "calls": 1,
+            "inclusiveMs": 0.8237059999999019,
+            "exclusiveMs": 0.28182299999980387,
+            "maxMs": 0.8237059999999019
+          },
+          "shared/teacherReassignment.ts:assignPreview": {
+            "calls": 1,
+            "inclusiveMs": 2.8080609999999524,
+            "exclusiveMs": 1.3857409999993706,
+            "maxMs": 2.8080609999999524
+          },
+          "shared/teacherReassignment.ts:previewTeacherReassignment": {
+            "calls": 1,
+            "inclusiveMs": 3.027467999999999,
+            "exclusiveMs": 0.0038119999999253196,
+            "maxMs": 3.027467999999999
+          }
+        },
+        "equivalentToPlain": true
+      },
+      {
+        "name": "period-first-open",
+        "instrumented": true,
+        "totalMs": 179.7940490000001,
+        "responseBytes": 10246,
+        "responseHash": "bbb4c7bc6b53aaba562098289e386a60baa333205fe79cade2b9606aef3b2271",
+        "units": 23,
+        "candidates": 11,
+        "functions": {
+          "JSON.stringify.object": {
+            "calls": 26,
+            "inclusiveMs": 0.1977170000006936,
+            "exclusiveMs": 0.1977170000006936,
+            "maxMs": 0.01982999999995627
+          },
+          "sqlite.prepare": {
+            "calls": 49,
+            "inclusiveMs": 2.339091999999482,
+            "exclusiveMs": 2.339091999999482,
+            "maxMs": 0.1482260000000224
+          },
+          "sqlite.get": {
+            "calls": 3,
+            "inclusiveMs": 0.050356999999848995,
+            "exclusiveMs": 0.050356999999848995,
+            "maxMs": 0.03221199999984492
+          },
+          "server/app.ts:stableJson": {
+            "calls": 70,
+            "inclusiveMs": 0.1433560000007219,
+            "exclusiveMs": 0.07184899999992922,
+            "maxMs": 0.04250299999989693
+          },
+          "sqlite.all": {
+            "calls": 50,
+            "inclusiveMs": 60.33251899999982,
+            "exclusiveMs": 60.33251899999982,
+            "maxMs": 53.880566000000044
+          },
+          "server/app.ts:readCatalog": {
+            "calls": 1,
+            "inclusiveMs": 0.7937439999998332,
+            "exclusiveMs": 0.2566480000004958,
+            "maxMs": 0.7937439999998332
+          },
+          "server/app.ts:readQuarters": {
+            "calls": 2,
+            "inclusiveMs": 0.08033799999998337,
+            "exclusiveMs": 0.015091000000211352,
+            "maxMs": 0.04712399999993977
+          },
+          "server/app.ts:reassignmentDates": {
+            "calls": 1,
+            "inclusiveMs": 0.2794450000001234,
+            "exclusiveMs": 0.03859000000011292,
+            "maxMs": 0.2794450000001234
+          },
+          "server/app.ts:readSchedule": {
+            "calls": 1,
+            "inclusiveMs": 73.40524900000014,
+            "exclusiveMs": 19.45862299999999,
+            "maxMs": 73.40524900000014
+          },
+          "server/app.ts:locatedLessons": {
+            "calls": 1,
+            "inclusiveMs": 1.1438689999999951,
+            "exclusiveMs": 1.1438689999999951,
+            "maxMs": 1.1438689999999951
+          },
+          "server/app.ts:readTeacherLessonOrigins": {
+            "calls": 35,
+            "inclusiveMs": 19.80157000000031,
+            "exclusiveMs": 3.7602569999999105,
+            "maxMs": 11.609642000000122
+          },
+          "server/app.ts:readTeacherTeachingAssignments": {
+            "calls": 1,
+            "inclusiveMs": 0.027922999999873355,
+            "exclusiveMs": 0.016744000000016968,
+            "maxMs": 0.027922999999873355
+          },
+          "server/app.ts:readReassignmentState": {
+            "calls": 1,
+            "inclusiveMs": 87.83661800000004,
+            "exclusiveMs": 0.5296220000000176,
+            "maxMs": 87.83661800000004
+          },
+          "shared/teacherReassignment.ts:locate": {
+            "calls": 1,
+            "inclusiveMs": 1.7555399999998826,
+            "exclusiveMs": 1.7555399999998826,
+            "maxMs": 1.7555399999998826
+          },
+          "shared/teacherReassignment.ts:buildUnitsFromLocated": {
+            "calls": 1,
+            "inclusiveMs": 35.69398799999999,
+            "exclusiveMs": 35.69398799999999,
+            "maxMs": 35.69398799999999
+          },
+          "shared/teacherReassignment.ts:createIndex": {
+            "calls": 1,
+            "inclusiveMs": 64.76442799999995,
+            "exclusiveMs": 27.31490000000008,
+            "maxMs": 64.76442799999995
+          },
+          "shared/teacherReassignment.ts:requestIndex": {
+            "calls": 49,
+            "inclusiveMs": 64.80171000000041,
+            "exclusiveMs": 0.03728200000045945,
+            "maxMs": 64.79328899999996
+          },
+          "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+            "calls": 2,
+            "inclusiveMs": 69.75144699999987,
+            "exclusiveMs": 4.950119999999515,
+            "maxMs": 67.84111400000006
+          },
+          "shared/teacherConflicts.ts:findTeacherConflicts": {
+            "calls": 506,
+            "inclusiveMs": 0.21157200000561716,
+            "exclusiveMs": 0.21157200000561716,
+            "maxMs": 0.009987000000137414
+          },
+          "shared/teacherReassignment.ts:mainReason": {
+            "calls": 506,
+            "inclusiveMs": 3.4894480000011754,
+            "exclusiveMs": 2.7066109999952914,
+            "maxMs": 0.03626499999995758
+          },
+          "shared/roomSuitability.ts:roomSuitabilityReason": {
+            "calls": 218,
+            "inclusiveMs": 0.46207599999866034,
+            "exclusiveMs": 0.46207599999866034,
+            "maxMs": 0.023838999999952648
+          },
+          "shared/teacherReassignment.ts:roomReason": {
+            "calls": 218,
+            "inclusiveMs": 0.5712650000002668,
+            "exclusiveMs": 0.10918900000160647,
+            "maxMs": 0.024423000000069806
+          },
+          "shared/teacherReassignment.ts:assignPreview": {
+            "calls": 1,
+            "inclusiveMs": 21.563782000000174,
+            "exclusiveMs": 17.90219099999831,
+            "maxMs": 21.563782000000174
+          },
+          "shared/teacherReassignment.ts:previewTeacherReassignment": {
+            "calls": 1,
+            "inclusiveMs": 23.477877000000035,
+            "exclusiveMs": 0.0037620000000515574,
+            "maxMs": 23.477877000000035
+          }
+        },
+        "equivalentToPlain": true
+      },
+      {
+        "name": "period-common-teacher109",
+        "instrumented": true,
+        "totalMs": 12.704795999999988,
+        "responseBytes": 22757,
+        "responseHash": "387eb44a48506069e870415c6c89cba4667b052adc9f4ed38cf245dc7e54f4b6",
+        "units": 23,
+        "candidates": 11,
+        "functions": {
+          "JSON.stringify.object": {
+            "calls": 49,
+            "inclusiveMs": 0.25606900000025234,
+            "exclusiveMs": 0.25606900000025234,
+            "maxMs": 0.07246700000018791
+          },
+          "sqlite.prepare": {
+            "calls": 2,
+            "inclusiveMs": 0.07059999999978572,
+            "exclusiveMs": 0.07059999999978572,
+            "maxMs": 0.054594999999835636
+          },
+          "sqlite.get": {
+            "calls": 2,
+            "inclusiveMs": 0.039804999999887514,
+            "exclusiveMs": 0.039804999999887514,
+            "maxMs": 0.03199999999992542
+          },
+          "server/app.ts:stableJson": {
+            "calls": 71,
+            "inclusiveMs": 0.08152600000062193,
+            "exclusiveMs": 0.042279999999891515,
+            "maxMs": 0.02159499999993386
+          },
+          "shared/teacherReassignment.ts:requestIndex": {
+            "calls": 49,
+            "inclusiveMs": 0.00707900000020345,
+            "exclusiveMs": 0.00707900000020345,
+            "maxMs": 0.0009129999998549465
+          },
+          "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+            "calls": 2,
+            "inclusiveMs": 3.322793000000047,
+            "exclusiveMs": 3.316081999999824,
+            "maxMs": 1.69362000000001
+          },
+          "shared/teacherReassignment.ts:cloneSchedule": {
+            "calls": 1,
+            "inclusiveMs": 1.7584790000000794,
+            "exclusiveMs": 1.7584790000000794,
+            "maxMs": 1.7584790000000794
+          },
+          "shared/teacherConflicts.ts:findTeacherConflicts": {
+            "calls": 276,
+            "inclusiveMs": 0.07031299999789553,
+            "exclusiveMs": 0.07031299999789553,
+            "maxMs": 0.0017239999999674183
+          },
+          "shared/roomSuitability.ts:roomSuitabilityReason": {
+            "calls": 132,
+            "inclusiveMs": 0.2487109999999575,
+            "exclusiveMs": 0.2487109999999575,
+            "maxMs": 0.01563099999998485
+          },
+          "shared/teacherReassignment.ts:roomReason": {
+            "calls": 132,
+            "inclusiveMs": 0.32872099999895,
+            "exclusiveMs": 0.0800099999989925,
+            "maxMs": 0.01619499999992513
+          },
+          "shared/teacherReassignment.ts:mainReason": {
+            "calls": 276,
+            "inclusiveMs": 1.5643889999989824,
+            "exclusiveMs": 1.1653550000021369,
+            "maxMs": 0.029919999999947322
+          },
+          "shared/teacherReassignment.ts:updateIndexedLessons": {
+            "calls": 23,
+            "inclusiveMs": 0.04707900000016707,
+            "exclusiveMs": 0.04707900000016707,
+            "maxMs": 0.013989999999921565
+          },
+          "shared/teacherReassignment.ts:policyFor": {
+            "calls": 23,
+            "inclusiveMs": 0.1700829999999769,
+            "exclusiveMs": 0.1700829999999769,
+            "maxMs": 0.020214000000123633
+          },
+          "shared/teacherReassignment.ts:unitsForStream": {
+            "calls": 23,
+            "inclusiveMs": 0.05978699999946002,
+            "exclusiveMs": 0.05978699999946002,
+            "maxMs": 0.007810999999946944
+          },
+          "shared/teacherReassignment.ts:applyTeacher": {
+            "calls": 1,
+            "inclusiveMs": 3.9546050000001287,
+            "exclusiveMs": 1.688655000001063,
+            "maxMs": 3.9546050000001287
+          },
+          "shared/teacherReassignment.ts:assignPreview": {
+            "calls": 1,
+            "inclusiveMs": 8.101744999999937,
+            "exclusiveMs": 2.6581980000003114,
+            "maxMs": 8.101744999999937
+          },
+          "shared/teacherReassignment.ts:previewTeacherReassignment": {
+            "calls": 1,
+            "inclusiveMs": 9.736496999999872,
+            "exclusiveMs": 0.00557899999989786,
+            "maxMs": 9.736496999999872
+          }
+        },
+        "equivalentToPlain": true
+      },
+      {
+        "name": "period-row0-teacher110",
+        "instrumented": true,
+        "totalMs": 12.682092999999895,
+        "responseBytes": 28169,
+        "responseHash": "1aeec1eefc019b4e3de6cadf6760c53bc52b7627aed3232f8e9c8b5e09ab3c65",
+        "units": 23,
+        "candidates": 11,
+        "functions": {
+          "JSON.stringify.object": {
+            "calls": 49,
+            "inclusiveMs": 0.23160400000028858,
+            "exclusiveMs": 0.23160400000028858,
+            "maxMs": 0.07366699999988668
+          },
+          "sqlite.prepare": {
+            "calls": 2,
+            "inclusiveMs": 0.06864300000006551,
+            "exclusiveMs": 0.06864300000006551,
+            "maxMs": 0.05050400000004629
+          },
+          "sqlite.get": {
+            "calls": 2,
+            "inclusiveMs": 0.045656000000008135,
+            "exclusiveMs": 0.045656000000008135,
+            "maxMs": 0.036839000000099986
+          },
+          "server/app.ts:stableJson": {
+            "calls": 73,
+            "inclusiveMs": 0.09208899999975984,
+            "exclusiveMs": 0.047959999999875436,
+            "maxMs": 0.02980400000001282
+          },
+          "shared/teacherReassignment.ts:requestIndex": {
+            "calls": 51,
+            "inclusiveMs": 0.008015000000341388,
+            "exclusiveMs": 0.008015000000341388,
+            "maxMs": 0.001216999999996915
+          },
+          "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+            "calls": 2,
+            "inclusiveMs": 4.530612000000019,
+            "exclusiveMs": 4.523003999999673,
+            "maxMs": 2.976278000000093
+          },
+          "shared/teacherReassignment.ts:cloneSchedule": {
+            "calls": 1,
+            "inclusiveMs": 1.2814350000001014,
+            "exclusiveMs": 1.2814350000001014,
+            "maxMs": 1.2814350000001014
+          },
+          "shared/teacherConflicts.ts:findTeacherConflicts": {
+            "calls": 34,
+            "inclusiveMs": 0.009585999999444539,
+            "exclusiveMs": 0.009585999999444539,
+            "maxMs": 0.0014330000001336884
+          },
+          "shared/roomSuitability.ts:roomSuitabilityReason": {
+            "calls": 28,
+            "inclusiveMs": 0.055649999999786814,
+            "exclusiveMs": 0.055649999999786814,
+            "maxMs": 0.006161000000020067
+          },
+          "shared/teacherReassignment.ts:roomReason": {
+            "calls": 28,
+            "inclusiveMs": 0.0713940000000548,
+            "exclusiveMs": 0.015744000000267988,
+            "maxMs": 0.009338000000070679
+          },
+          "shared/teacherReassignment.ts:mainReason": {
+            "calls": 34,
+            "inclusiveMs": 0.2681019999997716,
+            "exclusiveMs": 0.18712200000027224,
+            "maxMs": 0.026219000000082815
+          },
+          "shared/teacherReassignment.ts:updateIndexedLessons": {
+            "calls": 23,
+            "inclusiveMs": 0.02499399999965135,
+            "exclusiveMs": 0.02499399999965135,
+            "maxMs": 0.007978999999977532
+          },
+          "shared/teacherReassignment.ts:policyFor": {
+            "calls": 23,
+            "inclusiveMs": 0.06742900000062946,
+            "exclusiveMs": 0.06742900000062946,
+            "maxMs": 0.008587000000034095
+          },
+          "shared/teacherReassignment.ts:unitsForStream": {
+            "calls": 23,
+            "inclusiveMs": 0.021103000000266547,
+            "exclusiveMs": 0.021103000000266547,
+            "maxMs": 0.0031550000001061562
+          },
+          "shared/teacherReassignment.ts:applyTeacher": {
+            "calls": 1,
+            "inclusiveMs": 3.0317070000000967,
+            "exclusiveMs": 1.4224239999994097,
+            "maxMs": 3.0317070000000967
+          },
+          "shared/teacherReassignment.ts:assignPreview": {
+            "calls": 1,
+            "inclusiveMs": 7.428698999999824,
+            "exclusiveMs": 4.192333999999619,
+            "maxMs": 7.428698999999824
+          },
+          "shared/teacherReassignment.ts:previewTeacherReassignment": {
+            "calls": 1,
+            "inclusiveMs": 8.988711000000194,
+            "exclusiveMs": 0.005678000000443717,
+            "maxMs": 8.988711000000194
+          }
+        },
+        "equivalentToPlain": true
+      },
+      {
+        "name": "period-row1-teacher111",
+        "instrumented": true,
+        "totalMs": 10.853606000000127,
+        "responseBytes": 28169,
+        "responseHash": "c3b1eff679251e719a2fd95d8655e53bb459527e77a05d0a9d878abcb8572bb1",
+        "units": 23,
+        "candidates": 11,
+        "functions": {
+          "JSON.stringify.object": {
+            "calls": 49,
+            "inclusiveMs": 0.24025100000039856,
+            "exclusiveMs": 0.24025100000039856,
+            "maxMs": 0.07464600000002974
+          },
+          "sqlite.prepare": {
+            "calls": 2,
+            "inclusiveMs": 0.06146400000011454,
+            "exclusiveMs": 0.06146400000011454,
+            "maxMs": 0.04781600000001163
+          },
+          "sqlite.get": {
+            "calls": 2,
+            "inclusiveMs": 0.0414539999999306,
+            "exclusiveMs": 0.0414539999999306,
+            "maxMs": 0.033705999999938285
+          },
+          "server/app.ts:stableJson": {
+            "calls": 74,
+            "inclusiveMs": 0.08370800000056988,
+            "exclusiveMs": 0.043857000000116386,
+            "maxMs": 0.025744999999915308
+          },
+          "shared/teacherReassignment.ts:requestIndex": {
+            "calls": 51,
+            "inclusiveMs": 0.0073829999992085504,
+            "exclusiveMs": 0.0073829999992085504,
+            "maxMs": 0.000998999999865191
+          },
+          "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+            "calls": 2,
+            "inclusiveMs": 4.663275000000112,
+            "exclusiveMs": 4.656180000000859,
+            "maxMs": 3.132096000000047
+          },
+          "shared/teacherReassignment.ts:cloneSchedule": {
+            "calls": 1,
+            "inclusiveMs": 1.3680739999999787,
+            "exclusiveMs": 1.3680739999999787,
+            "maxMs": 1.3680739999999787
+          },
+          "shared/teacherConflicts.ts:findTeacherConflicts": {
+            "calls": 34,
+            "inclusiveMs": 0.009210999999140768,
+            "exclusiveMs": 0.009210999999140768,
+            "maxMs": 0.0011609999999109277
+          },
+          "shared/roomSuitability.ts:roomSuitabilityReason": {
+            "calls": 28,
+            "inclusiveMs": 0.05614800000057585,
+            "exclusiveMs": 0.05614800000057585,
+            "maxMs": 0.00701100000014776
+          },
+          "shared/teacherReassignment.ts:roomReason": {
+            "calls": 28,
+            "inclusiveMs": 0.07317999999850144,
+            "exclusiveMs": 0.017031999997925595,
+            "maxMs": 0.01054999999996653
+          },
+          "shared/teacherReassignment.ts:mainReason": {
+            "calls": 34,
+            "inclusiveMs": 0.2711969999995745,
+            "exclusiveMs": 0.18880600000193226,
+            "maxMs": 0.028354999999919528
+          },
+          "shared/teacherReassignment.ts:updateIndexedLessons": {
+            "calls": 23,
+            "inclusiveMs": 0.024544999999761785,
+            "exclusiveMs": 0.024544999999761785,
+            "maxMs": 0.0064589999999498104
+          },
+          "shared/teacherReassignment.ts:policyFor": {
+            "calls": 23,
+            "inclusiveMs": 0.07572000000027401,
+            "exclusiveMs": 0.07572000000027401,
+            "maxMs": 0.007701999999881082
+          },
+          "shared/teacherReassignment.ts:unitsForStream": {
+            "calls": 23,
+            "inclusiveMs": 0.020940000000337022,
+            "exclusiveMs": 0.020940000000337022,
+            "maxMs": 0.0028800000000046566
+          },
+          "shared/teacherReassignment.ts:applyTeacher": {
+            "calls": 1,
+            "inclusiveMs": 3.184105999999929,
+            "exclusiveMs": 1.4730019999994965,
+            "maxMs": 3.184105999999929
+          },
+          "shared/teacherReassignment.ts:assignPreview": {
+            "calls": 1,
+            "inclusiveMs": 5.483406000000059,
+            "exclusiveMs": 2.092125000000351,
+            "maxMs": 5.483406000000059
+          },
+          "shared/teacherReassignment.ts:previewTeacherReassignment": {
+            "calls": 1,
+            "inclusiveMs": 7.022339999999986,
+            "exclusiveMs": 0.0077549999998609564,
+            "maxMs": 7.022339999999986
+          }
+        },
+        "equivalentToPlain": true
+      },
+      {
+        "name": "period-no-end-common109",
+        "instrumented": true,
+        "totalMs": 189.88273200000003,
+        "responseBytes": 44101,
+        "responseHash": "4e531854b4ac54804dbf7bd77d764675d87ceb1d9978927e4896513014e0ffdb",
+        "units": 47,
+        "candidates": 11,
+        "functions": {
+          "JSON.stringify.object": {
+            "calls": 97,
+            "inclusiveMs": 0.4042650000010326,
+            "exclusiveMs": 0.4042650000010326,
+            "maxMs": 0.11069600000018909
+          },
+          "sqlite.prepare": {
+            "calls": 54,
+            "inclusiveMs": 2.7453689999995277,
+            "exclusiveMs": 2.7453689999995277,
+            "maxMs": 0.15030499999988933
+          },
+          "sqlite.get": {
+            "calls": 3,
+            "inclusiveMs": 0.05495500000006359,
+            "exclusiveMs": 0.05495500000006359,
+            "maxMs": 0.03217100000006212
+          },
+          "server/app.ts:stableJson": {
+            "calls": 71,
+            "inclusiveMs": 0.09209100000157378,
+            "exclusiveMs": 0.05015799999978299,
+            "maxMs": 0.03203599999983453
+          },
+          "sqlite.all": {
+            "calls": 55,
+            "inclusiveMs": 53.00632499999938,
+            "exclusiveMs": 53.00632499999938,
+            "maxMs": 44.82646599999998
+          },
+          "server/app.ts:readCatalog": {
+            "calls": 1,
+            "inclusiveMs": 0.7949329999999009,
+            "exclusiveMs": 0.2572299999999359,
+            "maxMs": 0.7949329999999009
+          },
+          "server/app.ts:readQuarters": {
+            "calls": 2,
+            "inclusiveMs": 0.08631799999989198,
+            "exclusiveMs": 0.01598999999987427,
+            "maxMs": 0.04992199999992408
+          },
+          "server/app.ts:readTeacherLessonOrigins": {
+            "calls": 39,
+            "inclusiveMs": 21.585837000000993,
+            "exclusiveMs": 4.104646000000912,
+            "maxMs": 12.635939000000008
+          },
+          "server/app.ts:reassignmentDates": {
+            "calls": 1,
+            "inclusiveMs": 1.851812000000109,
+            "exclusiveMs": 0.17267300000048635,
+            "maxMs": 1.851812000000109
+          },
+          "server/app.ts:readSchedule": {
+            "calls": 1,
+            "inclusiveMs": 59.98661900000002,
+            "exclusiveMs": 15.077577999999903,
+            "maxMs": 59.98661900000002
+          },
+          "server/app.ts:locatedLessons": {
+            "calls": 1,
+            "inclusiveMs": 4.775658000000021,
+            "exclusiveMs": 4.775658000000021,
+            "maxMs": 4.775658000000021
+          },
+          "server/app.ts:readTeacherTeachingAssignments": {
+            "calls": 1,
+            "inclusiveMs": 0.013948999999911393,
+            "exclusiveMs": 0.0036689999999452994,
+            "maxMs": 0.013948999999911393
+          },
+          "server/app.ts:readReassignmentState": {
+            "calls": 1,
+            "inclusiveMs": 80.72884799999997,
+            "exclusiveMs": 0.6200160000000778,
+            "maxMs": 80.72884799999997
+          },
+          "shared/teacherReassignment.ts:locate": {
+            "calls": 1,
+            "inclusiveMs": 1.7238830000001144,
+            "exclusiveMs": 1.7238830000001144,
+            "maxMs": 1.7238830000001144
+          },
+          "shared/teacherReassignment.ts:buildUnitsFromLocated": {
+            "calls": 1,
+            "inclusiveMs": 38.421391000000085,
+            "exclusiveMs": 38.421391000000085,
+            "maxMs": 38.421391000000085
+          },
+          "shared/teacherReassignment.ts:createIndex": {
+            "calls": 1,
+            "inclusiveMs": 67.14354300000014,
+            "exclusiveMs": 26.998268999999937,
+            "maxMs": 67.14354300000014
+          },
+          "shared/teacherReassignment.ts:requestIndex": {
+            "calls": 49,
+            "inclusiveMs": 67.17533600000024,
+            "exclusiveMs": 0.031793000000106986,
+            "maxMs": 67.16749400000003
+          },
+          "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+            "calls": 2,
+            "inclusiveMs": 73.12635299999988,
+            "exclusiveMs": 5.951500999999553,
+            "maxMs": 71.48099200000001
+          },
+          "shared/teacherConflicts.ts:findTeacherConflicts": {
+            "calls": 1081,
+            "inclusiveMs": 0.2558690000032584,
+            "exclusiveMs": 0.2558690000032584,
+            "maxMs": 0.011762000000089756
+          },
+          "shared/teacherReassignment.ts:mainReason": {
+            "calls": 1081,
+            "inclusiveMs": 5.645915999998351,
+            "exclusiveMs": 4.4418139999947925,
+            "maxMs": 0.029888000000028114
+          },
+          "shared/roomSuitability.ts:roomSuitabilityReason": {
+            "calls": 489,
+            "inclusiveMs": 0.768221999997877,
+            "exclusiveMs": 0.768221999997877,
+            "maxMs": 0.012889000000086526
+          },
+          "shared/teacherReassignment.ts:roomReason": {
+            "calls": 489,
+            "inclusiveMs": 0.9482330000003003,
+            "exclusiveMs": 0.18001100000242332,
+            "maxMs": 0.018458000000009633
+          },
+          "shared/teacherReassignment.ts:cloneSchedule": {
+            "calls": 1,
+            "inclusiveMs": 3.0348509999998896,
+            "exclusiveMs": 3.0348509999998896,
+            "maxMs": 3.0348509999998896
+          },
+          "shared/teacherReassignment.ts:updateIndexedLessons": {
+            "calls": 47,
+            "inclusiveMs": 0.038768999999547304,
+            "exclusiveMs": 0.038768999999547304,
+            "maxMs": 0.007384999999885622
+          },
+          "shared/teacherReassignment.ts:policyFor": {
+            "calls": 47,
+            "inclusiveMs": 0.19243300000061936,
+            "exclusiveMs": 0.19243300000061936,
+            "maxMs": 0.0450780000001032
+          },
+          "shared/teacherReassignment.ts:unitsForStream": {
+            "calls": 47,
+            "inclusiveMs": 0.05613500000072236,
+            "exclusiveMs": 0.05613500000072236,
+            "maxMs": 0.008133000000043467
+          },
+          "shared/teacherReassignment.ts:applyTeacher": {
+            "calls": 1,
+            "inclusiveMs": 5.7921369999999115,
+            "exclusiveMs": 2.067394999998669,
+            "maxMs": 5.7921369999999115
+          },
+          "shared/teacherReassignment.ts:assignPreview": {
+            "calls": 1,
+            "inclusiveMs": 35.260995000000094,
+            "exclusiveMs": 23.937935000001517,
+            "maxMs": 35.260995000000094
+          },
+          "shared/teacherReassignment.ts:previewTeacherReassignment": {
+            "calls": 1,
+            "inclusiveMs": 36.91417799999999,
+            "exclusiveMs": 0.007822000000032858,
+            "maxMs": 36.91417799999999
+          }
+        },
+        "equivalentToPlain": true
+      },
+      {
+        "name": "period-no-end-row0-teacher110",
+        "instrumented": true,
+        "totalMs": 17.59117399999991,
+        "responseBytes": 55431,
+        "responseHash": "57a41e7f8083a970b735d2d731792dc6246d407ea286c8e364af0ca2fb885cf5",
+        "units": 47,
+        "candidates": 11,
+        "functions": {
+          "JSON.stringify.object": {
+            "calls": 97,
+            "inclusiveMs": 0.4226579999999558,
+            "exclusiveMs": 0.4226579999999558,
+            "maxMs": 0.13397199999985787
+          },
+          "sqlite.prepare": {
+            "calls": 2,
+            "inclusiveMs": 0.07408500000019558,
+            "exclusiveMs": 0.07408500000019558,
+            "maxMs": 0.05249200000002929
+          },
+          "sqlite.get": {
+            "calls": 2,
+            "inclusiveMs": 0.037027999999736494,
+            "exclusiveMs": 0.037027999999736494,
+            "maxMs": 0.030313999999862062
+          },
+          "server/app.ts:stableJson": {
+            "calls": 73,
+            "inclusiveMs": 0.08138299999950505,
+            "exclusiveMs": 0.04290199999991273,
+            "maxMs": 0.02325199999995675
+          },
+          "shared/teacherReassignment.ts:requestIndex": {
+            "calls": 51,
+            "inclusiveMs": 0.007583999999724256,
+            "exclusiveMs": 0.007583999999724256,
+            "maxMs": 0.0010789999998905841
+          },
+          "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+            "calls": 2,
+            "inclusiveMs": 3.6537359999999808,
+            "exclusiveMs": 3.6464320000002317,
+            "maxMs": 2.384520000000066
+          },
+          "shared/teacherReassignment.ts:cloneSchedule": {
+            "calls": 1,
+            "inclusiveMs": 1.4920609999999215,
+            "exclusiveMs": 1.4920609999999215,
+            "maxMs": 1.4920609999999215
+          },
+          "shared/teacherConflicts.ts:findTeacherConflicts": {
+            "calls": 58,
+            "inclusiveMs": 0.013529999999491338,
+            "exclusiveMs": 0.013529999999491338,
+            "maxMs": 0.001471999999921536
+          },
+          "shared/roomSuitability.ts:roomSuitabilityReason": {
+            "calls": 52,
+            "inclusiveMs": 0.08929599999964921,
+            "exclusiveMs": 0.08929599999964921,
+            "maxMs": 0.006800999999995838
+          },
+          "shared/teacherReassignment.ts:roomReason": {
+            "calls": 52,
+            "inclusiveMs": 0.12788600000021688,
+            "exclusiveMs": 0.03859000000056767,
+            "maxMs": 0.013353999999935695
+          },
+          "shared/teacherReassignment.ts:mainReason": {
+            "calls": 58,
+            "inclusiveMs": 0.4728570000008858,
+            "exclusiveMs": 0.3314410000011776,
+            "maxMs": 0.02436200000011013
+          },
+          "shared/teacherReassignment.ts:updateIndexedLessons": {
+            "calls": 47,
+            "inclusiveMs": 0.03709600000092905,
+            "exclusiveMs": 0.03709600000092905,
+            "maxMs": 0.005751000000145723
+          },
+          "shared/teacherReassignment.ts:policyFor": {
+            "calls": 47,
+            "inclusiveMs": 0.10175499999991189,
+            "exclusiveMs": 0.10175499999991189,
+            "maxMs": 0.007734000000027663
+          },
+          "shared/teacherReassignment.ts:unitsForStream": {
+            "calls": 47,
+            "inclusiveMs": 0.06523799999990842,
+            "exclusiveMs": 0.06523799999990842,
+            "maxMs": 0.010225999999875057
+          },
+          "shared/teacherReassignment.ts:applyTeacher": {
+            "calls": 1,
+            "inclusiveMs": 4.139034000000038,
+            "exclusiveMs": 2.0106949999981225,
+            "maxMs": 4.139034000000038
+          },
+          "shared/teacherReassignment.ts:assignPreview": {
+            "calls": 1,
+            "inclusiveMs": 12.610245999999961,
+            "exclusiveMs": 8.148363000000245,
+            "maxMs": 12.610245999999961
+          },
+          "shared/teacherReassignment.ts:previewTeacherReassignment": {
+            "calls": 1,
+            "inclusiveMs": 13.886976000000004,
+            "exclusiveMs": 0.0075140000001283624,
+            "maxMs": 13.886976000000004
+          }
+        },
+        "equivalentToPlain": true
+      },
+      {
+        "name": "page-english-quarter",
+        "instrumented": true,
+        "totalMs": 87.42538999999988,
+        "responseBytes": 1574299,
+        "functions": {
+          "sqlite.prepare": {
+            "calls": 47,
+            "inclusiveMs": 2.3590000000003783,
+            "exclusiveMs": 2.3590000000003783,
+            "maxMs": 0.14087799999992967
+          },
+          "sqlite.get": {
+            "calls": 3,
+            "inclusiveMs": 0.11099700000022494,
+            "exclusiveMs": 0.11099700000022494,
+            "maxMs": 0.07102300000019568
+          },
+          "sqlite.all": {
+            "calls": 48,
+            "inclusiveMs": 50.752126999999746,
+            "exclusiveMs": 50.752126999999746,
+            "maxMs": 44.51054599999998
+          },
+          "server/app.ts:readCatalog": {
+            "calls": 1,
+            "inclusiveMs": 0.7758579999999711,
+            "exclusiveMs": 0.2554920000000038,
+            "maxMs": 0.7758579999999711
+          },
+          "server/app.ts:readQuarters": {
+            "calls": 1,
+            "inclusiveMs": 0.046714999999949214,
+            "exclusiveMs": 0.008001999999805776,
+            "maxMs": 0.046714999999949214
+          },
+          "server/app.ts:readSchedule": {
+            "calls": 1,
+            "inclusiveMs": 59.30544699999996,
+            "exclusiveMs": 14.715908000000127,
+            "maxMs": 59.30544699999996
+          },
+          "server/app.ts:locatedLessons": {
+            "calls": 3,
+            "inclusiveMs": 3.2596510000000762,
+            "exclusiveMs": 3.2596510000000762,
+            "maxMs": 1.4973600000000715
+          },
+          "server/app.ts:readTeacherLessonOrigins": {
+            "calls": 35,
+            "inclusiveMs": 16.628724999999577,
+            "exclusiveMs": 0.974931999999626,
+            "maxMs": 8.643912
+          },
+          "JSON.stringify.object": {
+            "calls": 1,
+            "inclusiveMs": 4.657766999999922,
+            "exclusiveMs": 4.657766999999922,
+            "maxMs": 4.657766999999922
+          }
+        }
+      },
+      {
+        "name": "apply23",
+        "instrumented": true,
+        "totalMs": 507.663734,
+        "responseBytes": 96,
+        "responseHash": "9a65fe9b9863473299a709975928a5b14111637e60fd1ad6c5adb513845cec7e",
+        "functions": {
+          "JSON.stringify.object": {
+            "calls": 102,
+            "inclusiveMs": 0.37016799999992145,
+            "exclusiveMs": 0.37016799999992145,
+            "maxMs": 0.12287000000014814
+          },
+          "sqlite.prepare": {
+            "calls": 73,
+            "inclusiveMs": 3.1932989999986603,
+            "exclusiveMs": 3.1932989999986603,
+            "maxMs": 0.1849320000001171
+          },
+          "sqlite.get": {
+            "calls": 6,
+            "inclusiveMs": 0.09558199999992212,
+            "exclusiveMs": 0.09558199999992212,
+            "maxMs": 0.028314999999793145
+          },
+          "sqlite.all": {
+            "calls": 65,
+            "inclusiveMs": 55.52004899999906,
+            "exclusiveMs": 55.52004899999906,
+            "maxMs": 45.61757299999999
+          },
+          "server/app.ts:readCatalog": {
+            "calls": 2,
+            "inclusiveMs": 1.7686329999999089,
+            "exclusiveMs": 0.5611700000015389,
+            "maxMs": 1.03125399999999
+          },
+          "server/app.ts:readQuarters": {
+            "calls": 2,
+            "inclusiveMs": 0.08685700000023644,
+            "exclusiveMs": 0.017269000000624146,
+            "maxMs": 0.05098500000008244
+          },
+          "server/app.ts:reassignmentDates": {
+            "calls": 1,
+            "inclusiveMs": 0.2263660000000982,
+            "exclusiveMs": 0.019650000000183354,
+            "maxMs": 0.2263660000000982
+          },
+          "server/app.ts:readSchedule": {
+            "calls": 1,
+            "inclusiveMs": 57.099883999999975,
+            "exclusiveMs": 11.409595000000081,
+            "maxMs": 57.099883999999975
+          },
+          "server/app.ts:locatedLessons": {
+            "calls": 4,
+            "inclusiveMs": 8.60714599999983,
+            "exclusiveMs": 8.60714599999983,
+            "maxMs": 3.5592750000000706
+          },
+          "server/app.ts:readTeacherLessonOrigins": {
+            "calls": 36,
+            "inclusiveMs": 20.065943999999263,
+            "exclusiveMs": 3.6880259999995815,
+            "maxMs": 11.648382999999967
+          },
+          "server/app.ts:readTeacherTeachingAssignments": {
+            "calls": 1,
+            "inclusiveMs": 0.014443999999912194,
+            "exclusiveMs": 0.0036829999999099527,
+            "maxMs": 0.014443999999912194
+          },
+          "server/app.ts:readReassignmentState": {
+            "calls": 1,
+            "inclusiveMs": 73.89841899999988,
+            "exclusiveMs": 0.5617029999998522,
+            "maxMs": 73.89841899999988
+          },
+          "shared/teacherReassignment.ts:locate": {
+            "calls": 2,
+            "inclusiveMs": 3.351754000000028,
+            "exclusiveMs": 3.351754000000028,
+            "maxMs": 1.8867830000001504
+          },
+          "shared/teacherReassignment.ts:buildUnitsFromLocated": {
+            "calls": 2,
+            "inclusiveMs": 67.067274,
+            "exclusiveMs": 67.067274,
+            "maxMs": 33.85163199999988
+          },
+          "shared/teacherReassignment.ts:createIndex": {
+            "calls": 2,
+            "inclusiveMs": 115.14682100000005,
+            "exclusiveMs": 44.72779300000002,
+            "maxMs": 58.56042199999979
+          },
+          "shared/teacherReassignment.ts:requestIndex": {
+            "calls": 51,
+            "inclusiveMs": 115.18923299999938,
+            "exclusiveMs": 0.042411999999330874,
+            "maxMs": 58.56989899999985
+          },
+          "shared/teacherReassignment.ts:validateTeacherReassignmentRequest": {
+            "calls": 2,
+            "inclusiveMs": 121.64731000000006,
+            "exclusiveMs": 6.458542000000762,
+            "maxMs": 63.00758100000007
+          },
+          "shared/teacherConflicts.ts:findTeacherConflicts": {
+            "calls": 529,
+            "inclusiveMs": 0.17946199999505552,
+            "exclusiveMs": 0.17946199999505552,
+            "maxMs": 0.0050810000002456945
+          },
+          "shared/teacherReassignment.ts:mainReason": {
+            "calls": 529,
+            "inclusiveMs": 3.686229999999341,
+            "exclusiveMs": 2.890322000001106,
+            "maxMs": 0.03790400000025329
+          },
+          "shared/roomSuitability.ts:roomSuitabilityReason": {
+            "calls": 241,
+            "inclusiveMs": 0.5298609999995278,
+            "exclusiveMs": 0.5298609999995278,
+            "maxMs": 0.007866999999805557
+          },
+          "shared/teacherReassignment.ts:roomReason": {
+            "calls": 241,
+            "inclusiveMs": 0.6164460000031795,
+            "exclusiveMs": 0.08658500000365166,
+            "maxMs": 0.00860899999997855
+          },
+          "shared/teacherReassignment.ts:cloneSchedule": {
+            "calls": 1,
+            "inclusiveMs": 1.7762619999998606,
+            "exclusiveMs": 1.7762619999998606,
+            "maxMs": 1.7762619999998606
+          },
+          "shared/teacherReassignment.ts:updateIndexedLessons": {
+            "calls": 23,
+            "inclusiveMs": 0.04532799999969939,
+            "exclusiveMs": 0.04532799999969939,
+            "maxMs": 0.01310200000034456
+          },
+          "shared/teacherReassignment.ts:policyFor": {
+            "calls": 23,
+            "inclusiveMs": 0.07331600000043181,
+            "exclusiveMs": 0.07331600000043181,
+            "maxMs": 0.007805000000189466
+          },
+          "shared/teacherReassignment.ts:unitsForStream": {
+            "calls": 23,
+            "inclusiveMs": 0.03344099999867467,
+            "exclusiveMs": 0.03344099999867467,
+            "maxMs": 0.006498000000192405
+          },
+          "shared/teacherReassignment.ts:applyTeacher": {
+            "calls": 1,
+            "inclusiveMs": 3.916247999999996,
+            "exclusiveMs": 1.7288670000007187,
+            "maxMs": 3.916247999999996
+          },
+          "shared/teacherReassignment.ts:assignPreview": {
+            "calls": 1,
+            "inclusiveMs": 38.42738599999984,
+            "exclusiveMs": 30.938283000000865,
+            "maxMs": 38.42738599999984
+          },
+          "shared/teacherReassignment.ts:previewTeacherReassignment": {
+            "calls": 1,
+            "inclusiveMs": 97.07657399999971,
+            "exclusiveMs": 0.00945899999987887,
+            "maxMs": 97.07657399999971
+          },
+          "server/app.ts:replaceSelectedLessons": {
+            "calls": 1,
+            "inclusiveMs": 5.827005999999983,
+            "exclusiveMs": 3.6877850000000763,
+            "maxMs": 5.827005999999983
+          },
+          "server/app.ts:readStudyPlans": {
+            "calls": 1,
+            "inclusiveMs": 3.732398000000103,
+            "exclusiveMs": 0.700275000000147,
+            "maxMs": 3.732398000000103
+          },
+          "server/app.ts:validateSchedule": {
+            "calls": 1,
+            "inclusiveMs": 42.01689699999997,
+            "exclusiveMs": 42.01689699999997,
+            "maxMs": 42.01689699999997
+          },
+          "server/app.ts:roomResolvedSchedule": {
+            "calls": 2,
+            "inclusiveMs": 78.20012899999983,
+            "exclusiveMs": 78.20012899999983,
+            "maxMs": 39.62772899999982
+          },
+          "shared/unavailability.ts:newUnavailabilityViolation": {
+            "calls": 1,
+            "inclusiveMs": 52.19974200000024,
+            "exclusiveMs": 52.19974200000024,
+            "maxMs": 52.19974200000024
+          },
+          "shared/roomConflicts.ts:newRoomConflict": {
+            "calls": 1,
+            "inclusiveMs": 18.814218999999866,
+            "exclusiveMs": 18.814218999999866,
+            "maxMs": 18.814218999999866
+          },
+          "shared/roomSuitability.ts:newRoomSuitabilityViolation": {
+            "calls": 1,
+            "inclusiveMs": 38.74508800000012,
+            "exclusiveMs": 38.74508800000012,
+            "maxMs": 38.74508800000012
+          },
+          "shared/teacherConflicts.ts:newTeacherConflict": {
+            "calls": 1,
+            "inclusiveMs": 20.63977900000009,
+            "exclusiveMs": 20.63977900000009,
+            "maxMs": 20.63977900000009
+          },
+          "sqlite.run": {
+            "calls": 76,
+            "inclusiveMs": 0.5872120000003633,
+            "exclusiveMs": 0.5872120000003633,
+            "maxMs": 0.1772459999997409
+          }
+        }
+      },
+      {
+        "name": "undo23",
+        "instrumented": true,
+        "totalMs": 91.67340899999999,
+        "responseBytes": 55,
+        "responseHash": "259697a9fa5c40578b222f281a1e824e8d32f0e4ae160fd16b3581712e225a6a",
+        "functions": {
+          "JSON.stringify.object": {
+            "calls": 135,
+            "inclusiveMs": 0.03280300000051284,
+            "exclusiveMs": 0.03280300000051284,
+            "maxMs": 0.003248999999868829
+          },
+          "sqlite.prepare": {
+            "calls": 18,
+            "inclusiveMs": 1.6467799999995805,
+            "exclusiveMs": 1.6467799999995805,
+            "maxMs": 1.248693000000003
+          },
+          "sqlite.get": {
+            "calls": 4,
+            "inclusiveMs": 0.2246220000001813,
+            "exclusiveMs": 0.2246220000001813,
+            "maxMs": 0.1809809999999743
+          },
+          "sqlite.all": {
+            "calls": 5,
+            "inclusiveMs": 32.319054000000506,
+            "exclusiveMs": 32.319054000000506,
+            "maxMs": 19.333294000000024
+          },
+          "server/app.ts:readSchedule": {
+            "calls": 1,
+            "inclusiveMs": 25.350914000000103,
+            "exclusiveMs": 5.931551999999556,
+            "maxMs": 25.350914000000103
+          },
+          "server/app.ts:roomResolvedSchedule": {
+            "calls": 1,
+            "inclusiveMs": 15.733418000000256,
+            "exclusiveMs": 15.733418000000256,
+            "maxMs": 15.733418000000256
+          },
+          "server/app.ts:readQuarters": {
+            "calls": 1,
+            "inclusiveMs": 0.15775399999984074,
+            "exclusiveMs": 0.019646999999622494,
+            "maxMs": 0.15775399999984074
+          },
+          "server/app.ts:readStudyPlans": {
+            "calls": 1,
+            "inclusiveMs": 19.80430800000022,
+            "exclusiveMs": 5.6208849999998165,
+            "maxMs": 19.80430800000022
+          },
+          "server/app.ts:validateSchedule": {
+            "calls": 1,
+            "inclusiveMs": 24.86491100000012,
+            "exclusiveMs": 24.86491100000012,
+            "maxMs": 24.86491100000012
+          },
+          "sqlite.run": {
+            "calls": 161,
+            "inclusiveMs": 0.4292960000025232,
+            "exclusiveMs": 0.4292960000025232,
+            "maxMs": 0.08798600000000079
+          }
+        }
+      }
+    ],
+    "cpuSummary": {
+      "totalMs": 6.0133710000000065,
+      "topSelfTime": [
+        {
+          "functionLocation": "post node:inspector:115",
+          "ms": 149.402
+        },
+        {
+          "functionLocation": "validateTeacherReassignmentRequest shared/teacherReassignment.ts:304",
+          "ms": 3.163
+        },
+        {
+          "functionLocation": "(garbage collector) :0",
+          "ms": 1.694
+        },
+        {
+          "functionLocation": "dispatch :0",
+          "ms": 0.942
+        },
+        {
+          "functionLocation": "processTicksAndRejections node:internal/process/task_queues:72",
+          "ms": 0.515
+        }
+      ]
+    }
+  },
+  "workingDatabaseAfter": {
+    "revision": 423,
+    "lessonCount": 181324,
+    "reassignmentOperations": 0
+  },
+  "limits": [
+    "Measurements use one local workstation and isolated copies; school hardware acceptance remains open.",
+    "Browser timings include 60ms input coalescing and Playwright waits.",
+    "Already running synchronous server computation is not interrupted by transport abort; measured cold-scope ping waited172ms.",
+    "Legacy full and compact API response formats remain compatible; the page uses response=receipt."
+  ],
+  "verification": {
+    "nodeTests": 333,
+    "nodeTestFailures": 0,
+    "additionalScriptChecksPassed": true,
+    "buildPassed": true,
+    "trialSchoolPassed": true,
+    "qaServerAndBrowserStopped": true
+  }
+}

@@ -1,0 +1,28 @@
+.group-selection { min-width: 0; color: #48556d; font-size: 11px; }
+.group-selection-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; color: #35425a; }
+.group-selection-heading > span, .group-selection-actions > span { color: #7b879b; font-size: 10px; }
+.group-selection-search { display: block; margin-bottom: 5px; }
+.group-selection-search input { box-sizing: border-box; width: 100%; min-width: 0; height: 30px; padding: 0 8px; border: 1px solid #dce2ef; border-radius: 6px; color: #35415a; background: #fff; font: inherit; }
+.group-selection-search input:focus { outline: 2px solid #4660dd33; border-color: #7587e2; }
+.group-selection-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 10px; margin-bottom: 5px; }
+.group-selection-actions button { padding: 0; border: 0; color: #465cc7; background: transparent; font: inherit; font-size: 10px; cursor: pointer; }
+.group-selection-actions button:disabled { opacity: .55; cursor: not-allowed; }
+.group-selection-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; max-height: min(210px, 30vh); overflow: auto; overscroll-behavior: contain; }
+.group-selection-list label { display: flex; align-items: center; gap: 7px; min-height: 27px; padding: 3px 2px; overflow-wrap: anywhere; cursor: pointer; }
+.group-selection-list input { flex: none; margin: 0; accent-color: #4660dd; }
+.group-selection-empty { padding: 6px 2px; color: #7b879b; }
+.group-selection-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+.group-select { position: relative; display: flex; align-items: center; gap: 8px; min-width: 0; color: #526078; font-size: 11px; }
+.group-select-label { flex: none; }
+.group-select-control { position: relative; display: flex; min-width: 0; width: 100%; }
+.group-select-control > input { box-sizing: border-box; min-width: 0; width: 100%; height: 32px; padding: 0 34px 0 8px; border: 1px solid #dce2ef; border-radius: 6px; color: #35415a; background: #fff; font: inherit; }
+.group-select-control > input:focus { outline: 2px solid #4660dd33; border-color: #7587e2; }
+.group-select-control > button { position: absolute; top: 1px; right: 1px; width: 30px; height: 30px; border: 0; color: #67738a; background: transparent; cursor: pointer; }
+.group-select-options { position: absolute; z-index: 30; top: calc(100% + 3px); left: 0; right: 0; display: grid; grid-template-columns: minmax(0, 1fr); max-height: min(210px, 30vh); overflow: auto; padding: 3px; border: 1px solid #dce2ef; border-radius: 7px; background: #fff; box-shadow: 0 8px 25px #17233a26; }
+.group-select-options > button { min-height: 29px; padding: 5px 7px; border: 0; border-radius: 4px; color: #48556d; background: transparent; text-align: left; font: inherit; cursor: pointer; }
+.group-select-options > button:hover, .group-select-options > button.active { color: #354cc1; background: #f0f3ff; }
+.group-select-empty { padding: 7px; color: #7b879b; }
+
+/* Dialog field styles must not stretch the group checkboxes. */
+.group-selection .group-selection-list > label { display:flex; align-items:center; gap:7px; }
+.group-selection .group-selection-list input[type="checkbox"] { box-sizing:border-box; width:15px; height:15px; min-width:15px; max-width:15px; flex:0 0 15px; padding:0; margin:0; }

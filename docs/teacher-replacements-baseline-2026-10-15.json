@@ -1,0 +1,2088 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-15",
+  "step": "8.1.1",
+  "status": "reproduced; baseline only; no fixes",
+  "environment": {
+    "cpu": "Intel Core i5-13500",
+    "logicalCPUs": 20,
+    "memoryGiB": 62,
+    "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+    "node": "26.8.2",
+    "browser": "HeadlessChrome/155.0.0.0",
+    "playwrightCLI": "0.1.19",
+    "viewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "server": "http://127.0.0.1:3181",
+    "mode": "npm start; existing production dist built 2026-10-15 19:24 +07:00"
+  },
+  "dataset": {
+    "capturedAt": "2026-10-15T12:51:11.819468+00:00",
+    "source": "data/smena.sqlite via SQLite online backup",
+    "copy": "/tmp/smena-replacements-review-20261015-1ekJj8/school.sqlite",
+    "counts": {
+      "catalog_groups": 74,
+      "catalog_teachers": 131,
+      "catalog_rooms": 177,
+      "quarters": 10,
+      "lessons": 181324,
+      "schedule_days": 44548,
+      "schedule_slots": 278124,
+      "teacher_lesson_origins": 0,
+      "teacher_teaching_assignments": 0,
+      "teacher_reassignment_operations": 0,
+      "teacher_replacement_operations": 0,
+      "temporary_teacher_replacements": 0,
+      "published_quarters": 10
+    },
+    "tableDigests": {
+      "catalog_groups": "a2f7847f0bcd0823c6a0f8a0e1630e8dd6a2134fddb7259a7a23fed168937208",
+      "catalog_teachers": "455af51bbf713ef47ac36be7f836081dd636a2f8b7c89a99c5c113a1a25d847f",
+      "catalog_rooms": "77a58bfd447944d77e957081bafbf0075fe5feaa9077f2d3c113739d0bb37048",
+      "quarters": "3b7d057c55249ebc254bd489cc18903866b8694595c0987d7f7d507a92000077",
+      "lessons": "fc56b3121b8c673f4bf1ada8cadadf5ad8b0887d8afe2e3ca2490a8cf6c49178",
+      "schedule_days": "183308a176cb7820dbeea739fa7c819d7c829f97a1b62e045a35ead8da7f93e2",
+      "schedule_slots": "53160f2040ae1be6740bd5fad2e4f1f53560172133a7a8a896ba1140c1ef2610",
+      "teacher_lesson_origins": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "teacher_teaching_assignments": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "teacher_reassignment_operations": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "teacher_replacement_operations": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "temporary_teacher_replacements": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_quarters": "9b9fc5e36882d47c74c554a6bbc6b2ff6ce2b79749ac940c198831ced134c17b"
+    },
+    "draftMetadata": [
+      [
+        1,
+        423,
+        "2026-10-15T11:48:38.330Z",
+        1
+      ]
+    ],
+    "quarter": [
+      "quarter-2026-1",
+      "1 четверть · 2026/2027",
+      "2026-09-01",
+      "2026-10-23"
+    ],
+    "integrity": "ok",
+    "foreignKeyErrors": 0
+  },
+  "scenario": {
+    "quarterId": "quarter-2026-1",
+    "subjectId": "english",
+    "groupId": "grade-10-А",
+    "groupName": "10А",
+    "sourceTeacherId": "teacher-106",
+    "commonTargetTeacherId": "teacher-109",
+    "rowTargetTeacherIds": [
+      "teacher-110",
+      "teacher-111",
+      "teacher-112"
+    ],
+    "quarterLessons": 23,
+    "noEndLessons": 47,
+    "exactUserSelectionKnown": false,
+    "workload": {
+      "selectedDates": 23,
+      "allGroupDaysOnDates": 1702,
+      "allGroupLessonsOnDates": 8990
+    }
+  },
+  "methodology": {
+    "actionTiming": "performance.now before Playwright action until preview completed and loading hidden; includes automation overhead",
+    "networkTiming": "fetch start until response headers/body clone complete",
+    "responseBytes": "UTF-8 JSON body bytes, not compressed wire size",
+    "instrumentation": "fetch response clone and PerformanceObserver(longtask), no production code edits",
+    "repetition": "initial and two repeated quarter opens; 3 row changes for23 lessons; 1 row change for47; no20-repeat/p95 claim"
+  },
+  "actions": [
+    {
+      "name": "filter-english-10A",
+      "start": 43898.10000000149,
+      "end": 44508.29999999702,
+      "durationMs": 610.1999999955297
+    },
+    {
+      "name": "period-first-open",
+      "start": 57508.29999999702,
+      "end": 59540.29999999702,
+      "durationMs": 2032
+    },
+    {
+      "name": "period-common-teacher109",
+      "start": 81555.79999999702,
+      "end": 85100.29999999702,
+      "durationMs": 3544.5,
+      "disabledRowsAfterInput": 23,
+      "rows": 23,
+      "values": [
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__"
+      ],
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 81564.10000000149,
+          "revision": 423,
+          "requestBytes": 975,
+          "status": 200,
+          "headersMs": 3518,
+          "bodyMs": 3518.5999999940395,
+          "responseBytes": 22757,
+          "done": true,
+          "units": 23,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 23
+        }
+      ]
+    },
+    {
+      "name": "period-row0-teacher110",
+      "start": 85106,
+      "end": 87956.29999999702,
+      "durationMs": 2850.2999999970198,
+      "disabledRowsAfterInput": 23,
+      "rows": 23,
+      "values": [
+        "teacher-110",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__"
+      ],
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 85114.19999999553,
+          "revision": 423,
+          "requestBytes": 1070,
+          "status": 200,
+          "headersMs": 2822,
+          "bodyMs": 2823.60000000149,
+          "responseBytes": 28169,
+          "done": true,
+          "units": 23,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 23,
+          "overrides": {
+            "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-110"
+          }
+        }
+      ]
+    },
+    {
+      "name": "period-row1-teacher111",
+      "start": 87960.89999999851,
+      "end": 91057.89999999851,
+      "durationMs": 3097,
+      "disabledRowsAfterInput": 23,
+      "rows": 23,
+      "values": [
+        "teacher-110",
+        "teacher-111",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__"
+      ],
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 87968.19999999553,
+          "revision": 423,
+          "requestBytes": 1146,
+          "status": 200,
+          "headersMs": 3078.8000000044703,
+          "bodyMs": 3079.60000000149,
+          "responseBytes": 28169,
+          "done": true,
+          "units": 23,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 23,
+          "overrides": {
+            "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-110",
+            "lesson:grade-10-А:2026-09-02:grade-10-А--5-2026-09-02-0-0": "teacher-111"
+          }
+        }
+      ]
+    },
+    {
+      "name": "period-row0-teacher112",
+      "start": 91062.5,
+      "end": 93941.5,
+      "durationMs": 2879,
+      "disabledRowsAfterInput": 23,
+      "rows": 23,
+      "values": [
+        "teacher-112",
+        "teacher-111",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__",
+        "__default__"
+      ],
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 91069.69999999553,
+          "revision": 423,
+          "requestBytes": 1146,
+          "status": 200,
+          "headersMs": 2860.5,
+          "bodyMs": 2861.5,
+          "responseBytes": 28169,
+          "done": true,
+          "units": 23,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 23,
+          "overrides": {
+            "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-112",
+            "lesson:grade-10-А:2026-09-02:grade-10-А--5-2026-09-02-0-0": "teacher-111"
+          }
+        }
+      ]
+    },
+    {
+      "name": "period-apply-mixed23",
+      "start": 135021.5,
+      "end": 138850.19999999553,
+      "durationMs": 3828.6999999955297,
+      "success": "Переназначения сохранены в черновике.",
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/apply?response=compact",
+          "method": "POST",
+          "start": 135034.8999999985,
+          "revision": 423,
+          "requestBytes": 3483,
+          "status": 200,
+          "headersMs": 3543,
+          "bodyMs": 3615.60000000149,
+          "responseBytes": 5182173,
+          "done": true
+        },
+        {
+          "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=english",
+          "method": "GET",
+          "start": 138748.69999999553
+        }
+      ]
+    },
+    {
+      "name": "period-undo",
+      "start": 194619.6000000015,
+      "end": 198115.5,
+      "durationMs": 3495.89999999851,
+      "successMs": 793.7999999970198,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/uGU71zQTSH98l7s_tpHE1Zb9/undo?response=compact",
+          "method": "POST",
+          "start": 194630.8999999985,
+          "revision": 424,
+          "requestBytes": 67,
+          "status": 200,
+          "headersMs": 414.1000000014901,
+          "bodyMs": 481.6000000014901,
+          "responseBytes": 5165842,
+          "done": true
+        },
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 195213.5,
+          "revision": 425,
+          "requestBytes": 1146,
+          "status": 200,
+          "headersMs": 2869.2999999970198,
+          "bodyMs": 2870,
+          "responseBytes": 28169,
+          "done": true,
+          "units": 23,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 23
+        },
+        {
+          "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=english",
+          "method": "GET",
+          "start": 195213.8999999985
+        }
+      ]
+    },
+    {
+      "name": "lesson-first-open",
+      "start": 246342.19999999553,
+      "end": 246425.29999999702,
+      "durationMs": 83.10000000149012,
+      "rows": 1,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 246378.29999999702,
+          "revision": 425,
+          "requestBytes": 229,
+          "status": 200,
+          "headersMs": 19.80000000447035,
+          "bodyMs": 20.399999998509884,
+          "responseBytes": 2309,
+          "done": true,
+          "units": 1,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 0,
+          "scope": "lesson"
+        }
+      ]
+    },
+    {
+      "name": "lesson-common109",
+      "start": 246431.69999999553,
+      "end": 246460.1000000015,
+      "durationMs": 28.400000005960464,
+      "rows": 1,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 246436.19999999553,
+          "revision": 425,
+          "requestBytes": 261,
+          "status": 200,
+          "headersMs": 11.600000001490116,
+          "bodyMs": 12.100000001490116,
+          "responseBytes": 2837,
+          "done": true,
+          "units": 1,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 1,
+          "scope": "lesson"
+        }
+      ]
+    },
+    {
+      "name": "week-first-open",
+      "start": 246503.29999999702,
+      "end": 246625.69999999553,
+      "durationMs": 122.39999999850988,
+      "rows": 3,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 246554.79999999702,
+          "revision": 425,
+          "requestBytes": 284,
+          "status": 200,
+          "headersMs": 48.5,
+          "bodyMs": 48.899999998509884,
+          "responseBytes": 3033,
+          "done": true,
+          "units": 3,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 0,
+          "scope": "week"
+        }
+      ]
+    },
+    {
+      "name": "week-common109",
+      "start": 246629.1000000015,
+      "end": 246714.19999999553,
+      "durationMs": 85.09999999403954,
+      "rows": 3,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 246633.29999999702,
+          "revision": 425,
+          "requestBytes": 316,
+          "status": 200,
+          "headersMs": 61.399999998509884,
+          "bodyMs": 61.80000000447035,
+          "responseBytes": 4868,
+          "done": true,
+          "units": 3,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 3,
+          "scope": "week"
+        }
+      ]
+    },
+    {
+      "name": "week-row0-teacher110",
+      "start": 246718.79999999702,
+      "end": 246812.79999999702,
+      "durationMs": 94,
+      "rows": 3,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 246730.79999999702,
+          "revision": 425,
+          "requestBytes": 410,
+          "status": 200,
+          "headersMs": 68.70000000298023,
+          "bodyMs": 69.20000000298023,
+          "responseBytes": 5360,
+          "done": true,
+          "units": 3,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 3,
+          "scope": "week"
+        }
+      ]
+    },
+    {
+      "name": "period-repeat-open",
+      "start": 246852.19999999553,
+      "end": 248631.29999999702,
+      "durationMs": 1779.1000000014901,
+      "rows": 23,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 246901.69999999553,
+          "revision": 425,
+          "requestBytes": 943,
+          "status": 200,
+          "headersMs": 1717,
+          "bodyMs": 1717.4000000059605,
+          "responseBytes": 10246,
+          "done": true,
+          "units": 23,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 0,
+          "scope": "period",
+          "startDate": "2026-09-01",
+          "endDate": "2026-10-23"
+        }
+      ]
+    },
+    {
+      "name": "period-no-end-open",
+      "start": 248635.8999999985,
+      "end": 252538.6000000015,
+      "durationMs": 3902.7000000029802,
+      "rows": 47,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 248685.1000000015,
+          "revision": 425,
+          "requestBytes": 935,
+          "status": 200,
+          "headersMs": 3834.2999999970198,
+          "bodyMs": 3835.1999999955297,
+          "responseBytes": 18836,
+          "done": true,
+          "units": 47,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 0,
+          "scope": "period",
+          "startDate": "2026-09-01",
+          "endDate": null
+        }
+      ]
+    },
+    {
+      "name": "period-no-end-common109",
+      "start": 252546.8999999985,
+      "end": 263052.5,
+      "durationMs": 10505.60000000149,
+      "rows": 47,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 252560.5,
+          "revision": 425,
+          "requestBytes": 967,
+          "status": 200,
+          "headersMs": 10473.29999999702,
+          "bodyMs": 10473.79999999702,
+          "responseBytes": 44101,
+          "done": true,
+          "units": 47,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 47,
+          "scope": "period",
+          "startDate": "2026-09-01",
+          "endDate": null
+        }
+      ]
+    },
+    {
+      "name": "period-repeat2-open",
+      "start": 293232,
+      "end": 295501.3999999985,
+      "durationMs": 2269.39999999851,
+      "rows": 23,
+      "disabledRowsAfterInput": 0,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 293254.3999999985,
+          "revision": 425,
+          "requestBytes": 943,
+          "status": 200,
+          "headersMs": 2235.39999999851,
+          "bodyMs": 2235.89999999851,
+          "responseBytes": 10246,
+          "done": true,
+          "units": 23,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 0
+        }
+      ]
+    },
+    {
+      "name": "period-no-end-repeat",
+      "start": 295505.1000000015,
+      "end": 300038,
+      "durationMs": 4532.89999999851,
+      "rows": 47,
+      "disabledRowsAfterInput": 23,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 295548.1000000015,
+          "revision": 425,
+          "requestBytes": 935,
+          "status": 200,
+          "headersMs": 4472,
+          "bodyMs": 4472.79999999702,
+          "responseBytes": 18836,
+          "done": true,
+          "units": 47,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 0
+        }
+      ]
+    },
+    {
+      "name": "period-no-end-common109-repeat",
+      "start": 300041.799999997,
+      "end": 308989.3999999985,
+      "durationMs": 8947.60000000149,
+      "rows": 47,
+      "disabledRowsAfterInput": 47,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 300052.8999999985,
+          "revision": 425,
+          "requestBytes": 967,
+          "status": 200,
+          "headersMs": 8918.5,
+          "bodyMs": 8919,
+          "responseBytes": 44101,
+          "done": true,
+          "units": 47,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 47
+        }
+      ]
+    },
+    {
+      "name": "period-no-end-row0-teacher110",
+      "start": 308993,
+      "end": 315964.1000000015,
+      "durationMs": 6971.10000000149,
+      "rows": 47,
+      "disabledRowsAfterInput": 47,
+      "requests": [
+        {
+          "url": "/api/teacher-reassignments/preview?response=compact",
+          "method": "POST",
+          "start": 309003.5,
+          "revision": 425,
+          "requestBytes": 1062,
+          "status": 200,
+          "headersMs": 6940.79999999702,
+          "bodyMs": 6942.5,
+          "responseBytes": 55431,
+          "done": true,
+          "units": 47,
+          "candidates": 11,
+          "skipped": 0,
+          "eligible": 47,
+          "overrides": {
+            "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-110"
+          }
+        }
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "url": "/api/admin/state?view=bootstrap",
+      "method": "GET",
+      "start": 19681.39999999851,
+      "status": 200,
+      "headersMs": 7.5,
+      "bodyMs": 8.600000001490116,
+      "responseBytes": 93711,
+      "done": true
+    },
+    {
+      "url": "/api/admin/reassignments?quarterId=quarter-2026-1",
+      "method": "GET",
+      "start": 19733.60000000149,
+      "status": 200,
+      "headersMs": 233.59999999403954,
+      "bodyMs": 234.09999999403954,
+      "responseBytes": 557,
+      "done": true
+    },
+    {
+      "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=school%3Aalgebra",
+      "method": "GET",
+      "start": 19991.69999999553,
+      "status": 200,
+      "headersMs": 92.5,
+      "bodyMs": 99.80000000447035,
+      "responseBytes": 910781,
+      "done": true
+    },
+    {
+      "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=english",
+      "method": "GET",
+      "start": 43984.69999999553,
+      "status": 200,
+      "headersMs": 96.20000000298023,
+      "bodyMs": 115.30000000447035,
+      "responseBytes": 1574299,
+      "done": true
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 57534.19999999553,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true
+      },
+      "revision": 423,
+      "requestBytes": 943,
+      "status": 200,
+      "headersMs": 1986.9000000059605,
+      "bodyMs": 1987.3000000044703,
+      "responseBytes": 10246,
+      "done": true,
+      "units": 23,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 0
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 81564.10000000149,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109"
+      },
+      "revision": 423,
+      "requestBytes": 975,
+      "status": 200,
+      "headersMs": 3518,
+      "bodyMs": 3518.5999999940395,
+      "responseBytes": 22757,
+      "done": true,
+      "units": 23,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 23
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 85114.19999999553,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109",
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-110"
+        }
+      },
+      "revision": 423,
+      "requestBytes": 1070,
+      "status": 200,
+      "headersMs": 2822,
+      "bodyMs": 2823.60000000149,
+      "responseBytes": 28169,
+      "done": true,
+      "units": 23,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 23
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 87968.19999999553,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109",
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-110",
+          "lesson:grade-10-А:2026-09-02:grade-10-А--5-2026-09-02-0-0": "teacher-111"
+        }
+      },
+      "revision": 423,
+      "requestBytes": 1146,
+      "status": 200,
+      "headersMs": 3078.8000000044703,
+      "bodyMs": 3079.60000000149,
+      "responseBytes": 28169,
+      "done": true,
+      "units": 23,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 23
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 91069.69999999553,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109",
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-112",
+          "lesson:grade-10-А:2026-09-02:grade-10-А--5-2026-09-02-0-0": "teacher-111"
+        }
+      },
+      "revision": 423,
+      "requestBytes": 1146,
+      "status": 200,
+      "headersMs": 2860.5,
+      "bodyMs": 2861.5,
+      "responseBytes": 28169,
+      "done": true,
+      "units": 23,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 23
+    },
+    {
+      "url": "/api/teacher-reassignments/apply?response=compact",
+      "method": "POST",
+      "start": 135034.8999999985,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109",
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-112",
+          "lesson:grade-10-А:2026-09-02:grade-10-А--5-2026-09-02-0-0": "teacher-111"
+        }
+      },
+      "revision": 423,
+      "requestBytes": 3483,
+      "status": 200,
+      "headersMs": 3543,
+      "bodyMs": 3615.60000000149,
+      "responseBytes": 5182173,
+      "done": true
+    },
+    {
+      "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=english",
+      "method": "GET",
+      "start": 138748.69999999553,
+      "status": 200,
+      "headersMs": 190.70000000298023,
+      "bodyMs": 208.30000000447035,
+      "responseBytes": 1584932,
+      "done": true
+    },
+    {
+      "url": "/api/teacher-reassignments/uGU71zQTSH98l7s_tpHE1Zb9/undo?response=compact",
+      "method": "POST",
+      "start": 194630.8999999985,
+      "revision": 424,
+      "requestBytes": 67,
+      "status": 200,
+      "headersMs": 414.1000000014901,
+      "bodyMs": 481.6000000014901,
+      "responseBytes": 5165842,
+      "done": true
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 195213.5,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109",
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-112",
+          "lesson:grade-10-А:2026-09-02:grade-10-А--5-2026-09-02-0-0": "teacher-111"
+        }
+      },
+      "revision": 425,
+      "requestBytes": 1146,
+      "status": 200,
+      "headersMs": 2869.2999999970198,
+      "bodyMs": 2870,
+      "responseBytes": 28169,
+      "done": true,
+      "units": 23,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 23
+    },
+    {
+      "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=english",
+      "method": "GET",
+      "start": 195213.8999999985,
+      "status": 200,
+      "headersMs": 3053.7999999970198,
+      "bodyMs": 3069.5,
+      "responseBytes": 1574299,
+      "done": true
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 246378.29999999702,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "sourceTeacherId": "teacher-106",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "lesson",
+        "lessonId": "grade-10-А-2-2026-10-19-1-0",
+        "persist": false
+      },
+      "revision": 425,
+      "requestBytes": 229,
+      "status": 200,
+      "headersMs": 19.80000000447035,
+      "bodyMs": 20.399999998509884,
+      "responseBytes": 2309,
+      "done": true,
+      "units": 1,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 0
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 246436.19999999553,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "sourceTeacherId": "teacher-106",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "lesson",
+        "lessonId": "grade-10-А-2-2026-10-19-1-0",
+        "targetTeacherId": "teacher-109",
+        "persist": false
+      },
+      "revision": 425,
+      "requestBytes": 261,
+      "status": 200,
+      "headersMs": 11.600000001490116,
+      "bodyMs": 12.100000001490116,
+      "responseBytes": 2837,
+      "done": true,
+      "units": 1,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 1
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 246554.79999999702,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "week",
+        "weekStart": "2026-10-19",
+        "lessonIds": [
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true
+      },
+      "revision": 425,
+      "requestBytes": 284,
+      "status": 200,
+      "headersMs": 48.5,
+      "bodyMs": 48.899999998509884,
+      "responseBytes": 3033,
+      "done": true,
+      "units": 3,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 0
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 246633.29999999702,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "week",
+        "weekStart": "2026-10-19",
+        "lessonIds": [
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109"
+      },
+      "revision": 425,
+      "requestBytes": 316,
+      "status": 200,
+      "headersMs": 61.399999998509884,
+      "bodyMs": 61.80000000447035,
+      "responseBytes": 4868,
+      "done": true,
+      "units": 3,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 3
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 246730.79999999702,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "week",
+        "weekStart": "2026-10-19",
+        "lessonIds": [
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109",
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-10-19:grade-10-А-2-2026-10-19-1-0": "teacher-110"
+        }
+      },
+      "revision": 425,
+      "requestBytes": 410,
+      "status": 200,
+      "headersMs": 68.70000000298023,
+      "bodyMs": 69.20000000298023,
+      "responseBytes": 5360,
+      "done": true,
+      "units": 3,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 3
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 246901.69999999553,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true
+      },
+      "revision": 425,
+      "requestBytes": 943,
+      "status": 200,
+      "headersMs": 1717,
+      "bodyMs": 1717.4000000059605,
+      "responseBytes": 10246,
+      "done": true,
+      "units": 23,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 0
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 248685.1000000015,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": null,
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true
+      },
+      "revision": 425,
+      "requestBytes": 935,
+      "status": 200,
+      "headersMs": 3834.2999999970198,
+      "bodyMs": 3835.1999999955297,
+      "responseBytes": 18836,
+      "done": true,
+      "units": 47,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 0
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 252560.5,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": null,
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109"
+      },
+      "revision": 425,
+      "requestBytes": 967,
+      "status": 200,
+      "headersMs": 10473.29999999702,
+      "bodyMs": 10473.79999999702,
+      "responseBytes": 44101,
+      "done": true,
+      "units": 47,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 47
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 293254.3999999985,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": "2026-10-23",
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true
+      },
+      "revision": 425,
+      "requestBytes": 943,
+      "status": 200,
+      "headersMs": 2235.39999999851,
+      "bodyMs": 2235.89999999851,
+      "responseBytes": 10246,
+      "done": true,
+      "units": 23,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 0
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 295548.1000000015,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": null,
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true
+      },
+      "revision": 425,
+      "requestBytes": 935,
+      "status": 200,
+      "headersMs": 4472,
+      "bodyMs": 4472.79999999702,
+      "responseBytes": 18836,
+      "done": true,
+      "units": 47,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 0
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 300052.8999999985,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": null,
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "targetTeacherId": "teacher-109"
+      },
+      "revision": 425,
+      "requestBytes": 967,
+      "status": 200,
+      "headersMs": 8918.5,
+      "bodyMs": 8919,
+      "responseBytes": 44101,
+      "done": true,
+      "units": 47,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 47
+    },
+    {
+      "url": "/api/teacher-reassignments/preview?response=compact",
+      "method": "POST",
+      "start": 309003.5,
+      "request": {
+        "mode": "assign",
+        "quarterId": "quarter-2026-1",
+        "subjectId": "english",
+        "groupIds": [
+          "grade-10-А"
+        ],
+        "scope": "period",
+        "startDate": "2026-09-01",
+        "endDate": null,
+        "lessonIds": [
+          "grade-10-А--5-2026-09-01-2-0",
+          "grade-10-А--5-2026-09-02-0-0",
+          "grade-10-А--4-2026-09-07-1-0",
+          "grade-10-А--4-2026-09-08-2-0",
+          "grade-10-А--4-2026-09-09-0-0",
+          "grade-10-А--3-2026-09-14-1-0",
+          "grade-10-А--3-2026-09-15-2-0",
+          "grade-10-А--3-2026-09-16-0-0",
+          "grade-10-А--2-2026-09-21-1-0",
+          "grade-10-А--2-2026-09-22-2-0",
+          "grade-10-А--2-2026-09-23-0-0",
+          "grade-10-А--1-2026-09-28-1-0",
+          "grade-10-А--1-2026-09-29-2-0",
+          "grade-10-А--1-2026-09-30-0-0",
+          "grade-10-А-0-2026-10-05-1-0",
+          "grade-10-А-0-2026-10-06-2-0",
+          "grade-10-А-0-2026-10-07-0-0",
+          "grade-10-А-1-2026-10-12-1-0",
+          "grade-10-А-1-2026-10-13-2-0",
+          "grade-10-А-1-2026-10-14-0-0",
+          "grade-10-А-2-2026-10-19-1-0",
+          "grade-10-А-2-2026-10-20-2-0",
+          "grade-10-А-2-2026-10-21-0-0"
+        ],
+        "persist": true,
+        "unitTeacherIds": {
+          "lesson:grade-10-А:2026-09-01:grade-10-А--5-2026-09-01-2-0": "teacher-110"
+        },
+        "targetTeacherId": "teacher-109"
+      },
+      "revision": 425,
+      "requestBytes": 1062,
+      "status": 200,
+      "headersMs": 6940.79999999702,
+      "bodyMs": 6942.5,
+      "responseBytes": 55431,
+      "done": true,
+      "units": 47,
+      "candidates": 11,
+      "skipped": 0,
+      "eligible": 47
+    }
+  ],
+  "browser": {
+    "errors": [],
+    "longTasks": [
+      {
+        "start": 20115.89999999851,
+        "duration": 55
+      },
+      {
+        "start": 44134.60000000149,
+        "duration": 74
+      },
+      {
+        "start": 138664.6000000015,
+        "duration": 81
+      },
+      {
+        "start": 195126.29999999702,
+        "duration": 84
+      }
+    ],
+    "maxLongTaskMs": 84,
+    "disabledSamples": [
+      {
+        "at": 81565,
+        "disabled": 23,
+        "total": 23
+      },
+      {
+        "at": 85092.19999999553,
+        "disabled": 0,
+        "total": 23
+      },
+      {
+        "at": 85114.79999999702,
+        "disabled": 23,
+        "total": 23
+      },
+      {
+        "at": 87943.5,
+        "disabled": 0,
+        "total": 23
+      },
+      {
+        "at": 87968.60000000149,
+        "disabled": 23,
+        "total": 23
+      },
+      {
+        "at": 91052.19999999553,
+        "disabled": 0,
+        "total": 23
+      },
+      {
+        "at": 91070.10000000149,
+        "disabled": 23,
+        "total": 23
+      },
+      {
+        "at": 93935.60000000149,
+        "disabled": 0,
+        "total": 23
+      },
+      {
+        "at": 135042.19999999553,
+        "disabled": 23,
+        "total": 23
+      },
+      {
+        "at": 138745.6000000015,
+        "disabled": 0,
+        "total": 0
+      }
+    ]
+  },
+  "applyIntegrity": {
+    "changedTeachers": 23,
+    "outsideChosenSubjectGroupPeriod": 0,
+    "otherLessonFieldsChanged": 146,
+    "lessonCountBefore": 181324,
+    "lessonCountAfter": 181324,
+    "changed": [
+      [
+        "grade-10-А--5-2026-09-01-2-0",
+        "teacher-112",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-01",
+        "english"
+      ],
+      [
+        "grade-10-А--5-2026-09-02-0-0",
+        "teacher-111",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-02",
+        "english"
+      ],
+      [
+        "grade-10-А--4-2026-09-07-1-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-07",
+        "english"
+      ],
+      [
+        "grade-10-А--4-2026-09-08-2-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-08",
+        "english"
+      ],
+      [
+        "grade-10-А--4-2026-09-09-0-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-09",
+        "english"
+      ],
+      [
+        "grade-10-А--3-2026-09-14-1-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-14",
+        "english"
+      ],
+      [
+        "grade-10-А--3-2026-09-15-2-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-15",
+        "english"
+      ],
+      [
+        "grade-10-А--3-2026-09-16-0-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-16",
+        "english"
+      ],
+      [
+        "grade-10-А--2-2026-09-21-1-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-21",
+        "english"
+      ],
+      [
+        "grade-10-А--2-2026-09-22-2-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-22",
+        "english"
+      ],
+      [
+        "grade-10-А--2-2026-09-23-0-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-23",
+        "english"
+      ],
+      [
+        "grade-10-А--1-2026-09-28-1-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-28",
+        "english"
+      ],
+      [
+        "grade-10-А--1-2026-09-29-2-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-29",
+        "english"
+      ],
+      [
+        "grade-10-А--1-2026-09-30-0-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-09-30",
+        "english"
+      ],
+      [
+        "grade-10-А-0-2026-10-05-1-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-10-05",
+        "english"
+      ],
+      [
+        "grade-10-А-0-2026-10-06-2-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-10-06",
+        "english"
+      ],
+      [
+        "grade-10-А-0-2026-10-07-0-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-10-07",
+        "english"
+      ],
+      [
+        "grade-10-А-1-2026-10-12-1-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-10-12",
+        "english"
+      ],
+      [
+        "grade-10-А-1-2026-10-13-2-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-10-13",
+        "english"
+      ],
+      [
+        "grade-10-А-1-2026-10-14-0-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-10-14",
+        "english"
+      ],
+      [
+        "grade-10-А-2-2026-10-19-1-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-10-19",
+        "english"
+      ],
+      [
+        "grade-10-А-2-2026-10-20-2-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-10-20",
+        "english"
+      ],
+      [
+        "grade-10-А-2-2026-10-21-0-0",
+        "teacher-109",
+        "teacher-106",
+        "grade-10-А",
+        "2026-10-21",
+        "english"
+      ]
+    ],
+    "schedule_daysEqual": true,
+    "schedule_slotsEqual": false,
+    "published_quartersEqual": true,
+    "physicalWriteDetails": {
+      "slotIdsRecreated": 161,
+      "cachedTeacherLabelsNormalized": 146,
+      "explanation": "Server rewrites selected group-days; stored teacher text is refreshed from catalog. Actual teacher_ref only changed for 23 English lessons."
+    },
+    "semanticOtherLessonChanges": 0,
+    "persistedOperationResponseComparison": {
+      "nonTeacherScheduleEqual": true,
+      "actualTeacherChanges": 23,
+      "sameLessonIds": true,
+      "contextLessons": 16602
+    }
+  },
+  "undoIntegrity": {
+    "actualTeachersDifferentAfterUndo": 0,
+    "lessonsAfterUndo": 181324,
+    "publicationsEqual": true,
+    "integrity": "ok",
+    "foreignKeyErrors": 0
+  },
+  "reopen": {
+    "name": "authenticated-page-reload-after-undo",
+    "readyMs": 440,
+    "sourceSelection": {
+      "quarter": "quarter-2026-1",
+      "subject": "Алгебра",
+      "cards": 1015
+    },
+    "filterEnglish10AMs": 522.2000000029802,
+    "toolbar": "23 занятий по предмету\nПереназначить четверть",
+    "requests": [
+      {
+        "url": "/api/admin/state?view=bootstrap",
+        "method": "GET",
+        "start": 39,
+        "status": 200,
+        "headersMs": 5.899999998509884,
+        "bodyMs": 7.200000002980232,
+        "responseBytes": 93711,
+        "done": true
+      },
+      {
+        "url": "/api/admin/reassignments?quarterId=quarter-2026-1",
+        "method": "GET",
+        "start": 54.20000000298023,
+        "status": 200,
+        "headersMs": 181.29999999701977,
+        "bodyMs": 181.69999999552965,
+        "responseBytes": 557,
+        "done": true
+      },
+      {
+        "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=school%3Aalgebra",
+        "method": "GET",
+        "start": 242.89999999850988,
+        "status": 200,
+        "headersMs": 80,
+        "bodyMs": 90.60000000149012,
+        "responseBytes": 910781,
+        "done": true
+      },
+      {
+        "url": "/api/admin/reassignments?quarterId=quarter-2026-1&subjectId=english",
+        "method": "GET",
+        "start": 490.20000000298023,
+        "status": 200,
+        "headersMs": 80.79999999701977,
+        "bodyMs": 97.5,
+        "responseBytes": 1574299,
+        "done": true
+      }
+    ],
+    "errors": []
+  },
+  "workingSourceCheck": {
+    "sourceLessonCountAfterQA": 181324,
+    "sourceDraftMetadataAfterQA": [
+      [
+        1,
+        423,
+        "2026-10-15T11:48:38.330Z",
+        1
+      ]
+    ],
+    "sourceReassignmentOperations": 0,
+    "sourceFileHashes": {
+      "src/TeacherReassignmentsPage.tsx": "2186eb5e5526779b6e1b5f96cd4918819eae469ecb2e2d2286e4b92e858b3b91",
+      "shared/teacherReassignment.ts": "627d14bdd5f8d2f18133fa0dbbdab9109a4d6872ae5780a80eb74501cb995fa4",
+      "server/app.ts": "174c67ef01095b3601c4d3b3d20518493939a226e6de9be21dcbf2d38fc61593",
+      "dist/index.html": "349e1496a4c55f1411995b687b20886a80bebe7c356713adf459a2b0c2b6bacf"
+    }
+  },
+  "limitations": [
+    "No SQL query timing/counts or server CPU profile yet; next step8.1.2",
+    "Only manual reassignment baseline, not full8.1.5 regression matrix",
+    "No absence/return changes; no performance fixes",
+    "Apply/undo on clone only; no-end scenario previewed only",
+    "Cold application startup not timed: first login/setup excluded; authenticated reload measured",
+    "p95 for row changes not measured"
+  ]
+}
