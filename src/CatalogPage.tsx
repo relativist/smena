@@ -75,7 +75,7 @@ const russianSort = new Intl.Collator("ru", {
   sensitivity: "base",
 });
 
-function TeacherActionIcon({ kind }: { kind: "edit" | "availability" | "archive" | "restore" }) {
+function CatalogActionIcon({ kind }: { kind: "edit" | "availability" | "archive" | "restore" }) {
   const common = { fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   return (
     <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" {...common}>
@@ -952,6 +952,7 @@ export default function CatalogPage({
                         <div className="catalog-filter-control">
                           <input
                             type="search"
+                            className={key === "group" || key === "preferredGroups" || (key === "name" && (tab === "groups" || tab === "subgroups")) ? "school-code" : undefined}
                             aria-label={`Фильтр: ${field.label}`}
                             placeholder={field.label}
                             value={filters[field.key] ?? ""}
@@ -978,7 +979,7 @@ export default function CatalogPage({
                 >
                   <td className="catalog-row-number" aria-label={`Запись ${index + 1}`}>{index + 1}</td>
                   <td>
-                    <strong className={tab === "subjects" ? "catalog-subject-name" : undefined}>{tab === "subjects" && <SubjectIcon subject={entry as CatalogSubject} />}<span>{entry.name}</span></strong>
+                    <strong className={tab === "subjects" ? "catalog-subject-name" : tab === "groups" || tab === "subgroups" ? "school-code" : undefined}>{tab === "subjects" && <SubjectIcon subject={entry as CatalogSubject} />}<span>{entry.name}</span></strong>
                     {tab === "teachers" && (entry as CatalogTeacher).preferredShift && <small className="catalog-shift-preference">Предпочтение: {(entry as CatalogTeacher).preferredShift === "morning" ? "1-я смена" : "2-я смена"}</small>}
                   </td>
                   {tab === "teachers" && (
@@ -1004,7 +1005,7 @@ export default function CatalogPage({
                           ).defaultRoomId,
                         )}
                       </td>
-                      <td>{((entry as CatalogTeacher).preferredGroupIds ?? [])
+                      <td className="school-code">{((entry as CatalogTeacher).preferredGroupIds ?? [])
                         .map((id) => catalog.groups.find((group) => group.id === id)?.name)
                         .filter((name): name is string => Boolean(name))
                         .sort(russianSort.compare)
@@ -1024,7 +1025,7 @@ export default function CatalogPage({
                   )}
                   {tab === "subgroups" && (
                     <>
-                      <td>
+                      <td className="school-code">
                         {labelOf(
                           catalog,
                           catalog.groups.find(
@@ -1067,21 +1068,21 @@ export default function CatalogPage({
                   )}
                   <td className="catalog-actions">
                     <button
-                      className={tab === "teachers" ? "catalog-icon-action" : undefined}
+                      className="catalog-icon-action"
                       type="button"
-                      aria-label={tab === "teachers" ? `Изменить: ${entry.name}` : undefined}
-                      title={tab === "teachers" ? "Изменить" : undefined}
+                      aria-label={`Изменить: ${entry.name}`}
+                      title="Изменить"
                       onClick={() => openEditor(entry)}
                       disabled={Boolean(pending)}
                     >
-                      {tab === "teachers" ? <TeacherActionIcon kind="edit" /> : <ActionLabel action="edit">Изменить</ActionLabel>}
+                      <CatalogActionIcon kind="edit" />
                     </button>
                     {(tab === "teachers" || tab === "rooms") && (
                       <button
-                        className={tab === "teachers" ? "catalog-icon-action" : undefined}
+                        className="catalog-icon-action"
                         type="button"
-                        aria-label={tab === "teachers" ? `Недоступность: ${entry.name}` : undefined}
-                        title={tab === "teachers" ? "Недоступность" : undefined}
+                        aria-label={`Недоступность: ${entry.name}`}
+                        title="Недоступность"
                         onClick={() => {
                           setAvailabilityTarget({
                             kind: tab === "teachers" ? "teacher" : "room",
@@ -1091,14 +1092,14 @@ export default function CatalogPage({
                         }}
                         disabled={Boolean(pending)}
                       >
-                        {tab === "teachers" ? <TeacherActionIcon kind="availability" /> : "Недоступность"}
+                        <CatalogActionIcon kind="availability" />
                       </button>
                     )}
                     <button
-                      className={tab === "teachers" ? `catalog-icon-action ${entry.archived ? "restore" : "archive"}` : undefined}
+                      className={`catalog-icon-action ${entry.archived ? "restore" : "archive"}`}
                       type="button"
-                      aria-label={tab === "teachers" ? `${entry.archived ? "Восстановить" : "В архив"}: ${entry.name}` : undefined}
-                      title={tab === "teachers" ? (entry.archived ? "Восстановить" : "В архив") : undefined}
+                      aria-label={`${entry.archived ? "Восстановить" : "В архив"}: ${entry.name}`}
+                      title={entry.archived ? "Восстановить" : "В архив"}
                       onClick={() =>
                         entry.archived
                           ? void toggleArchive(entry, false)
@@ -1106,9 +1107,7 @@ export default function CatalogPage({
                       }
                       disabled={Boolean(pending)}
                     >
-                      {tab === "teachers"
-                        ? <TeacherActionIcon kind={entry.archived ? "restore" : "archive"} />
-                        : entry.archived ? "Восстановить" : "В архив"}
+                      <CatalogActionIcon kind={entry.archived ? "restore" : "archive"} />
                     </button>
                   </td>
                 </tr>
@@ -1177,6 +1176,7 @@ export default function CatalogPage({
                   <span>{tab === "teachers" ? "Фамилия, имя и отчество" : "Название"}</span>
                   <input
                     ref={nameInput}
+                    className={tab === "groups" || tab === "subgroups" ? "school-code" : undefined}
                     maxLength={tab === "teachers" ? 160 : undefined}
                     value={draft.name}
                     onChange={(event) =>
@@ -1458,7 +1458,7 @@ export default function CatalogPage({
                                     });
                                   }}
                                 />
-                                <span>
+                                <span className="school-code">
                                   {group.name}
                                   {group.archived ? " · архив" : ""}
                                 </span>
@@ -1480,6 +1480,7 @@ export default function CatalogPage({
                     <label>
                       Родительская группа
                       <select
+                        className="school-code"
                         value={draft.groupId}
                         onChange={(event) =>
                           setDraft({ ...draft, groupId: event.target.value })

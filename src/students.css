@@ -4,8 +4,8 @@ body.students-view *, body.students-view *::before, body.students-view *::after 
   min-height: 100vh;
   color: #253047;
   background: #f5f6fa;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 14px;
+  font-family: var(--ui-font-family);
+  font-size: var(--ui-text);
 }
 .students-page button, .students-page input, .students-page select { font: inherit; }
 .students-page button, .students-page select { cursor: pointer; }
@@ -15,16 +15,16 @@ body.students-view *, body.students-view *::before, body.students-view *::after 
 .students-brand { display: inline-flex; align-items: center; gap: 9px; color: #253047; text-decoration: none; font-weight: 800; font-size: 24px; letter-spacing: -1px; }
 .students-brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; color: #fff; background: #4260d5; font-size: 20px; letter-spacing: 0; }
 .students-header-title { color: #68748a; font-weight: 650; }
-.students-header-school-name { flex: 1 1 220px; max-width: 420px; color: #52627a; font-size: 14px; font-weight: 700; }
+.students-header-school-name { flex: 1 1 220px; max-width: 420px; color: #52627a; font-size: var(--ui-text); font-weight: 700; }
 .students-admin-link { margin-left: auto; color: #52627a; text-decoration: none; font-weight: 600; }
 .students-admin-link:hover { color: #334fc2; }
 .students-public-links { display: flex; align-items: center; gap: 16px; margin-left: auto; }
 .students-public-links .students-admin-link { margin-left: 0; }
 .students-main { width: min(1880px, calc(100% - 48px)); margin: 0 auto; padding: 16px 0 60px; }
 .students-controls { position: relative; z-index: 2; display: flex; align-items: end; gap: 13px; flex-wrap: wrap; padding: 18px; background: white; border: 1px solid #e7eaf1; border-radius: 14px; box-shadow: 0 4px 18px #1f2c4510; }
-.students-controls label { display: flex; flex-direction: column; gap: 7px; color: #68748a; font-size: 12px; font-weight: 650; }
-.students-group-control { position: relative; display: flex; flex: 1 1 190px; min-width: 190px; flex-direction: column; gap: 7px; color: #68748a; font-size: 12px; font-weight: 650; }
-.students-group-control > input, .students-controls select { width: 100%; height: 42px; padding: 0 12px; color: #253047; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font-weight: 550; }
+.students-controls label { display: flex; flex-direction: column; gap: 7px; color: #68748a; font-size: var(--ui-secondary); font-weight: 400; }
+.students-group-control { position: relative; display: flex; flex: 1 1 190px; min-width: 190px; flex-direction: column; gap: 7px; color: #68748a; font-size: var(--ui-secondary); font-weight: 400; }
+.students-group-control > input, .students-controls select { width: 100%; height: 42px; padding: 0 12px; color: #253047; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font-weight: 400; }
 .students-group-control > input::placeholder { color: #9aa4b4; }
 .students-select-control { flex: 1 1 130px; min-width: 130px; }
 .students-week-control { flex: 1.25 1 205px; }
@@ -32,59 +32,59 @@ body.students-view *, body.students-view *::before, body.students-view *::after 
 .students-week-picker select { min-width: 0; }
 .students-week-picker button { width: 35px; height: 42px; flex: 0 0 35px; border: 1px solid #dfe4ed; border-radius: 8px; background: #fff; color: #465571; font-size: 23px; line-height: 1; }
 .students-week-picker button:hover:not(:disabled) { background: #f2f4fb; border-color: #cbd4ef; }
-.students-today-button { height: 42px; padding: 0 14px; border: 1px solid #dfe4ed; border-radius: 8px; color: #4159bd; background: #f7f8fd; font-weight: 700; }
+.students-today-button { height: 42px; padding: 0 14px; border: 1px solid #dfe4ed; border-radius: 8px; color: #4159bd; background: #f7f8fd; font-weight: 400; }
 .students-today-button:hover { background: #eef1ff; border-color: #cbd4ef; }
 .students-group-options { position: absolute; top: calc(100% + 5px); left: 0; right: 0; max-height: 310px; overflow: auto; padding: 5px; background: #fff; border: 1px solid #dfe4ed; border-radius: 10px; box-shadow: 0 14px 36px #25304724; }
 .students-group-options button { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 8px; min-height: 39px; padding: 8px 10px; text-align: left; border: 0; border-radius: 6px; color: #34415a; background: #fff; }
 .students-group-options button.is-active, .students-group-options button:hover { background: #f2f4fb; }
-.students-group-options button.is-selected { color: #334fc2; font-weight: 750; }
-.students-group-options button span { color: #7b86a0; font-size: 11px; font-weight: 550; }
+.students-group-options button.is-selected { color: #334fc2; font-weight: 400; }
+.students-group-options button span { color: #7b86a0; font-size: var(--ui-secondary); font-weight: 550; }
 .students-group-options > p { padding: 12px 10px; color: #818ba0; font-weight: 500; }
 .students-schedule-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 15px; margin: 28px 2px 15px; }
 .students-schedule-meta h2 { margin: 0; font-size: 23px; letter-spacing: -.03em; }
-.students-schedule-meta p { color: #818ba0; font-size: 12px; text-align: right; }
+.students-schedule-meta p { color: #818ba0; font-size: var(--ui-secondary); text-align: right; }
 .students-days { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr)); gap: 10px; align-items: start; }
 .students-day { display: flex; min-width: 0; max-width: 420px; flex-direction: column; overflow: hidden; background: #fff; border: 1px solid #e7eaf1; border-radius: 10px; }
 .students-day.is-today { border-color: #bac7fa; box-shadow: 0 0 0 1px #d7defd inset; }
 .students-day.is-holiday { background: #fbfcfe; }
 .students-day-header { display: flex; align-items: center; justify-content: space-between; gap: 7px; min-height: 61px; padding: 9px 10px; border-bottom: 1px solid #eff1f5; }
 .students-day-header > div { display: flex; flex-direction: column; gap: 3px; }
-.students-day-header span { color: #778399; text-transform: capitalize; font-size: 12px; }
-.students-day-header strong { color: #253047; font-size: 14px; }
-.students-day-header small { padding: 5px 8px; color: #425bc6; background: #edf0ff; border-radius: 20px; font-size: 10px; font-weight: 750; }
-.students-day-empty { display: grid; flex: 1; place-items: center; min-height: 90px; padding: 12px; color: #929bad; font-size: 12px; text-align: center; }
+.students-day-header span { color: #778399; text-transform: capitalize; font-size: var(--ui-secondary); }
+.students-day-header strong { color: #253047; font-size: var(--ui-text); }
+.students-day-header small { padding: 5px 8px; color: #425bc6; background: #edf0ff; border-radius: 20px; font-size: var(--ui-secondary); font-weight: 400; }
+.students-day-empty { display: grid; flex: 1; place-items: center; min-height: 90px; padding: 12px; color: #929bad; font-size: var(--ui-secondary); text-align: center; }
 .students-day-lessons { display: flex; min-width: 0; flex-direction: column; }
 .students-slot-row { display: flex; min-width: 0; align-items: center; gap: 6px; padding: 5px 6px; border-bottom: 1px solid #f0f2f6; }
-.students-slot-time { display: flex; flex: 0 0 auto; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 31px; color: #536381; font-size: 10px; line-height: 1.15; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.students-slot-time strong { color: #4159bd; font-size: 11px; }
+.students-slot-time { display: flex; flex: 0 0 auto; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 31px; color: #536381; font-size: var(--ui-secondary); line-height: 1.15; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.students-slot-time strong { color: #4159bd; font-size: var(--ui-secondary); }
 .students-slot-time time { color: #7b879b; }
 .students-slot-items { display: flex; flex: 1 1 auto; min-width: 0; flex-direction: column; justify-content: center; gap: 3px; }
-.students-empty-slot { margin-left: auto; color: #c0c6d1; font-size: 13px; }
+.students-empty-slot { margin-left: auto; color: #c0c6d1; font-size: var(--ui-secondary); }
 .students-lesson { display: flex; min-width: 0; align-items: center; gap: 7px; padding-left: 5px; border-left: 2px solid #dce2ef; line-height: 1.2; }
 .students-lesson > .subject-icon { width: 36px; height: 36px; flex-basis: 36px; }
 .students-lesson-body { display: flex; flex: 1; min-width: 0; min-height: 36px; flex-direction: column; justify-content: center; gap: 3px; }
-.students-lesson-title { min-width: 0; color: #253047; font-size: 12px; font-weight: 650; overflow-wrap: anywhere; }
+.students-lesson-title { min-width: 0; color: #253047; font-size: var(--ui-secondary); font-weight: 650; overflow-wrap: anywhere; }
 .students-lesson-teacher { color: #68758a; font-weight: 450; }
-.students-lesson-detail, .students-lesson-room, .students-lesson-joint { color: #788398; font-size: 11px; line-height: 1.2; overflow-wrap: anywhere; }
+.students-lesson-detail, .students-lesson-room, .students-lesson-joint { color: #788398; font-size: var(--ui-secondary); line-height: 1.2; overflow-wrap: anywhere; }
 .students-lesson-joint { flex: none; }
 .students-lesson-resources { display: flex; align-items: baseline; gap: 3px 7px; min-width: 0; }
 .students-lesson-room { max-width: 100%; }
 .students-lesson-detail + .students-lesson-room { margin-left: auto; flex-shrink: 0; max-width: 45%; text-align: right; }
-.students-lesson-tag { align-self: flex-start; padding: 2px 4px; color: #6753a7; background: #f2effb; border-radius: 4px; font-size: 9px; font-weight: 700; }
+.students-lesson-tag { align-self: flex-start; padding: 2px 4px; color: #6753a7; background: #f2effb; border-radius: 4px; font-size: var(--ui-secondary); font-weight: 700; }
 .students-state { margin-top: 16px; padding: 24px; color: #758198; background: #fff; border: 1px solid #e7eaf1; border-radius: 12px; text-align: center; }
-.students-state h2 { margin: 0 0 8px; color: #354159; font-size: 18px; }
+.students-state h2 { margin: 0 0 8px; color: #354159; font-size: var(--ui-min-text); }
 .students-state p { margin: 0; }
 .students-error { display: flex; align-items: center; justify-content: center; gap: 14px; color: #9a4651; }
 .students-error button { padding: 8px 12px; color: #fff; background: #5269c7; border: 0; border-radius: 7px; font-weight: 650; }
-.students-footer { padding: 22px 24px; color: #99a2b1; text-align: center; font-size: 12px; }
+.students-footer { padding: 22px 24px; color: #99a2b1; text-align: center; font-size: var(--ui-secondary); }
 @media (max-width: 700px) {
   .students-header { min-height: 60px; padding: 8px 16px; }
   .students-header-top { flex-wrap: wrap; gap: 10px 12px; }
   .students-brand { font-size: 21px; }
   .students-brand-mark { width: 31px; height: 31px; }
-  .students-header-title { font-size: 13px; }
-  .students-header-school-name { order: 2; flex: 0 0 100%; max-width: none; margin-top: 3px; font-size: 13px; }
-  .students-admin-link { font-size: 12px; }
+  .students-header-title { font-size: var(--ui-secondary); }
+  .students-header-school-name { order: 2; flex: 0 0 100%; max-width: none; margin-top: 3px; font-size: var(--ui-secondary); }
+  .students-admin-link { font-size: var(--ui-secondary); }
   .students-public-links { gap: 12px; }
   .students-main { width: min(100% - 28px, 560px); padding: 12px 0 30px; }
   .students-controls { gap: 11px; padding: 13px; }
@@ -99,14 +99,14 @@ body.students-view *, body.students-view *::before, body.students-view *::after 
   .students-day-empty { min-height: 65px; margin: 0; }
   .students-slot-row { gap: 10px; padding: 7px 11px; min-height: 44px; }
   .students-slot-row.is-empty { display: none; }
-  .students-slot-time { min-width: 42px; font-size: 11px; }
-  .students-slot-time strong { font-size: 12px; }
-  .students-lesson-title { font-size: 13px; }
-  .students-lesson-detail, .students-lesson-room, .students-lesson-joint { font-size: 11px; }
+  .students-slot-time { min-width: 42px; font-size: var(--ui-secondary); }
+  .students-slot-time strong { font-size: var(--ui-secondary); }
+  .students-lesson-title { font-size: var(--ui-secondary); }
+  .students-lesson-detail, .students-lesson-room, .students-lesson-joint { font-size: var(--ui-secondary); }
 }
 @media (max-width: 390px) {
   .students-header { padding: 8px 11px; }
   .students-header-title { display: none; }
-  .students-admin-link { font-size: 11px; }
+  .students-admin-link { font-size: var(--ui-secondary); }
   .students-main { width: calc(100% - 22px); }
 }

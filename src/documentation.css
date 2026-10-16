@@ -1,16 +1,16 @@
 body.documentation-view { margin: 0; overflow: auto; }
 .documentation-page, .documentation-page * { box-sizing: border-box; }
-.documentation-page { min-height: 100vh; color: #253047; background: #f5f6fa; font: 14px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.documentation-page { min-height: 100vh; color: #253047; background: #f5f6fa; font: var(--ui-text) var(--ui-font-family); }
 .documentation-main { display: block; width: min(1220px, calc(100% - 40px)); height: auto; overflow: visible; margin: 0 auto; padding: 28px 0 48px; }
 .documentation-main > h1 { margin: 0 0 24px; font-size: clamp(23px, 4vw, 30px); line-height: 1.25; letter-spacing: -.025em; }
 .documentation-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); align-items: start; gap: 24px; }
 .documentation-sidebar { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; padding: 16px 10px; border: 1px solid #e4e9f1; border-radius: 12px; background: #fff; }
-.documentation-sidebar h2 { margin: 0 10px 12px; font-size: 14px; }
+.documentation-sidebar h2 { margin: 0 10px 12px; font-size: var(--ui-text); }
 .documentation-content { min-width: 0; }
 .documentation-page nav:not(.documentation-pagination) { display: grid; gap: 3px; }
-.documentation-page nav:not(.documentation-pagination) button { display: flex; align-items: baseline; gap: 9px; width: 100%; min-width: 0; padding: 9px 10px; border: 0; border-radius: 7px; color: #58657b; background: transparent; text-align: left; font: inherit; font-size: 13px; line-height: 1.4; cursor: pointer; }
+.documentation-page nav:not(.documentation-pagination) button { display: flex; align-items: baseline; gap: 9px; width: 100%; min-width: 0; padding: 9px 10px; border: 0; border-radius: 7px; color: #58657b; background: transparent; text-align: left; font: inherit; font-size: var(--ui-secondary); line-height: 1.4; cursor: pointer; }
 .documentation-page nav button:hover:not(:disabled), .documentation-page nav button[aria-current] { color: #334da6; background: #edf1fc; }
-.documentation-number { flex: none; width: 21px; color: #7c89a0; font-size: 11px; }
+.documentation-number { flex: none; width: 21px; color: #7c89a0; font-size: var(--ui-secondary); }
 .documentation-page nav button[aria-current] { font-weight: 700; }
 .documentation-article { padding: 28px 32px; border: 1px solid #e4e9f1; border-radius: 12px; background: #fff; overflow-wrap: anywhere; }
 .documentation-article h2 { margin: 0 0 16px; font-size: 23px; line-height: 1.3; scroll-margin-top: 20px; }
@@ -19,10 +19,10 @@ body.documentation-view { margin: 0; overflow: auto; }
 .documentation-article ol { margin: 0 0 24px; padding-left: 24px; }
 .documentation-article li { padding-left: 4px; margin: 0 0 10px; }
 .documentation-example { padding: 17px 20px; margin: 22px 0; border-left: 3px solid #6681d8; border-radius: 0 8px 8px 0; background: #f1f4fc; }
-.documentation-example h3 { margin: 0 0 7px; color: #405cad; font-size: 14px; }
+.documentation-example h3 { margin: 0 0 7px; color: #405cad; font-size: var(--ui-text); }
 .documentation-example p { margin: 0; }
 .documentation-note { margin: 14px 0; color: #58657b; }
-.documentation-open, .documentation-pagination button { min-height: 40px; padding: 9px 13px; border: 1px solid #dce2ef; border-radius: 8px; background: #fff; color: #4159bd; font: inherit; font-size: 13px; line-height: 1.4; cursor: pointer; }
+.documentation-open, .documentation-pagination button { min-height: 40px; padding: 9px 13px; border: 1px solid #dce2ef; border-radius: 8px; background: #fff; color: #4159bd; font: inherit; font-size: var(--ui-secondary); line-height: 1.4; cursor: pointer; }
 .documentation-open { margin-top: 10px; background: #f7f8fd; font-weight: 650; }
 .documentation-page button:disabled { opacity: .5; cursor: default; }
 .documentation-page :focus-visible { outline: 3px solid #91a8ff; outline-offset: 2px; }
@@ -40,5 +40,5 @@ body.documentation-view { margin: 0; overflow: auto; }
   .documentation-article { padding: 20px 17px; }
   .documentation-article h2 { font-size: 21px; }
   .documentation-example { padding: 14px; }
-  .documentation-pagination button { flex: 1; padding: 9px; font-size: 12px; }
+  .documentation-pagination button { flex: 1; padding: 9px; font-size: var(--ui-secondary); }
 }

@@ -94,13 +94,13 @@ export default function ScheduleCopyDialog({ state, revision, csrfToken, onUnaut
 
   return <dialog ref={dialogRef} className="schedule-copy-dialog" aria-labelledby="schedule-copy-title" onCancel={(event) => { event.preventDefault(); if (!busy) onClose(); }}>
     <header className="schedule-copy-header">
-      <div><h2 id="schedule-copy-title">{mode === "week" ? "Копировать неделю" : "Повторить урок"}</h2><p>{quarter?.name ?? "Четверть не найдена"} · {groupName(sourceGroupId)} · {sourceWeekLabel}</p></div>
+      <div><h2 id="schedule-copy-title">{mode === "week" ? "Копировать неделю" : "Повторить урок"}</h2><p>{quarter?.name ?? "Четверть не найдена"} · <span className="school-code">{groupName(sourceGroupId)}</span> · {sourceWeekLabel}</p></div>
       <button type="button" aria-label="Закрыть" disabled={busy} onClick={onClose}>×</button>
     </header>
     <main className="schedule-copy-content">
       {mode === "lesson" && <p className="schedule-copy-source"><strong>{sourceSubject || "Исходный урок не найден"}</strong>{sourceLesson && sourceDay ? ` · ${dateLabel(sourceDay.date, { weekday: "long" })} · урок ${sourceDay.slots.findIndex((slot) => slot.some((lesson) => lesson.id === sourceLessonId)) + 1}` : ""}</p>}
       <p className="schedule-copy-policy">Время и длительность берутся из расписания каждого дня назначения. Уже занятые места сохраняются, каникулы и конфликты будут показаны в пропусках. Совместные занятия учитываются вместе.</p>
-      {!!preview?.linkedGroupIds?.length && <p className="schedule-copy-linked">Совместный урок также затронет: {preview.linkedGroupIds.map(groupName).join(", ")}.</p>}
+      {!!preview?.linkedGroupIds?.length && <p className="schedule-copy-linked">Совместный урок также затронет: {preview.linkedGroupIds.map((id, index) => <span key={id}><span className="school-code">{groupName(id)}</span>{index < preview.linkedGroupIds!.length - 1 ? ", " : ""}</span>)}.</p>}
       <section className="schedule-copy-weeks" aria-label="Недели назначения">
         <div className="schedule-copy-section-title"><strong>Куда копировать</strong><button type="button" disabled={busy || !offsets.length} onClick={() => setTargetWeekOffsets(allSelected ? [] : offsets)}>{allSelected ? "Снять выбор" : "Выбрать все"}</button></div>
         <div className="schedule-copy-week-list">
@@ -118,15 +118,15 @@ export default function ScheduleCopyDialog({ state, revision, csrfToken, onUnaut
           {preview.added.map((row, index) => {
             const detail = preview.details?.find(item => item.lessonId === row.lessonId);
             return <article className="schedule-copy-row" key={`a-${row.groupId}-${row.date}-${row.slot}-${row.sourceLessonId}-${index}`}>
-              <span className="schedule-copy-status is-added">Добавится</span><div><strong>{dateLabel(row.date, { weekday: "short", day: "2-digit", month: "short" })} · урок {row.slot + 1} · {groupName(row.groupId)}</strong><span>{row.event ?? subjectName(row.subjectId)}{detail ? ` · ${clock(detail.start)}–${clock(detail.start + detail.duration)} · ${teacherName(detail.teacherId)} · ${roomName(detail.roomId)}` : ""}</span></div>
+              <span className="schedule-copy-status is-added">Добавится</span><div><strong>{dateLabel(row.date, { weekday: "short", day: "2-digit", month: "short" })} · урок {row.slot + 1} · <span className="school-code">{groupName(row.groupId)}</span></strong><span>{row.event ?? subjectName(row.subjectId)}{detail ? <> · {clock(detail.start)}–{clock(detail.start + detail.duration)} · {teacherName(detail.teacherId)} · {roomName(detail.roomId)}</> : ""}</span></div>
             </article>;
           })}
           {preview.skipped.map((row, index) => <article className="schedule-copy-row" key={`s-${row.groupId}-${row.date}-${row.slot}-${row.sourceLessonId}-${index}`}>
-            <span className="schedule-copy-status is-skipped">Пропуск</span><div><strong>{dateLabel(row.date, { weekday: "short", day: "2-digit", month: "short" })} · урок {row.slot + 1} · {groupName(row.groupId)}</strong><span>{row.event ?? subjectName(row.subjectId)} · {row.reason}</span></div>
+            <span className="schedule-copy-status is-skipped">Пропуск</span><div><strong>{dateLabel(row.date, { weekday: "short", day: "2-digit", month: "short" })} · урок {row.slot + 1} · <span className="school-code">{groupName(row.groupId)}</span></strong><span>{row.event ?? subjectName(row.subjectId)} · {row.reason}</span></div>
           </article>)}
         </div>}
         {!!hourGroups.length && <details className="schedule-copy-hours"><summary>Часы за четверть · {hourGroups.reduce((count, [, entries]) => count + entries.length, 0)} изменений</summary>
-          {hourGroups.map(([groupId, entries]) => <div key={groupId} className="schedule-copy-hour-group"><strong>{groupName(groupId)}</strong>{entries.map((item, index) => <p key={`${item.subjectId}-${item.subgroupId ?? ""}-${index}`}>{subjectName(item.subjectId)}{item.subgroupId ? ` · ${state.catalog.subgroups.find((subgroup) => subgroup.id === item.subgroupId)?.name ?? "Подгруппа"}` : ""}: {item.before} → {item.after} из {item.target}{item.after > item.target ? " · выше плана" : ""}</p>)}</div>)}
+          {hourGroups.map(([groupId, entries]) => <div key={groupId} className="schedule-copy-hour-group"><strong className="school-code">{groupName(groupId)}</strong>{entries.map((item, index) => <p key={`${item.subjectId}-${item.subgroupId ?? ""}-${index}`}>{subjectName(item.subjectId)}{item.subgroupId ? <> · <span className="school-code">{state.catalog.subgroups.find((subgroup) => subgroup.id === item.subgroupId)?.name ?? "Подгруппа"}</span></> : ""}: {item.before} → {item.after} из {item.target}{item.after > item.target ? " · выше плана" : ""}</p>)}</div>)}
         </details>}
       </section>}
       {!targetWeekOffsets.length && <p className="schedule-copy-empty">Выберите недели назначения, чтобы посмотреть результат.</p>}

@@ -23,8 +23,8 @@
   color: #4159bd;
   background: #f7f8fd;
   font: inherit;
-  font-size: 12px;
-  font-weight: 650;
+  font-size: var(--ui-secondary);
+  font-weight: 400;
   line-height: 20px;
   white-space: nowrap;
   cursor: pointer;
@@ -35,15 +35,15 @@
 .admin-page-back svg { flex: none; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .admin-page-identity { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding-left: 18px; border-left: 1px solid #e5e8f0; }
 .admin-page-heading { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: 1px; }
-.admin-page-mark { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; color: #fff; background: #4660dd; font-size: 18px; font-weight: 750; }
-.admin-page-title { min-width: 0; font-size: 14px; font-weight: 650; line-height: 1.4; overflow-wrap: anywhere; }
-.admin-page-school-name { color: #69758b; font-size: 11px; font-weight: 550; }
-.admin-page-user { flex: none; max-width: 25%; overflow: hidden; color: #818ba0; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.admin-page-mark { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; color: #fff; background: #4660dd; font-size: var(--ui-min-text); font-weight: 750; }
+.admin-page-title { min-width: 0; font-size: var(--ui-text); font-weight: 650; line-height: 1.4; overflow-wrap: anywhere; }
+.admin-page-school-name { color: #69758b; font-size: var(--ui-secondary); font-weight: 550; }
+.admin-page-user { flex: none; max-width: 25%; overflow: hidden; color: #818ba0; font-size: var(--ui-secondary); text-overflow: ellipsis; white-space: nowrap; }
 @media (max-width: 520px) {
   .admin-page-header { gap: 12px; min-height: 56px; padding: 9px 12px; }
   .admin-page-identity { gap: 0; padding-left: 12px; }
   .admin-page-mark, .admin-page-user { display: none; }
-  .admin-page-title { font-size: 12px; }
+  .admin-page-title { font-size: var(--ui-secondary); }
   .admin-page-header .admin-page-back { padding: 7px 8px; }
 }
 @media (max-width: 520px) {
@@ -52,4 +52,11 @@
   .admin-page-header:has(.admin-page-school-name) .admin-page-heading { display: contents; }
   .admin-page-header:has(.admin-page-school-name) .admin-page-title { grid-column: 2; grid-row: 1; padding-left: 12px; border-left: 1px solid #e5e8f0; }
   .admin-page-school-name { grid-column: 1 / -1; grid-row: 2; }
+}
+
+@media (max-width: 480px) {
+  .admin-page-header:has(.admin-page-school-name) { grid-template-columns: minmax(0, 1fr); }
+  .admin-page-header:has(.admin-page-school-name) .admin-page-back { grid-column: 1; grid-row: 1; justify-self: start; }
+  .admin-page-header:has(.admin-page-school-name) .admin-page-title { grid-column: 1; grid-row: 2; padding-left: 0; border-left: 0; }
+  .admin-page-header:has(.admin-page-school-name) .admin-page-school-name { grid-column: 1; grid-row: 3; }
 }

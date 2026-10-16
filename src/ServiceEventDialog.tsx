@@ -127,6 +127,7 @@ export default function ServiceEventDialog({
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [confirmRemoval, setConfirmRemoval] = useState(false);
+  const confirmRemovalRef = useRef<HTMLDivElement>(null);
   const roomReason = (candidate: string) => selectedGroups.length ? roomSuitabilityReason(catalog, {
     subjectId: "event", groupId, groupIds: selectedGroups, roomId: candidate,
   }) : null;
@@ -215,6 +216,10 @@ export default function ServiceEventDialog({
     );
     return () => cancelAnimationFrame(frame);
   }, [lessonId]);
+
+  useEffect(() => {
+    if (confirmRemoval) confirmRemovalRef.current?.scrollIntoView({ block: "nearest" });
+  }, [confirmRemoval]);
 
   async function save() {
     setError("");
@@ -335,7 +340,7 @@ export default function ServiceEventDialog({
               <button type="button" onClick={() => { setSelectedGroups([groupId]); invalidatePreview(); }}>Текущая группа</button>
             </div>
             <p className="service-event-selected-groups" aria-live="polite">
-              <strong>Выбранные группы:</strong> {selectedGroupNames.length ? selectedGroupNames.join(", ") : "не выбраны"}
+              <strong>Выбранные группы:</strong> <span className="school-code">{selectedGroupNames.length ? selectedGroupNames.join(", ") : "не выбраны"}</span>
             </p>
             <GroupSelection
               groups={groups}
@@ -412,7 +417,7 @@ export default function ServiceEventDialog({
         {preparedPreview && <section className="service-event-preview" aria-live="polite">
           <strong>Проверьте изменения уроков</strong>
           <ul>{preparedPreview.affectedLessons.map((item) => <li key={`${item.groupId}-${item.lessonId}`}>
-            <span><b>{item.groupName}</b>: {item.subjectName}{item.subgroup ? ` · ${item.subgroup}` : ""}</span>
+            <span><b className="school-code">{item.groupName}</b>: {item.subjectName}{item.subgroup ? <> · <span className="school-code">{item.subgroup}</span></> : ""}</span>
             <small>{item.after
               ? `${item.after.duration > item.before.duration ? "Восстановление урока" : "Продолжение без перемены"} · ${item.after.duration} мин`
               : "Урок будет заменён мероприятием"}</small>
@@ -422,31 +427,6 @@ export default function ServiceEventDialog({
           <p className="service-event-error" role="alert">
             {error}
           </p>
-        )}
-        {confirmRemoval && (
-          <div
-            className="service-event-confirm"
-            role="alertdialog"
-            aria-label="Подтверждение удаления"
-          >
-            <span>Удалить мероприятие во всех связанных группах?</span>
-            {found?.lesson.eventRemainder && <span>Исходное время сокращённых уроков будет восстановлено.</span>}
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => setConfirmRemoval(false)}
-            >
-              Оставить
-            </button>
-            <button
-              className="service-event-delete"
-              type="button"
-              disabled={busy}
-              onClick={() => void remove()}
-            >
-              <ActionLabel action="delete">Удалить</ActionLabel>
-            </button>
-          </div>
         )}
         <footer>
           {lessonId && (
@@ -470,6 +450,32 @@ export default function ServiceEventDialog({
             <ActionLabel action="save">{busy ? "Проверяем…" : preparedPreview ? "Подтвердить и сохранить" : "Сохранить"}</ActionLabel>
           </button>
         </footer>
+        {confirmRemoval && (
+          <div
+            ref={confirmRemovalRef}
+            className="service-event-confirm"
+            role="alertdialog"
+            aria-label="Подтверждение удаления"
+          >
+            <span>Удалить мероприятие здесь во всех связанных группах?</span>
+            {found?.lesson.eventRemainder && <span>Исходное время сокращённых уроков будет восстановлено.</span>}
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => setConfirmRemoval(false)}
+            >
+              Оставить
+            </button>
+            <button
+              className="service-event-delete"
+              type="button"
+              disabled={busy}
+              onClick={() => void remove()}
+            >
+              <ActionLabel action="delete">Удалить</ActionLabel>
+            </button>
+          </div>
+        )}
       </form>
     </dialog>
   );

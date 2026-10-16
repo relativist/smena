@@ -26,9 +26,9 @@ export default function QuarterPlanDialog({ groupName, quarterName, rows, onClos
   const bySubject = new Map<string, PlanCoverageDetailRow[]>();
   for (const row of rows) bySubject.set(row.subjectId, [...(bySubject.get(row.subjectId) ?? []), row]);
 
-  return <dialog ref={dialogRef} className="modal" aria-labelledby={titleId} onCancel={(event) => { event.preventDefault(); onClose(); }} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+  return <dialog ref={dialogRef} className="modal quarter-plan-dialog" aria-labelledby={titleId} onCancel={(event) => { event.preventDefault(); onClose(); }} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
     <div className="modal-head">
-      <h2 id={titleId}>План четверти · {groupName}<InfoTooltip label="План четверти">Фактически поставленные уроки и заданный план. Сокращённый урок считается как один час.</InfoTooltip></h2>
+      <h2 id={titleId}><span>План четверти · <span className="school-code">{groupName}</span></span><InfoTooltip label="План четверти">Фактически поставленные уроки и заданный план. Сокращённый урок считается как один час.</InfoTooltip></h2>
       <button className="icon-button" type="button" autoFocus onClick={onClose} aria-label="Закрыть"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button>
     </div>
     <p className="modal-intro">{quarterName}</p>
@@ -44,7 +44,7 @@ export default function QuarterPlanDialog({ groupName, quarterName, rows, onClos
             const description = status === "excess" ? `перебор на ${difference}` : status === "complete" ? "план выполнен" : `недобор ${Math.abs(difference)}`;
             return <div className="hours-table-row" key={row.id}>
               <span><b>{index === 0 ? row.subjectName : ""}</b>
-                {row.subgroupId && <small className="hours-participant">{row.subgroupName}</small>}
+                {row.subgroupId && <small className="hours-participant school-code">{row.subgroupName}</small>}
                 {row.lessonKind === "lab" && <small className="hours-participant">Лабораторные</small>}
               </span>
               <span className={`hours-actual hours-${status}`} aria-label={`${row.scheduled}, ${description}`}>

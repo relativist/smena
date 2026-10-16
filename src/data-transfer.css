@@ -1,18 +1,18 @@
 .data-transfer-card { margin-top: 14px; }
 .data-transfer-card .display-settings-card-heading { margin: 0; }
-.data-transfer-description, .data-transfer-muted { margin: 8px 0 0; color: #68758a; font-size: 12px; }
-.data-transfer-warning { margin: 10px 0 0; color: #8a5310; font-size: 12px; }
+.data-transfer-description, .data-transfer-muted { margin: 8px 0 0; color: #68758a; font-size: var(--ui-secondary); }
+.data-transfer-warning { margin: 10px 0 0; color: #8a5310; font-size: var(--ui-secondary); }
 .data-transfer-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
 .data-transfer-file-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; }
 .data-transfer-error { margin: 10px 0 0; }
 .data-transfer-dialog { width: min(520px, calc(100vw - 28px)); padding: 18px; border: 1px solid #e3e7ef; border-radius: 10px; color: #35415a; }
 .data-transfer-dialog::backdrop { background: rgb(25 34 52 / 42%); }
-.data-transfer-dialog h2 { margin: 0; font-size: 16px; }
-.data-transfer-preview { display: grid; grid-template-columns: minmax(90px, auto) 1fr; gap: 7px 12px; margin: 16px 0; font-size: 12px; }
+.data-transfer-dialog h2 { margin: 0; font-size: var(--ui-text); }
+.data-transfer-preview { display: grid; grid-template-columns: minmax(90px, auto) 1fr; gap: 7px 12px; margin: 16px 0; font-size: var(--ui-secondary); }
 .data-transfer-preview dt { color: #68758a; }
 .data-transfer-preview dd { min-width: 0; margin: 0; color: #35415a; overflow-wrap: anywhere; }
-.data-transfer-replace-warning { margin: 13px 0 5px; padding: 10px; border-radius: 7px; background: #fff4e8; color: #8c3e19; font-size: 13px; font-weight: 650; }
-.data-transfer-dialog .data-transfer-confirm { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 12px; }
+.data-transfer-replace-warning { margin: 13px 0 5px; padding: 10px; border-radius: 7px; background: #fff4e8; color: #8c3e19; font-size: var(--ui-secondary); font-weight: 650; }
+.data-transfer-dialog .data-transfer-confirm { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: var(--ui-secondary); }
 .data-transfer-confirm input { width: 17px; height: 17px; flex-shrink: 0; accent-color: #4660dd; }
 .data-transfer-dialog footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
 .data-transfer-dialog footer button { min-height: 36px; }

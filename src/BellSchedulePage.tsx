@@ -284,7 +284,7 @@ export default function BellSchedulePage({ initialState, auth, onUnauthorized, o
         <div className="bell-preview-heading"><h2>Предварительный просмотр</h2><span>Дней: {applyPreview.changedDays.length} · занятий: {applyPreview.changedLessons}</span></div>
         {applyPreview.manualChanges > 0 && <p className="bell-warning">Затронуто уроков с ручными настройками времени: {applyPreview.manualChanges}.</p>}
         {applyPreview.changedDays.length ? <div className="bell-table-wrap"><table><thead><tr><th>Дата</th><th>Группа</th><th>Занятий</th><th>Было</th><th>Станет</th><th>Ячеек вручную</th></tr></thead><tbody>{applyPreview.changedDays.map((change, index) => <tr key={`${change.groupId}-${change.date}-${index}`}>
-          <td>{dateText(change.date)}</td><td>{state.catalog.groups.find((group) => group.id === change.groupId)?.name ?? "Группа"}</td><td>{change.lessonCount}</td>
+          <td>{dateText(change.date)}</td><td><span className="school-code">{state.catalog.groups.find((group) => group.id === change.groupId)?.name ?? "Группа"}</span></td><td>{change.lessonCount}</td>
           <td><details className="bell-time-details"><summary>{timeSpan(change.before)}</summary><ol>{timeList(change.before).map((time, timeIndex) => <li key={timeIndex}>{time}</li>)}</ol></details></td>
           <td><details className="bell-time-details"><summary>{timeSpan(change.after)}</summary><ol>{timeList(change.after).map((time, timeIndex) => <li key={timeIndex}>{time}</li>)}</ol></details></td>
           <td>{change.manualChanges || "—"}</td>

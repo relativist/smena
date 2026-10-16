@@ -88,7 +88,7 @@ export default function TeacherReplacementDialog({ schedule, catalog, lessonIds,
         return <label className="teacher-replacement-row" key={row.id}>
           <input type="checkbox" checked={selected.includes(row.id)} onChange={() => toggle(row.id)} />
           <span className="teacher-replacement-detail">
-            <strong>{groupName(row.groupId)} · {subjectName(row.lesson.subjectId)}</strong>
+            <strong><span className="school-code">{groupName(row.groupId)}</span> · {subjectName(row.lesson.subjectId)}</strong>
             <span>{dateLabel(row.date)} · {clock(row.start)}–{clock(row.end)} · сейчас: {teacherName(row.lesson.teacherId)}</span>
             {changed.has(row.id) && <span className="teacher-replacement-ok">Будет вести: {teacherName(teacherId)}</span>}
             {reason && <span className="teacher-replacement-skip">{reason}</span>}

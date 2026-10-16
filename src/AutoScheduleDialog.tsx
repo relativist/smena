@@ -371,6 +371,7 @@ export default function AutoScheduleDialog({
             <label>
               Показать{" "}
               <select
+                className="school-code"
                 value={filterGroup}
                 onChange={(event) => {
                   setFilterGroup(event.target.value);
@@ -441,12 +442,12 @@ export default function AutoScheduleDialog({
                         <tr key={item.lessonId}>
                           <td>{dateLabel(item.date)}</td>
                           <td>{item.start === null || item.duration === null ? "—" : `${formatTime(item.start)}–${formatTime(item.start + item.duration)}`}</td>
-                          <td>{groupName(item.groupId)}</td>
+                          <td><span className="school-code">{groupName(item.groupId)}</span></td>
                           <td>
                             {subjectName(item.subjectId)}
                             {item.lessonKind === "lab" ? " · лаб." : ""}
                             {item.subgroupId
-                              ? ` · ${subgroupName(item.subgroupId)}`
+                              ? <> · <span className="school-code">{subgroupName(item.subgroupId)}</span></>
                               : ""}
                           </td>
                           <td>{teacherName(item.teacherId)}</td>
@@ -495,12 +496,12 @@ export default function AutoScheduleDialog({
                       <tr
                         key={`${item.groupId}-${item.subjectId}-${item.subgroupId ?? "all"}-${item.lessonKind}-${index}`}
                       >
-                        <td>{groupName(item.groupId)}</td>
+                        <td><span className="school-code">{groupName(item.groupId)}</span></td>
                         <td>
                           {subjectName(item.subjectId)}
                           {item.lessonKind === "lab" ? " · лаб." : ""}
                           {item.subgroupId
-                            ? ` · ${subgroupName(item.subgroupId)}`
+                            ? <> · <span className="school-code">{subgroupName(item.subgroupId)}</span></>
                             : ""}
                         </td>
                         <td>
@@ -520,13 +521,13 @@ export default function AutoScheduleDialog({
         </>
       )}
       <footer className="auto-schedule-footer">
-        <button type="button" onClick={onClose} disabled={busy}>
+        <button className="catalog-button" type="button" onClick={onClose} disabled={busy}>
           Отмена
         </button>
         <button
           ref={generateRef}
           type="button"
-          className="auto-schedule-primary"
+          className="catalog-primary auto-schedule-primary"
           onClick={generate}
           disabled={busy || !selectedGroups.length}
         >
@@ -539,7 +540,7 @@ export default function AutoScheduleDialog({
         {result && (
           <button
             type="button"
-            className="auto-schedule-primary"
+            className="catalog-primary auto-schedule-primary"
             onClick={() => void apply()}
             disabled={busy || (result.added.length === 0 && result.removedCount === 0)}
           >

@@ -3,12 +3,14 @@ import InfoTooltip from "./InfoTooltip";
 import ScheduleGroupSelect from "./ScheduleGroupSelect";
 import {
   useEffect,
+  useImperativeHandle,
   useMemo,
   useRef,
   useState,
   type CSSProperties,
   type ReactNode,
   type DragEvent,
+  type Ref,
 } from "react";
 import {
   editorSubjects,
@@ -60,7 +62,7 @@ import {
 import AutoScheduleDialog from "./AutoScheduleDialog";
 import ClearScheduleDialog from "./ClearScheduleDialog";
 import ServiceEventDialog from "./ServiceEventDialog";
-import { LessonForm, TimeForm, BreakForm } from "./EditorForms";
+import { LessonForm, TimeForm, BreakForm, type LessonValues } from "./EditorForms";
 import type { EditorPreviewResponse, StateResponse } from "../server/contracts";
 import { api, ApiError, type AuthSession } from "./api";
 import { withBasePath } from "./basePath";
@@ -241,6 +243,48 @@ function Modal({
     </dialog>
   );
 }
+
+type LessonDialogHandle = { setDetail: (detail: Detail | null) => void };
+
+// Opening a lesson only updates this small subtree. The calendar and palette
+// keep their rendered state instead of rebuilding before the dialog can paint.
+function LessonDetailsDialog({ controller, schedule, catalog, subjects, groupId, close, onSave, onDelete, onMove, onRepeat, onJoint }: {
+  controller: Ref<LessonDialogHandle>;
+  schedule: Schedule;
+  catalog: StateResponse["catalog"];
+  subjects: Subject[];
+  groupId: string;
+  close: () => void;
+  onSave: (detail: Detail, value: LessonValues) => void;
+  onDelete: (detail: Detail) => void;
+  onMove: (detail: Detail, lesson: EditorLesson) => void;
+  onRepeat: (detail: Detail) => void;
+  onJoint: (detail: Detail) => void;
+}) {
+  const [detail, setDetail] = useState<Detail | null>(null);
+  useImperativeHandle(controller, () => ({ setDetail }), []);
+  const day = detail ? schedule[key(detail.location.groupId, detail.location.weekOffset)]?.find(day => day.date === detail.location.date) : undefined;
+  const lesson = detail && day ? day.slots[detail.location.slot]?.find(lesson => lesson.id === detail.id) : undefined;
+  if (!detail || !day || !lesson) return null;
+  return <Modal title={lesson.event ?? subjects.find(subject => subject.id === lesson.subjectId)?.name ?? "Занятие"} close={close}>
+    <LessonForm
+      key={lesson.id}
+      day={day}
+      slot={detail.location.slot}
+      lesson={lesson}
+      catalog={catalog}
+      schedule={schedule}
+      groupId={groupId}
+      close={close}
+      onSave={value => onSave(detail, value)}
+      onDelete={() => onDelete(detail)}
+      onMove={() => onMove(detail, lesson)}
+      onRepeat={() => onRepeat(detail)}
+      onJoint={() => onJoint(detail)}
+    />
+  </Modal>;
+}
+
 export default function App({
   initialState,
   auth,
@@ -398,7 +442,12 @@ export default function App({
   }, [selected, groupId, quarterId]);
   const [onlyRemaining, setOnlyRemaining] = useState(false);
   const [dialog, setDialog] = useState<"hours" | null>(null);
-  const [detail, setDetail] = useState<Detail | null>(null);
+  const detailRef = useRef<Detail | null>(null);
+  const lessonDialogRef = useRef<LessonDialogHandle>(null);
+  function setDetail(detail: Detail | null) {
+    detailRef.current = detail;
+    lessonDialogRef.current?.setDetail(detail);
+  }
   const [timeDialog, setTimeDialog] = useState<TimeDialog | null>(null);
   const [placement, setPlacement] = useState<Placement | null>(null);
   const [dragging, setDragging] = useState<Placement | null>(null);
@@ -902,7 +951,7 @@ export default function App({
         (event.ctrlKey || event.metaKey) &&
         event.key.toLowerCase() === "z" &&
         !["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) &&
-        !detail &&
+        !detailRef.current &&
         !timeDialog &&
         !dialog &&
         !autoScheduleOpen &&
@@ -1098,17 +1147,6 @@ export default function App({
       transferBlocked = error instanceof Error ? error.message : "Перенос невозможен";
     }
   }
-  const detailDay = detail
-    ? schedule[key(detail.location.groupId, detail.location.weekOffset)].find(
-        (day) => day.date === detail.location.date,
-      )
-    : null;
-  const detailLesson =
-    detailDay && detail
-      ? detailDay.slots[detail.location.slot].find(
-          (lesson) => lesson.id === detail.id,
-        )
-      : null;
   const timingDay = timeDialog
     ? schedule[
         key(timeDialog.location.groupId, timeDialog.location.weekOffset)
@@ -1546,20 +1584,16 @@ export default function App({
                         <Icon name="grip" size={16} />
                       </span>
                     </div>
-                    <h3 title={selectedSubject!.name}>
-                      {selectedSubject!.shortName || selectedSubject!.name}
-                      {item.lessonKind === "lab" ? " · лаб." : ""}
-                    </h3>
                     <p className="teacher-name" title={item.fullTeacher}>
-                      {item.teacher}
+                      {teacherInitials(item.fullTeacher)}
                     </p>
                     {paletteReady && <><span className="room-label">
                       <Icon name="pin" size={13} />
-                      {/^\d/.test(item.room) ? `Каб. ${item.room}` : item.room}
+                      {item.room}
                     </span>
                     <div className="plan-line">
                       <span>
-                        {item.planned} из {item.target} часов
+                        {item.planned}/{item.target}
                       </span>
                       <b>
                         {item.planned > item.target
@@ -1647,7 +1681,7 @@ export default function App({
                       (item) => item.id === placement.lesson.subjectId,
                     )?.name
                   }{" "}
-                  · {placement.lesson.subgroup ?? "вся группа"} — выберите место
+                  · <span className="school-code">{placement.lesson.subgroup ?? "вся группа"}</span> — выберите место
                 </span>
                 <button
                   className="icon-button"
@@ -1659,7 +1693,7 @@ export default function App({
               </div>
             )}
             <div className="calendar-scroll">
-              <div className="week-grid" style={{ gridTemplateColumns: `repeat(${visibleWeek.length}, minmax(137px, 1fr))` }}>
+              <div className="week-grid" style={{ gridTemplateColumns: `repeat(${visibleWeek.length}, minmax(var(--schedule-day-width, 340px), 1fr))` }}>
                 {visibleWeek.map((day) => (
                   <div
                     className={`day-column ${day.date === today ? "example-day" : ""}`}
@@ -1857,7 +1891,7 @@ export default function App({
                                             placeAt(location);
                                             return;
                                           }
-                                          setPlacement(null);
+                                          if (placement) setPlacement(null);
                                           if (lesson.event) {
                                             void openServiceEvent({ title: lesson.event, location, lessonId: lesson.id });
                                             return;
@@ -2107,7 +2141,7 @@ export default function App({
           <ul className="transfer-lessons">
             {transferConflicts.map(({ b }) => (
               <li key={b.lessonId}>
-                <b>{catalog.groups.find((entry) => entry.id === b.groupId)?.name ?? b.groupId}</b>
+                <b className="school-code">{catalog.groups.find((entry) => entry.id === b.groupId)?.name ?? b.groupId}</b>
                 <span>{b.event || catalog.subjects.find((entry) => entry.id === b.subjectId)?.name || b.subjectId}</span>
                 <span>{formatTime(b.start)}–{formatTime(b.end)}</span>
               </li>
@@ -2186,70 +2220,56 @@ export default function App({
         onClose={() => setJointSource(null)}
         onApply={(options) => applyBulkOperation("joint", options as unknown as Record<string, unknown>)}
       />}
-      {detail && detailDay && detailLesson && (
-        <Modal
-          title={
-            detailLesson.event ??
-            allSubjects.find((subject) => subject.id === detailLesson.subjectId)
-              ?.name ??
-            "Занятие"
-          }
-          close={() => setDetail(null)}
-        >
-          <LessonForm
-            key={detailLesson.id}
-            day={detailDay}
-            slot={detail.location.slot}
-            lesson={detailLesson}
-            catalog={catalog}
-            schedule={schedule}
-            groupId={groupId}
-            close={() => setDetail(null)}
-            onRepeat={() => void openScheduleCopy({ groupId: detail.location.groupId, weekOffset: detail.location.weekOffset, lessonId: detailLesson.id })}
-            onJoint={() => void openJointLesson({ groupId: detail.location.groupId, lessonId: detailLesson.id })}
-            onSave={(value) => {
-              applyChange(
-                (current) =>
-                  editLesson(
-                    current,
-                    detail.location,
-                    detail.id,
-                    {
-                      teacher: value.teacher,
-                      teacherId: value.teacherId,
-                      roomId: value.roomId,
-                      room: value.room,
-                      note: value.note,
-                    },
-                    value,
-                    catalog,
-                  ),
-                "Урок изменён",
+      <LessonDetailsDialog
+        controller={lessonDialogRef}
+        catalog={catalog}
+        schedule={schedule}
+        subjects={allSubjects}
+        groupId={groupId}
+        close={() => setDetail(null)}
+        onRepeat={detail => void openScheduleCopy({ groupId: detail.location.groupId, weekOffset: detail.location.weekOffset, lessonId: detail.id })}
+        onJoint={detail => void openJointLesson({ groupId: detail.location.groupId, lessonId: detail.id })}
+        onSave={(detail, value) => {
+          applyChange(
+            (current) =>
+              editLesson(
+                current,
                 detail.location,
-              );
-              setDetail(null);
-            }}
-            onDelete={() =>
-              attempt(() => {
-                applyChange(
-                  (current) =>
-                    removeLesson(current, detail.location, detail.id, catalog),
-                  "Урок удалён",
-                  detail.location,
-                );
-                setDetail(null);
-              })
-            }
-            onMove={() => {
-              setPlacement({
-                lesson: detailLesson,
-                from: { location: detail.location, id: detail.id },
-              });
-              setDetail(null);
-            }}
-          />
-        </Modal>
-      )}
+                detail.id,
+                {
+                  teacher: value.teacher,
+                  teacherId: value.teacherId,
+                  roomId: value.roomId,
+                  room: value.room,
+                  note: value.note,
+                },
+                value,
+                catalog,
+              ),
+            "Урок изменён",
+            detail.location,
+          );
+          setDetail(null);
+        }}
+        onDelete={detail =>
+          attempt(() => {
+            applyChange(
+              (current) =>
+                removeLesson(current, detail.location, detail.id, catalog),
+              "Урок удалён",
+              detail.location,
+            );
+            setDetail(null);
+          })
+        }
+        onMove={(detail, lesson) => {
+          setPlacement({
+            lesson,
+            from: { location: detail.location, id: detail.id },
+          });
+          setDetail(null);
+        }}
+      />
       {timeDialog && timingDay && (
         <Modal
           title={

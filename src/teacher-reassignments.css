@@ -1,69 +1,70 @@
 body.teacher-reassignments-view { margin: 0; overflow-x: hidden; overflow-y: auto; }
 .tr-dialog-controls { min-width: 0; margin: 0; padding: 0; border: 0; }
-.tr-page-actions .tr-secondary { min-height: 38px; padding: 8px 12px; color: #4159bd; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font: inherit; font-size: 12px; cursor: pointer; }
+.tr-page-actions .tr-secondary { min-height: 38px; padding: 8px 12px; color: #4159bd; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font: inherit; font-size: var(--ui-secondary); cursor: pointer; }
 .tr-page-actions button:disabled { opacity: .55; cursor: default; }
-.tr-rule-select select { width: 100%; min-height: 38px; padding: 7px 10px; color: #253047; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font: inherit; font-size: 12px; }
+.tr-rule-select select { width: 100%; min-height: 38px; padding: 7px 10px; color: #253047; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font: inherit; font-size: var(--ui-secondary); }
 body.teacher-reassignments-view *, body.teacher-reassignments-view *::before, body.teacher-reassignments-view *::after { box-sizing: border-box; }
-.teacher-reassignments-page { display: block; width: 100%; max-width: none; min-height: 100vh; margin: 0; padding: 0; overflow: visible; color: #253047; background: #f5f6fa; font: 14px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.teacher-reassignments-page { display: block; width: 100%; max-width: none; min-height: 100vh; margin: 0; padding: 0; overflow: visible; color: #253047; background: #f5f6fa; font: var(--ui-text) var(--ui-font-family); }
 .teacher-reassignments-page button, .teacher-reassignments-page select, .teacher-reassignments-page input { font: inherit; }
 .teacher-reassignments-page button, .teacher-reassignments-page select { cursor: pointer; }
 .teacher-reassignments-page :focus-visible, .tr-dialog :focus-visible { outline: 3px solid #91a8ff; outline-offset: 2px; }
 .tr-main { width: min(1600px, 100%); margin: 0 auto; padding: 27px 24px 40px; }
 .tr-page-title { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 21px; }
 .tr-page-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-.tr-page-title p { margin: 0 0 4px; color: #7c879a; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.tr-page-title p { margin: 0 0 4px; color: #7c879a; font-size: var(--ui-secondary); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .tr-page-title h1 { margin: 0; color: #253047; font-size: clamp(23px, 2.4vw, 31px); letter-spacing: -.035em; }
 .tr-toolbar button, .tr-dialog-footer button:not(.tr-secondary) { min-height: 38px; padding: 8px 13px; color: #fff; background: #5069c7; border: 1px solid #5069c7; border-radius: 8px; font-weight: 700; }
 .tr-toolbar button:hover:not(:disabled), .tr-dialog-footer button:not(.tr-secondary):hover:not(:disabled) { background: #4159b7; }
 .tr-toolbar button:disabled, .tr-dialog button:disabled { opacity: .55; cursor: not-allowed; }
 .tr-filters { display: grid; grid-template-columns: minmax(180px, .8fr) minmax(180px, .9fr) minmax(220px, 1fr) minmax(210px, .8fr); gap: 12px; align-items: end; padding: 16px; background: #fff; border: 1px solid #e7eaf1; border-radius: 11px; box-shadow: 0 3px 14px #1f2c4508; }
-.tr-filters > label, .tr-group-filter, .tr-rule-select { position: relative; display: grid; gap: 6px; min-width: 0; color: #68748a; font-size: 11px; font-weight: 650; }
-.tr-search-select { position: relative; min-width: 0; color: #68748a; font-size: 11px; font-weight: 650; }
+.tr-filters > label, .tr-group-filter, .tr-rule-select { position: relative; display: grid; gap: 6px; min-width: 0; color: #68748a; font-size: var(--ui-secondary); font-weight: 650; }
+.tr-search-select { position: relative; min-width: 0; color: #68748a; font-size: var(--ui-secondary); font-weight: 650; }
 .tr-search-select > label { display: grid; gap: 6px; }
-.tr-search-select input { min-width: 0; width: 100%; min-height: 40px; padding: 0 10px; color: #253047; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font-size: 13px; font-weight: 550; }
+.tr-search-select input { min-width: 0; width: 100%; min-height: 40px; padding: 0 10px; color: #253047; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font-size: var(--ui-secondary); font-weight: 550; }
 .tr-search-options { position: absolute; z-index: 6; top: calc(100% + 5px); left: 0; width: 100%; max-height: 300px; overflow-y: auto; padding: 4px; background: #fff; border: 1px solid #dfe4ed; border-radius: 9px; box-shadow: 0 12px 35px #19243c25; }
 .tr-search-options button { display: grid; gap: 2px; width: 100%; padding: 8px 9px; color: #34415a; background: transparent; border: 0; border-radius: 6px; text-align: left; cursor: pointer; }
 .tr-search-options button:hover, .tr-search-options button.is-active { background: #f2f4fb; }
-.tr-search-options button span { font-size: 12px; font-weight: 600; }
-.tr-search-options button small, .tr-search-options > p { margin: 0; color: #8490a2; font-size: 10px; }
+.tr-search-options button span { font-size: var(--ui-secondary); font-weight: 600; }
+.tr-search-options button small, .tr-search-options > p { margin: 0; color: #8490a2; font-size: var(--ui-secondary); }
 .tr-search-options > p { padding: 9px; }
-.tr-filters select, .tr-group-filter > button, .tr-group-popover > input, .tr-dialog select { min-width: 0; width: 100%; min-height: 40px; padding: 0 10px; color: #253047; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font-size: 13px; font-weight: 550; }
+.tr-filters select, .tr-group-filter > button, .tr-group-popover > input, .tr-dialog select { min-width: 0; width: 100%; min-height: 40px; padding: 0 10px; color: #253047; background: #fff; border: 1px solid #dfe4ed; border-radius: 8px; font-size: var(--ui-secondary); font-weight: 550; }
 .tr-group-filter > button { display: flex; align-items: center; justify-content: space-between; text-align: left; }
 .tr-group-popover { position: absolute; z-index: 5; top: calc(100% + 5px); left: 0; width: min(320px, calc(100vw - 36px)); padding: 10px; background: #fff; border: 1px solid #dfe4ed; border-radius: 10px; box-shadow: 0 12px 35px #19243c25; }
 .tr-group-popover > input { margin-bottom: 8px; }
 .tr-group-list { max-height: 240px; overflow-y: auto; overscroll-behavior: contain; border: 1px solid #edf0f5; border-radius: 7px; }
-.tr-group-list label { display: flex; align-items: center; gap: 9px; min-height: 35px; padding: 5px 9px; color: #34415a; font-size: 13px; cursor: pointer; }
+.tr-group-list label { display: flex; align-items: center; gap: 9px; min-height: 35px; padding: 5px 9px; color: #34415a; font-size: var(--ui-secondary); cursor: pointer; }
 .tr-group-list label + label { border-top: 1px solid #f0f2f6; }
 .tr-group-list label:hover { background: #f7f8fd; }
 .tr-group-list input, .tr-check input { accent-color: #5069c7; }
 .tr-group-actions { display: flex; justify-content: space-between; gap: 8px; padding-top: 8px; }
-.tr-group-actions button { padding: 6px 8px; color: #4159bd; background: #f7f8fd; border: 1px solid #dfe4ed; border-radius: 6px; font-size: 11px; font-weight: 650; }
-.tr-filters .tr-original-toggle { display: flex; grid-column: 1 / -1; align-items: center; gap: 9px; color: #5c6880; font-size: 12px; }
+.tr-group-actions button { padding: 6px 8px; color: #4159bd; background: #f7f8fd; border: 1px solid #dfe4ed; border-radius: 6px; font-size: var(--ui-secondary); font-weight: 650; }
+.tr-filters .tr-original-toggle { display: flex; grid-column: 1 / -1; align-items: center; gap: 9px; color: #5c6880; font-size: var(--ui-secondary); }
 .tr-original-toggle input { width: 17px; height: 17px; accent-color: #5069c7; }
 .tr-rule-select { grid-template-columns: auto minmax(210px, 420px); align-items: center; justify-content: end; margin: 11px 2px 0; color: #7b8699; }
-.tr-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 17px 1px 10px; color: #69758a; font-size: 12px; }
+.tr-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 17px 1px 10px; color: #69758a; font-size: var(--ui-secondary); }
 .tr-toolbar > div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-.tr-toolbar button { min-height: 34px; padding: 6px 10px; font-size: 12px; }
+.tr-toolbar button { min-height: 34px; padding: 6px 10px; font-size: var(--ui-secondary); }
 .tr-calendar-scroll { max-width: 100%; max-height: calc(100vh - 310px); overflow: auto; background: #fff; border: 1px solid #e7eaf1; border-radius: 11px; box-shadow: 0 3px 14px #1f2c4508; }
 .tr-calendar { width: 100%; min-width: 1120px; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
-.tr-calendar thead th { position: sticky; z-index: 2; top: 0; padding: 11px 8px; color: #657188; background: #f8f9fc; border-bottom: 1px solid #e7eaf1; font-size: 11px; text-align: left; }
+.tr-calendar thead th { position: sticky; z-index: 2; top: 0; padding: 11px 8px; color: #657188; background: #f8f9fc; border-bottom: 1px solid #e7eaf1; font-size: var(--ui-secondary); text-align: left; }
 .tr-calendar thead th:first-child { left: 0; z-index: 4; width: 130px; }
 .tr-calendar tbody th { position: sticky; z-index: 1; left: 0; width: 130px; padding: 9px; color: #34415a; background: #fff; border-right: 1px solid #edf0f5; border-bottom: 1px solid #eef0f4; text-align: left; vertical-align: top; }
-.tr-calendar tbody th span { display: block; white-space: nowrap; font-size: 11px; }
-.tr-calendar tbody th button { margin-top: 7px; padding: 4px 6px; color: #4159bd; background: #f3f5ff; border: 1px solid #e2e7f8; border-radius: 5px; font-size: 10px; font-weight: 650; }
+.tr-calendar tbody th .tr-week-range { display: block; font-size: var(--ui-secondary); line-height: 1.35; }
+.tr-calendar tbody th .tr-week-range > span { display: block; white-space: nowrap; }
+.tr-calendar tbody th button { margin-top: 7px; padding: 4px 6px; color: #4159bd; background: #f3f5ff; border: 1px solid #e2e7f8; border-radius: 5px; font-size: var(--ui-secondary); font-weight: 650; }
 .tr-calendar td { min-width: 142px; height: 115px; padding: 5px; vertical-align: top; border-right: 1px solid #eef0f4; border-bottom: 1px solid #eef0f4; }
 .tr-calendar td:last-child, .tr-calendar th:last-child { border-right: 0; }
 .tr-calendar tr:last-child > * { border-bottom: 0; }
 .tr-calendar td.is-weekend { background: #fffaf2; }
 .tr-calendar td.is-outside { background: #f1f3f7; }
-.tr-date { display: block; margin: 0 2px 4px; color: #8a94a5; font-size: 10px; }
+.tr-date { display: block; margin: 0 2px 4px; color: #8a94a5; font-size: var(--ui-secondary); }
 .tr-cards { display: grid; gap: 4px; }
 .tr-lesson-card { display: grid; gap: 2px; width: 100%; min-width: 0; padding: 5px 6px; color: #34415a; background: #f4f6ff; border: 1px solid #e2e7f8; border-left: 3px solid #657bd0; border-radius: 6px; text-align: left; }
 .tr-lesson-card:hover:not(:disabled) { background: #e9edff; border-color: #c5cef2; }
-.tr-lesson-card strong { overflow: hidden; color: #34415a; font-size: 10px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-.tr-lesson-card span { color: #63708a; font-size: 10px; white-space: nowrap; }
-.tr-lesson-card small { overflow: hidden; color: #7a8599; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
-.tr-footnote { margin: 12px 2px; color: #8791a2; font-size: 11px; line-height: 1.5; }
+.tr-lesson-card strong { overflow: hidden; color: #34415a; font-size: var(--ui-secondary); font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.tr-lesson-card span { color: #63708a; font-size: var(--ui-secondary); white-space: nowrap; }
+.tr-lesson-card small { overflow: hidden; color: #7a8599; font-size: var(--ui-secondary); text-overflow: ellipsis; white-space: nowrap; }
+.tr-footnote { margin: 12px 2px; color: #8791a2; font-size: var(--ui-secondary); line-height: 1.5; }
 .tr-empty { padding: 28px; color: #818ba0; text-align: center; }
 .tr-error { margin: 12px 0; padding: 10px 12px; color: #93434e; background: #fff7f7; border: 1px solid #edd4d7; border-radius: 8px; }
 .tr-dialog { width: min(1050px, calc(100% - 24px)); max-width: none; max-height: min(92vh, 900px); padding: 0; overflow: hidden; color: #253047; background: #fff; border: 1px solid #e2e6ef; border-radius: 14px; box-shadow: 0 20px 70px #19243c35; }
@@ -72,40 +73,40 @@ body.teacher-reassignments-view *, body.teacher-reassignments-view *::before, bo
 .tr-dialog .tr-dialog-head, .tr-dialog .tr-dialog-footer { flex: none; }
 .tr-dialog .tr-dialog-content { flex: 1; min-height: 0; max-height: none; }
 .tr-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 17px 20px 13px; border-bottom: 1px solid #eef0f4; }
-.tr-dialog-head p { margin: 0 0 4px; color: #7c879a; font-size: 10px; font-weight: 650; text-transform: uppercase; letter-spacing: .08em; }
+.tr-dialog-head p { margin: 0 0 4px; color: #7c879a; font-size: var(--ui-secondary); font-weight: 650; text-transform: uppercase; letter-spacing: .08em; }
 .tr-dialog-head h2 { margin: 0; font-size: 20px; letter-spacing: -.025em; }
 .tr-dialog-head > button { flex: 0 0 32px; width: 32px; height: 32px; color: #68748a; background: #f5f6fa; border: 0; border-radius: 8px; font-size: 22px; line-height: 1; }
 .tr-dialog-content { max-height: calc(92vh - 140px); overflow: auto; padding: 15px 20px; }
-.tr-dialog-summary, .tr-counts { display: flex; flex-wrap: wrap; gap: 8px 18px; color: #68748a; font-size: 12px; }
+.tr-dialog-summary, .tr-counts { display: flex; flex-wrap: wrap; gap: 8px 18px; color: #68748a; font-size: var(--ui-secondary); }
 .tr-dialog-summary b, .tr-counts b { color: #34415a; }
-.tr-field { display: grid; gap: 6px; max-width: 530px; margin: 15px 0 10px; color: #68748a; font-size: 11px; font-weight: 650; }
+.tr-field { display: grid; gap: 6px; max-width: 530px; margin: 15px 0 10px; color: #68748a; font-size: var(--ui-secondary); font-weight: 650; }
 .tr-period-controls { max-width: 700px; margin-top: 8px; padding: 10px 12px; background: #f8f9fc; border: 1px solid #e9edf4; border-radius: 8px; }
 .tr-date-pair { display: grid; grid-template-columns: repeat(2, minmax(180px, 1fr)); gap: 10px; }
 .tr-date-pair .tr-field { margin: 0; }
-.tr-quarter-shortcut { min-height: 31px; padding: 5px 8px; font-size: 11px; }
-.tr-dialog-hint { margin: 10px 0; color: #778398; font-size: 11px; line-height: 1.5; }
+.tr-quarter-shortcut { min-height: 31px; padding: 5px 8px; font-size: var(--ui-secondary); }
+.tr-dialog-hint { margin: 10px 0; color: #778398; font-size: var(--ui-secondary); line-height: 1.5; }
 .tr-policy-warning { margin: 6px 0; padding: 7px 9px; color: #846529; background: #fffaf0; border-left: 3px solid #d8b55e; }
-.tr-load-delta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin: 9px 0; padding: 8px 10px; color: #53617a; background: #f7f8fc; border: 1px solid #e9edf4; border-radius: 7px; font-size: 11px; }
+.tr-load-delta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin: 9px 0; padding: 8px 10px; color: #53617a; background: #f7f8fc; border: 1px solid #e9edf4; border-radius: 7px; font-size: var(--ui-secondary); }
 .tr-load-delta strong { color: #34415a; font-weight: 700; }
-.tr-check { display: flex; align-items: flex-start; gap: 8px; margin: 11px 0; color: #57647b; font-size: 12px; line-height: 1.4; }
+.tr-check { display: flex; align-items: flex-start; gap: 8px; margin: 11px 0; color: #57647b; font-size: var(--ui-secondary); line-height: 1.4; }
 .tr-check input { flex: 0 0 auto; width: 16px; height: 16px; margin: 1px 0 0; }
 .tr-counts { margin: 14px 0 8px; }
 .tr-loading { padding: 14px; color: #68748a; background: #f8f9fc; border-radius: 8px; }
 .tr-preview-scroll { max-height: 42vh; overflow: auto; margin-top: 10px; border: 1px solid #e7eaf1; border-radius: 8px; }
-.tr-preview-scroll table { width: 100%; min-width: 740px; border-collapse: collapse; font-size: 11px; text-align: left; }
+.tr-preview-scroll table { width: 100%; min-width: 740px; border-collapse: collapse; font-size: var(--ui-secondary); text-align: left; }
 .tr-preview-scroll th, .tr-preview-scroll td { padding: 8px 10px; border-bottom: 1px solid #eef0f4; vertical-align: top; }
-.tr-preview-scroll thead th { position: sticky; top: 0; z-index: 1; color: #657188; background: #f8f9fc; font-size: 10px; }
+.tr-preview-scroll thead th { position: sticky; top: 0; z-index: 1; color: #657188; background: #f8f9fc; font-size: var(--ui-secondary); }
 .tr-preview-scroll tbody tr:last-child td { border-bottom: 0; }
 .tr-preview-scroll td small { display: block; margin-top: 3px; color: #8490a2; }
 .tr-preview-scroll tr.is-skipped td:last-child { color: #9a6d28; }
-.tr-preview-scroll .tr-row-teacher { width: 100%; min-width: 170px; min-height: 34px; padding: 5px 8px; font-size: 11px; }
+.tr-preview-scroll .tr-row-teacher { width: 100%; min-width: 170px; min-height: 34px; padding: 5px 8px; font-size: var(--ui-secondary); }
 .tr-preview-scroll tr.is-skipped .tr-row-teacher { border-color: #e8d7b9; }
 .tr-preview-scroll .tr-row-status { max-width: 220px; white-space: normal; line-height: 1.35; }
 .tr-preview-scroll .tr-empty { padding: 15px; }
 .tr-dialog-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 20px; border-top: 1px solid #eef0f4; }
-.tr-dialog-footer > span { color: #8993a4; font-size: 10px; }
+.tr-dialog-footer > span { color: #8993a4; font-size: var(--ui-secondary); }
 .tr-dialog-footer > div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
-.tr-dialog-footer button { min-height: 34px; padding: 6px 11px; font-size: 11px; }
+.tr-dialog-footer button { min-height: 34px; padding: 6px 11px; font-size: var(--ui-secondary); }
 .tr-secondary { color: #52617b; background: #f7f8fb; border: 1px solid #dfe4ed; border-radius: 7px; font-weight: 650; }
 .tr-secondary:hover:not(:disabled) { background: #eef1f8; }
 .tr-success { padding: 10px 12px; color: #28734f; background: #f0faf4; border: 1px solid #d5efdf; border-radius: 8px; }
@@ -130,7 +131,7 @@ body.teacher-reassignments-view *, body.teacher-reassignments-view *::before, bo
   .tr-dialog { width: calc(100% - 12px); max-height: 96vh; border-radius: 10px; }
   .tr-dialog-content { max-height: calc(96vh - 150px); padding: 12px; }
   .tr-dialog-head { padding: 13px 12px 10px; }
-  .tr-dialog-head h2 { font-size: 17px; }
+  .tr-dialog-head h2 { font-size: var(--ui-heading); }
   .tr-date-pair { grid-template-columns: 1fr; }
   .tr-dialog-footer { align-items: stretch; flex-direction: column; padding: 9px 12px; }
   .tr-dialog-footer > div { justify-content: stretch; }
@@ -144,15 +145,15 @@ body.teacher-reassignments-view *, body.teacher-reassignments-view *::before, bo
 
 .tr-inline-help { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .tr-dialog-context { display: grid; gap: 4px; margin-bottom: 10px; overflow-wrap: anywhere; }
-.tr-dialog-context strong { color: #34415a; font-size: 14px; }
-.tr-dialog-context > span { color: #68748a; font-size: 12px; }
+.tr-dialog-context strong { color: #34415a; font-size: var(--ui-text); }
+.tr-dialog-context > span { color: #68748a; font-size: var(--ui-secondary); }
 .tr-period-options { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .tr-period-options .tr-check { margin: 10px 0; }
 .tr-individual-controls { margin: 12px 0 4px; }
-.tr-individual-controls > button { min-height: 34px; padding: 6px 10px; font: inherit; font-size: 12px; }
+.tr-individual-controls > button { min-height: 34px; padding: 6px 10px; font: inherit; font-size: var(--ui-secondary); }
 .tr-absence-panel { margin: 12px 0; border: 1px solid #e1e6ef; border-radius: 9px; background: #fff; }
-.tr-absence-panel > summary { padding: 12px; color: #53617a; font-size: 12px; font-weight: 650; cursor: pointer; }
-.tr-absence-content { display: grid; gap: 10px; padding: 0 12px 12px; color: #53617a; font-size: 12px; }
+.tr-absence-panel > summary { padding: 12px; color: #53617a; font-size: var(--ui-secondary); font-weight: 650; cursor: pointer; }
+.tr-absence-content { display: grid; gap: 10px; padding: 0 12px 12px; color: #53617a; font-size: var(--ui-secondary); }
 .tr-absence-content > button { justify-self: start; min-height: 36px; padding: 7px 10px; }
 .tr-absence-content .tr-rule-select { justify-content: start; margin: 0; }
 .tr-absence-content .tr-dialog-hint { margin: 0; }

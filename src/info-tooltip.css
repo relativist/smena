@@ -8,9 +8,9 @@
 .info-tooltip__button {
   box-sizing: border-box;
   display: inline-flex;
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
   align-items: center;
   justify-content: center;
   padding: 0;
@@ -18,7 +18,7 @@
   border-radius: 50%;
   background: transparent;
   color: #526174;
-  font: 600 12px/1 Arial, sans-serif;
+  font: 600 var(--ui-min-text)/1 var(--ui-font-family);
   cursor: help;
 }
 
@@ -44,7 +44,7 @@
   background: #fff;
   color: #202b3a;
   box-shadow: 0 3px 12px rgb(20 35 55 / 18%);
-  font: 400 13px/1.4 Arial, sans-serif;
+  font: 400 var(--ui-secondary)/1.4 var(--ui-font-family);
   white-space: normal;
   overflow-wrap: anywhere;
   pointer-events: auto;

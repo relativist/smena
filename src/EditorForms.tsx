@@ -1,7 +1,7 @@
 import ActionLabel from "./ActionLabel";
 import InfoTooltip from "./InfoTooltip";
 import RussianTimeInput from "./RussianTimeInput";
-import { useId, useMemo, useState, type FormEvent } from "react";
+import { useId, useMemo, useRef, useState, type FormEvent } from "react";
 import {
   formatTime,
   parseTime,
@@ -69,13 +69,15 @@ export function LessonForm({
     : catalog.rooms.find((item) => item.name === lesson.room);
   const [teacherId, setTeacherId] = useState(matchedTeacher?.id ?? "");
   const [roomId, setRoomId] = useState(matchedRoom?.id ?? "");
-  const [note, setNote] = useState(lesson.note ?? "");
+  // Notes do not affect resource availability. Keep typing local to the native
+  // field instead of rerunning every teacher/room conflict check per character.
+  const noteRef = useRef<HTMLTextAreaElement>(null);
   const [start, setStart] = useState(formatTime(day.times[slot].start));
   const [duration, setDuration] = useState(day.times[slot].duration);
   const [shiftFollowing, setShiftFollowing] = useState(false);
   const [error, setError] = useState("");
   const [confirmJointDelete, setConfirmJointDelete] = useState(false);
-  const hasUnsavedChanges = teacherId !== (matchedTeacher?.id ?? "") || roomId !== (matchedRoom?.id ?? "") || note !== (lesson.note ?? "") || start !== formatTime(day.times[slot].start) || duration !== day.times[slot].duration || shiftFollowing;
+  const hasUnsavedChanges = () => teacherId !== (matchedTeacher?.id ?? "") || roomId !== (matchedRoom?.id ?? "") || (noteRef.current?.value ?? "") !== (lesson.note ?? "") || start !== formatTime(day.times[slot].start) || duration !== day.times[slot].duration || shiftFollowing;
   function submit(event: FormEvent) {
     event.preventDefault();
     try {
@@ -105,7 +107,7 @@ export function LessonForm({
         teacherId: teacherId || undefined,
         room: selectedRoom?.name ?? "",
         roomId: roomId || undefined,
-        note: note.trim(),
+        note: (noteRef.current?.value ?? "").trim(),
         start: parseTime(start),
         duration,
         shiftFollowing,
@@ -140,7 +142,7 @@ export function LessonForm({
     .filter((item) => !item.archived || item.id === roomId)
     .sort((left, right) => left.name.localeCompare(right.name, "ru"));
   const dayOccupancies = useMemo(
-    () => roomOccupancies(schedule).filter((entry) => entry.date === day.date),
+    () => roomOccupancies(schedule, day.date),
     [schedule, day.date],
   );
   const roomReasons = new Map<string, string>();
@@ -225,7 +227,7 @@ export function LessonForm({
   return (
     <form className="editor-form lesson-form" onSubmit={submit}>
       <p className="form-hint">
-        {subject?.name ?? lesson.subjectId} · {lesson.subgroup ?? "Вся группа"}{" "}
+        {subject?.name ?? lesson.subjectId} · <span className="school-code">{lesson.subgroup ?? "Вся группа"}</span>{" "}
         ·{" "}
         {new Date(`${day.date}T12:00:00`).toLocaleDateString("ru-RU", {
           day: "numeric",
@@ -396,8 +398,8 @@ export function LessonForm({
           rows={2}
           maxLength={500}
           placeholder="Например, лабораторная работа"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
+          ref={noteRef}
+          defaultValue={lesson.note ?? ""}
         />
       </label>
       {error && (
@@ -416,14 +418,14 @@ export function LessonForm({
             </button>
         )}
         {!lesson.event && <button type="button" className="secondary-button" onClick={() => {
-          if (hasUnsavedChanges) {
+          if (hasUnsavedChanges()) {
             setError("Сначала примените изменения урока, затем повторите его на другие недели.");
             return;
           }
           onRepeat();
         }}>Повторить урок</button>}
         {subject?.jointSameGrade && !lesson.event && !lesson.subgroup && !lesson.subgroupId && <button type="button" className="secondary-button" onClick={() => {
-          if (hasUnsavedChanges) { setError("Сначала примените изменения урока, затем объедините группы."); return; }
+          if (hasUnsavedChanges()) { setError("Сначала примените изменения урока, затем объедините группы."); return; }
           onJoint();
         }}>Объединить группы</button>}
         <button type="button" className="secondary-button" onClick={close}>

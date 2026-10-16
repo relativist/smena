@@ -1,6 +1,6 @@
 .service-event-dialog {
   box-sizing: border-box;
-  width: min(620px, calc(100vw - 32px));
+  width: min(720px, calc(100vw - 32px));
   max-width: calc(100vw - 32px);
   max-height: min(90vh, 820px);
   margin: auto;
@@ -36,7 +36,7 @@
 
 .service-event-dialog header h2 {
   margin: 0 0 4px;
-  font-size: 17px;
+  font-size: var(--ui-heading);
   font-weight: 650;
   letter-spacing: -0.25px;
 }
@@ -44,7 +44,7 @@
 .service-event-dialog header p {
   margin: 0;
   color: #788497;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
 }
 
 .service-event-dialog button,
@@ -89,7 +89,7 @@
   display: grid;
   gap: 4px;
   color: #68758a;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
 }
 
 .service-event-fields select,
@@ -101,7 +101,7 @@
   border-radius: 6px;
   background: #fff;
   color: #344158;
-  font-size: 12px;
+  font-size: var(--ui-secondary);
 }
 
 .service-event-fields select:focus-visible,
@@ -113,8 +113,9 @@
 
 .service-event-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 9px;
+  align-items: start;
 }
 
 .service-event-row:last-of-type {
@@ -142,7 +143,7 @@
 .service-event-dialog legend {
   padding: 0 4px;
   color: #68758a;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
 }
 
 .service-event-actions {
@@ -159,7 +160,7 @@
   border-radius: 5px;
   background: #fff;
   color: #536078;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
 }
 
 .service-event-actions button:hover:not(:disabled),
@@ -180,7 +181,7 @@
   align-items: center;
   gap: 5px;
   color: #536078;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
 }
 
 .service-event-groups input {
@@ -216,7 +217,7 @@
 .service-event-error {
   margin: 10px 0 0;
   color: #a43636;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
 }
 
 .service-event-preview {
@@ -226,7 +227,7 @@
   border-radius: 7px;
   background: #fffaf0;
   color: #65552f;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
 }
 .service-event-preview > strong { display: block; margin-bottom: 6px; }
 .service-event-preview ul { display: grid; gap: 6px; max-height: 150px; overflow: auto; margin: 0; padding-left: 18px; }
@@ -245,7 +246,7 @@
   border-radius: 7px;
   background: #fff8f8;
   color: #713333;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
 }
 
 .service-event-confirm span {
@@ -258,7 +259,7 @@
   border: 1px solid #d6dce6;
   border-radius: 5px;
   background: #fff;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
 }
 
 .service-event-confirm .service-event-delete {
@@ -285,11 +286,15 @@
   align-self: start;
   min-width: 0;
   color: #68758a;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
 }
 
 .service-event-row > .tr-search-select > label { display: grid; gap: 4px; }
-.service-event-row > .tr-search-select > label > span { line-height: 18px; }
+.service-event-row > .tr-search-select > label > span,
+.service-event-field-label {
+  min-height: 26px;
+  line-height: 1.3;
+}
 .service-event-row > .tr-search-select input {
   box-sizing: border-box;
   width: 100%;
@@ -300,7 +305,7 @@
   border-radius: 6px;
   background: #fff;
   color: #344158;
-  font-size: 12px;
+  font-size: var(--ui-secondary);
 }
 .service-event-row > .tr-search-select input:focus-visible {
   border-color: var(--accent);
@@ -336,7 +341,7 @@
   border-radius: 5px;
   background: transparent;
   color: #344158;
-  font-size: 12px;
+  font-size: var(--ui-secondary);
   text-align: left;
 }
 .service-event-row .tr-search-options button:hover,
@@ -350,7 +355,7 @@
   border-radius: 6px;
   background: #f7f9fc;
   color: #536078;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
@@ -362,7 +367,7 @@
   border-radius: 5px;
   background: #fff;
   color: #536078;
-  font-size: 10px;
+  font-size: var(--ui-secondary);
 }
 .service-event-group-selection .group-selection { margin: 0; }
 .service-event-group-selection .group-selection-list { max-height: 120px; }
@@ -381,7 +386,7 @@
   gap: 8px;
   min-width: 0;
   color: #536078;
-  font-size: 11px;
+  font-size: var(--ui-secondary);
   line-height: 1.35;
 }
 .service-event-option input[type="checkbox"] {
@@ -395,7 +400,7 @@
 .service-event-option .info-tooltip { flex: 0 0 18px; margin-left: auto; }
 
 .service-event-room-field .room-conflict-hint,
-.service-event-room-field .room-legacy-hint { color: #9b5555; font-size: 10px; line-height: 1.35; }
+.service-event-room-field .room-legacy-hint { color: #9b5555; font-size: var(--ui-secondary); line-height: 1.35; }
 .service-event-room-field .room-legacy-hint { color: #8b6a32; }
 .service-event-dialog .info-tooltip__bubble { white-space: pre-line; }
 

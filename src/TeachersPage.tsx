@@ -40,7 +40,7 @@ function TeacherLesson({ lesson }: { lesson: PublicTeacherLesson }) {
     <div className="teachers-lesson-content">
       <strong>{lesson.event || lesson.subject?.name || "Занятие"}</strong>
       {lesson.lessonKind === "lab" && <span className="teachers-lesson-tag">Лаб.</span>}
-      <div className="teachers-lesson-groups" aria-label="Классы и подгруппы">{groups.map((group, index) => <span key={`${group.cohort}-${index}`}>{group.cohort}{numbers.length > 1 && <> · <b className={`teachers-shift-${group.shift}`}>№{group.slot}</b></>}</span>)}</div>
+      <div className="teachers-lesson-groups" aria-label="Классы и подгруппы">{groups.map((group, index) => <span key={`${group.cohort}-${index}`}><span className="school-code">{group.cohort}</span>{numbers.length > 1 && <> · <b className={`teachers-shift-${group.shift}`}>№{group.slot}</b></>}</span>)}</div>
       {room && <span className="teachers-lesson-room">{room}</span>}
     </div>
   </article>;
@@ -249,7 +249,6 @@ export default function TeachersPage() {
         {scheduleError && <div className="teachers-state teachers-error" role="alert"><p>{scheduleError}</p><button onClick={retry}>Повторить</button></div>}
         {loading && <div className="teachers-state" role="status">Загружаем расписание…</div>}
         {!loading && !scheduleError && schedule && <>
-          <div className="teachers-schedule-meta"><h2>{schedule.teacher.name}</h2><p>{quarter?.name} · опубликовано {new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(schedule.publication.publishedAt))}</p></div>
           {schedule.days.some(day => day.lessons.length) && <div className="teachers-shift-legend" aria-label="Цвета смен"><span className="teachers-shift-morning" title="Учебный день группы начинается до 12:00">№ · 1-я смена</span><span className="teachers-shift-afternoon" title="Учебный день группы начинается с 12:00">№ · 2-я смена</span></div>}
           {schedule.days.some(day => day.gaps !== undefined) && <div className="teachers-gap-explanation">
             {weekGaps.length > 0 && <span className="teachers-gap-summary">Длительные перерывы за неделю: <strong>{weekGapMinutes} мин</strong></span>}

@@ -46,7 +46,7 @@ function LoadMetric({ summary, period, onClick, label }: { summary: TeacherLoadS
     </button>;
   }
   return <button type="button" className={`teacher-load-metric ${loadTone(percent)}${percent !== null && percent > 100 ? " teacher-load-extra" : ""}`} title={calculationTitle(period)} aria-label={`${label}: ${summary.lessons} уроков, ${percent === null ? "процент не рассчитан" : `${number(percent)}%`}`} onClick={onClick}>
-    <span className="teacher-load-metric-top"><strong>{summary.lessons}</strong> {lessonWord(summary.lessons)}</span>
+    <span className="teacher-load-metric-top">{summary.lessons}</span>
     <span className="teacher-load-percent">{percent === null ? "—" : `${number(percent)}%`}</span>
     {percent !== null && <span className="teacher-load-bar" aria-hidden="true"><i style={{ width: `${Math.min(percent, 100)}%` }} /></span>}
     {summary.events > 0 && <span className="teacher-load-events">+ {summary.events} мер.</span>}
@@ -105,7 +105,7 @@ function TeacherDetails({ selection, onClose }: { selection: Selection; onClose:
               <time className="teacher-load-grid-date" dateTime={date}>{dateLabel(date, { day: "2-digit", month: "2-digit" })}</time>
               {dayLessons.length ? dayLessons.map(lesson => <article className="teacher-load-grid-lesson" key={`${lesson.id}:${lesson.start}`}>
                 <div className="teacher-load-grid-lesson-title"><time>{clock(lesson.start)}</time><strong title={lesson.subject} aria-label={lesson.subject}>{lesson.shortSubject}</strong></div>
-                <div className="teacher-load-grid-lesson-meta"><span>{lesson.participants.map(participant => participant.subgroup ? participant.subgroup.startsWith(participant.name) ? participant.subgroup : `${participant.name}/${participant.subgroup}` : participant.name).join(", ")}</span>{lesson.room && <span className="teacher-load-grid-room">{lesson.room}</span>}</div>
+                <div className="teacher-load-grid-lesson-meta"><span className="school-code">{lesson.participants.map(participant => participant.subgroup ? participant.subgroup.startsWith(participant.name) ? participant.subgroup : `${participant.name}/${participant.subgroup}` : participant.name).join(", ")}</span>{lesson.room && <span className="teacher-load-grid-room">{lesson.room}</span>}</div>
               </article>) : <span className="teacher-load-grid-empty" aria-label={outside ? "Вне выбранного периода" : week.incomplete ? "В доступных данных занятий нет" : "Занятий нет"}>—</span>}
             </td>;
           })}
@@ -252,7 +252,7 @@ export default function TeacherLoadPage({ initialState, onUnauthorized, onBack, 
           <th scope="col" aria-sort={sortState("name")}>{sortLabel("name", "Учитель")}</th>
           {periods.weeks.map(week => <th key={week.id} scope="col" aria-sort={sortState(`week:${week.id}`)} title={calculationTitle(weekPeriod(week))}>
             {sortLabel(`week:${week.id}`, `${dateLabel(week.start, { day: "numeric" })}–${dateLabel(week.end)}`)}
-            <small>{!weekPeriod(week).incomplete && week.nonStudyLabel ? week.nonStudyLabel : week.partial ? "Часть недели" : "Неделя"}</small>
+            {!weekPeriod(week).incomplete && week.nonStudyLabel && <small>{week.nonStudyLabel}</small>}
           </th>)}
           <th scope="col" className="teacher-load-month-total" aria-sort={sortState("month")} title={calculationTitle(monthPeriod)}>{sortLabel("month", "Итого за месяц")}<small>{monthPeriod.incomplete ? "Неполные данные" : periods.target > 0 ? `${number(periods.target)} ${lessonWord(periods.target)} = 100%` : "Нет учебных дней"}</small></th>
         </tr></thead><tbody>{visibleRows.map(({ row, weeks, month: monthSummary }) => <tr key={row.id} className={row.archived ? "is-archived" : ""}>

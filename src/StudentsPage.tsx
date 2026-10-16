@@ -37,11 +37,11 @@ function LessonCard({ lessons, groupName, showIcons }: { lessons: PublicStudentL
       const number = item.subgroup?.number ?? Number(item.subgroup?.name.match(/\d+/)?.[0]);
       const groupLabel = item.subgroup && (Number.isFinite(number) && number > 0 ? `${groupName}/${number}` : item.subgroup.name);
       return (groupLabel || (!headerSurname && surname) || room) && <div className="students-lesson-resources" key={item.id}>
-        {(groupLabel || (!headerSurname && surname)) && <span className="students-lesson-detail" title={item.subgroup?.name}>{groupLabel ? `${groupLabel}${surname ? ` (${surname})` : ""}` : surname}</span>}
+        {(groupLabel || (!headerSurname && surname)) && <span className="students-lesson-detail" title={item.subgroup?.name}>{groupLabel ? <><span className="school-code">{groupLabel}</span>{surname ? ` (${surname})` : ""}</> : surname}</span>}
         {room && <span className="students-lesson-room">{room}</span>}
       </div>;
     })}
-    {participants && <span className="students-lesson-joint">Общий: {participants}</span>}
+    {participants && <span className="students-lesson-joint">Общий: <span className="school-code">{participants}</span></span>}
     </div>
   </article>;
 }
@@ -229,13 +229,13 @@ export default function StudentsPage() {
         <section className="students-controls" aria-label="Выбор расписания">
           <div className="students-group-control" ref={pickerRef}>
             <div className="group-search-label"><label htmlFor="students-group-search">Класс</label><GroupSearchHint /></div>
-            <input id="students-group-search" role="combobox" aria-autocomplete="list" aria-expanded={showGroups} aria-controls="students-group-options" aria-activedescendant={showGroups && filteredGroups[activeOption] ? `student-group-${filteredGroups[activeOption].id}` : undefined} value={search} placeholder="Найти класс" autoComplete="off" onFocus={event => { setShowGroups(true); setActiveOption(0); event.currentTarget.select(); }} onBlur={() => { window.setTimeout(() => { if (!pickerRef.current?.contains(document.activeElement)) { setShowGroups(false); setSearch(selectedNameRef.current); } }, 120); }} onChange={event => { setSearch(event.target.value); setShowGroups(true); setActiveOption(0); }} onKeyDown={event => {
+            <input id="students-group-search" className="school-code" role="combobox" aria-autocomplete="list" aria-expanded={showGroups} aria-controls="students-group-options" aria-activedescendant={showGroups && filteredGroups[activeOption] ? `student-group-${filteredGroups[activeOption].id}` : undefined} value={search} placeholder="Найти класс" autoComplete="off" onFocus={event => { setShowGroups(true); setActiveOption(0); event.currentTarget.select(); }} onBlur={() => { window.setTimeout(() => { if (!pickerRef.current?.contains(document.activeElement)) { setShowGroups(false); setSearch(selectedNameRef.current); } }, 120); }} onChange={event => { setSearch(event.target.value); setShowGroups(true); setActiveOption(0); }} onKeyDown={event => {
               if (event.key === "ArrowDown") { event.preventDefault(); setShowGroups(true); setActiveOption(value => Math.min(value + 1, filteredGroups.length - 1)); }
               else if (event.key === "ArrowUp") { event.preventDefault(); setActiveOption(value => Math.max(value - 1, 0)); }
               else if (event.key === "Enter" && showGroups && filteredGroups[activeOption]) { event.preventDefault(); chooseGroup(filteredGroups[activeOption]); }
               else if (event.key === "Escape") setShowGroups(false);
             }} />
-            {showGroups && <div id="students-group-options" className="students-group-options" role="listbox">{filteredGroups.length ? filteredGroups.map((group, i) => <button id={`student-group-${group.id}`} key={group.id} type="button" role="option" aria-selected={group.id === selection.groupId} className={`${i === activeOption ? "is-active" : ""}${group.id === selection.groupId ? " is-selected" : ""}`} onMouseEnter={() => setActiveOption(i)} onClick={() => chooseGroup(group)}>{group.name}{group.id === selection.groupId && <span>Выбран</span>}</button>) : <p>Класс не найден</p>}</div>}
+            {showGroups && <div id="students-group-options" className="students-group-options" role="listbox">{filteredGroups.length ? filteredGroups.map((group, i) => <button id={`student-group-${group.id}`} key={group.id} type="button" role="option" aria-selected={group.id === selection.groupId} className={`school-code ${i === activeOption ? "is-active" : ""}${group.id === selection.groupId ? " is-selected" : ""}`} onMouseEnter={() => setActiveOption(i)} onClick={() => chooseGroup(group)}>{group.name}{group.id === selection.groupId && <span>Выбран</span>}</button>) : <p>Класс не найден</p>}</div>}
           </div>
           <label className="students-select-control">Четверть<select value={quarter?.id ?? ""} onChange={event => changeQuarter(event.target.value)}>{visibleQuarters(index.quarters).map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
           <div className="students-select-control students-week-control"><label htmlFor="students-week">Неделя</label><div className="students-week-picker"><button type="button" aria-label="Предыдущая неделя" disabled={weekIndex <= 0} onClick={() => moveWeek(-1)}>‹</button><select id="students-week" aria-label="Неделя" value={activeWeek} onChange={event => setDate(event.target.value < (quarter?.startDate ?? "") ? quarter!.startDate : event.target.value)}>{weeks.map(week => <option key={week} value={week}>{weekTitle(week)}</option>)}</select><button type="button" aria-label="Следующая неделя" disabled={weekIndex < 0 || weekIndex >= weeks.length - 1} onClick={() => moveWeek(1)}>›</button></div></div>
@@ -244,7 +244,7 @@ export default function StudentsPage() {
         {scheduleError && <div className="students-state students-error" role="alert"><p>{scheduleError}</p><button onClick={retry}>Повторить</button></div>}
         {loading && <div className="students-state" role="status">Загружаем расписание…</div>}
         {!loading && !scheduleError && schedule && <>
-          <div className="students-schedule-meta"><h2>{chosenGroupName}</h2><p>{quarter?.name} · опубликовано {new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(schedule.publication.publishedAt))}</p></div>
+          <div className="students-schedule-meta"><h2 className="school-code">{chosenGroupName}</h2></div>
           {selection.date < (quarter?.startDate ?? "") || selection.date > (quarter?.endDate ?? "")
             ? <div className="students-state"><h2>Эта дата вне опубликованной четверти</h2><p>Выберите четверть, в которую входит нужная дата.</p></div>
             : !schedule.days.some(day => day.lessons.length)

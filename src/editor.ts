@@ -38,11 +38,12 @@ export type Location = {
 const DEFAULT_BREAK = 10;
 
 /** Flatten stored lessons for room-conflict previews across all groups. */
-export function roomOccupancies(schedule: Schedule): RoomOccupancy[] {
+export function roomOccupancies(schedule: Schedule, date?: string): RoomOccupancy[] {
   const result: RoomOccupancy[] = [];
   for (const [scheduleKey, days] of Object.entries(schedule)) {
     const groupId = scheduleKey.slice(0, scheduleKey.lastIndexOf(":"));
     for (const day of days) {
+      if (date !== undefined && day.date !== date) continue;
       day.slots.forEach((slot, slotIndex) => {
         const time = day.times[slotIndex];
         if (!time) return;

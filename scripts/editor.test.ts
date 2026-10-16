@@ -36,6 +36,31 @@ function setup(): { schedule: Schedule; location: Location } {
   };
 }
 
+test("date-filtered room occupancies match full results for one day, including joint mirrors", () => {
+  const schedule = createSchedule();
+  for (const days of Object.values(schedule))
+    for (const day of days) day.slots = day.slots.map(() => []);
+
+  const dayA = schedule[key("5a", 0)][0];
+  const dayB = schedule[key("5b", 0)].find((day) => day.date === dayA.date)!;
+  const laterDay = schedule[key("5a", 0)].find((day) => day.date !== dayA.date)!;
+  const jointLesson = {
+    id: "date-filter-joint-a", jointId: "date-filter-joint", subjectId: "math",
+    teacherId: "teacher", roomId: "room",
+  };
+  dayA.slots[0] = [jointLesson];
+  dayB.slots[0] = [{ ...jointLesson, id: "date-filter-joint-b" }];
+  laterDay.slots[0] = [{ id: "other-date", subjectId: "math", teacherId: "teacher", roomId: "room" }];
+
+  const full = roomOccupancies(schedule);
+  const filtered = roomOccupancies(schedule, dayA.date);
+  assert.deepEqual(filtered, full.filter((entry) => entry.date === dayA.date));
+  assert.deepEqual(filtered.map((entry) => entry.lessonId).sort(), [
+    "date-filter-joint-a", "date-filter-joint-b",
+  ]);
+  assert.ok(full.some((entry) => entry.lessonId === "other-date"));
+});
+
 test("shortened day changes every slot and its breaks without changing other dates or groups", () => {
   const { schedule, location } = setup();
   const original = structuredClone(schedule);

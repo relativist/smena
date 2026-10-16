@@ -14,30 +14,30 @@
 }
 .teacher-replacement-dialog::backdrop { background: #17203375; }
 .teacher-replacement-dialog header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
-.teacher-replacement-dialog h2 { margin: 0 0 5px; font-size: 18px; }
-.teacher-replacement-dialog header p { margin: 0; color: #718096; font-size: 13px; line-height: 1.4; }
+.teacher-replacement-dialog h2 { margin: 0 0 5px; font-size: var(--ui-min-text); }
+.teacher-replacement-dialog header p { margin: 0; color: #718096; font-size: var(--ui-secondary); line-height: 1.4; }
 .teacher-replacement-dialog button,
 .teacher-replacement-dialog select { font: inherit; }
 .teacher-replacement-dialog button { cursor: pointer; }
 .teacher-replacement-dialog header > button { flex: 0 0 32px; height: 32px; border: 1px solid #dfe4ed; border-radius: 7px; background: #fff; color: #536078; font-size: 21px; }
-.teacher-replacement-choice { display: grid; gap: 5px; margin-bottom: 13px; color: #58677e; font-size: 13px; }
+.teacher-replacement-choice { display: grid; gap: 5px; margin-bottom: 13px; color: #58677e; font-size: var(--ui-secondary); }
 .teacher-replacement-choice select { box-sizing: border-box; width: 100%; min-height: 38px; padding: 6px 9px; border: 1px solid #dfe4ed; border-radius: 7px; background: #fff; color: #253047; }
 .teacher-replacement-list { display: grid; max-height: min(45vh, 380px); overflow: auto; border: 1px solid #e4e8ef; border-radius: 8px; }
 .teacher-replacement-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 11px; border-bottom: 1px solid #edf0f4; cursor: pointer; }
 .teacher-replacement-row:last-child { border-bottom: 0; }
 .teacher-replacement-row input { flex: 0 0 auto; margin: 3px 0 0; }
-.teacher-replacement-detail { display: grid; min-width: 0; gap: 3px; font-size: 12px; }
-.teacher-replacement-detail strong { color: #35435a; font-size: 13px; }
+.teacher-replacement-detail { display: grid; min-width: 0; gap: 3px; font-size: var(--ui-secondary); }
+.teacher-replacement-detail strong { color: #35435a; font-size: var(--ui-secondary); }
 .teacher-replacement-detail > span { color: #788497; }
 .teacher-replacement-detail .teacher-replacement-ok { color: #18804c; }
 .teacher-replacement-detail .teacher-replacement-skip,
 .teacher-replacement-skip { color: #a13c35; }
 .teacher-replacement-empty { padding: 14px; color: #788497; }
-.teacher-replacement-hint { margin: -4px 0 10px; color: #788497; font-size: 12px; line-height: 1.4; }
-.teacher-replacement-undo { padding: 9px 11px; border: 1px solid #f0d49a; border-radius: 7px; background: #fff9e8; color: #805c12; font-size: 12px; line-height: 1.45; }
+.teacher-replacement-hint { margin: -4px 0 10px; color: #788497; font-size: var(--ui-secondary); line-height: 1.4; }
+.teacher-replacement-undo { padding: 9px 11px; border: 1px solid #f0d49a; border-radius: 7px; background: #fff9e8; color: #805c12; font-size: var(--ui-secondary); line-height: 1.45; }
 .teacher-replacement-error { color: #a13c35; }
 .teacher-replacement-dialog footer { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.teacher-replacement-dialog footer > span { flex: 1 1 160px; color: #68758a; font-size: 12px; }
+.teacher-replacement-dialog footer > span { flex: 1 1 160px; color: #68758a; font-size: var(--ui-secondary); }
 .teacher-replacement-dialog footer button { min-height: 36px; padding: 7px 11px; border: 1px solid #dfe4ed; border-radius: 7px; background: #fff; color: #536078; }
 .teacher-replacement-dialog footer .teacher-replacement-primary { border-color: #2767c5; background: #2767c5; color: #fff; }
 .teacher-replacement-dialog button:disabled { cursor: not-allowed; opacity: .55; }

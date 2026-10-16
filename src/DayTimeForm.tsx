@@ -83,7 +83,7 @@ export default function DayTimeForm({ day, location, schedule, catalog, schoolPr
     </div>
     <label className="day-apply-scope">
       <span className="field-label">Применить на эту дату · {dateLabel}</span>
-      <select value={scope} onChange={(event) => { setScope(event.target.value as Scope); setError(""); }}>
+      <select className="school-code" value={scope} onChange={(event) => { setScope(event.target.value as Scope); setError(""); }}>
         <option value="current">Только к текущей группе ({currentGroup?.name})</option>
         <option value="selected">К выбранным группам</option>
         <option value="all">Ко всем группам</option>
@@ -97,12 +97,12 @@ export default function DayTimeForm({ day, location, schedule, catalog, schoolPr
             setSelectedGroups((current) => event.target.checked ? [...current, group.id] : current.filter((id) => id !== group.id));
             setError("");
           }} />
-        <span>{group.name}</span>
+        <span className="school-code">{group.name}</span>
       </label>)}</div>
     </fieldset>}
     <p className="form-hint">
       {scope === "current" ? "Изменится только этот день текущей группы." : currentSelected
-        ? `Начало выше применяется только к группе «${currentGroup?.name}». Остальные группы сохраняют своё начало дня.`
+        ? <>Начало выше применяется только к группе «<span className="school-code">{currentGroup?.name}</span>». Остальные группы сохраняют своё начало дня.</>
         : "Выбранные группы сохраняют своё начало дня."}{" "}
       {customBreaks ? "Все перемены будут одинаковыми." : "Перемены — по школьным настройкам."}
     </p>
@@ -121,7 +121,7 @@ export default function DayTimeForm({ day, location, schedule, catalog, schoolPr
         const last = after.at(-1)!;
         return <details className="day-group-preview" key={id} open={id === location.groupId || groupIds.length === 1}>
           <summary>
-            <strong>{groupName(id)}</strong>
+            <strong className="school-code">{groupName(id)}</strong>
             <span>{formatTime(after[0].start)}–{formatTime(last.start + last.duration)}</span>
             <small>{change ? `${after.length} уроков · ${duration} мин` : "Без изменений"}</small>
           </summary>
@@ -136,7 +136,7 @@ export default function DayTimeForm({ day, location, schedule, catalog, schoolPr
         </details>;
       })}
       {preview.result.skippedGroups.map((entry) => <p className="day-group-skipped" key={entry.groupId}>
-        <strong>{groupName(entry.groupId)}</strong> · {entry.reason}
+        <strong className="school-code">{groupName(entry.groupId)}</strong> · {entry.reason}
       </p>)}
     </section>}
     <div className="form-actions">
