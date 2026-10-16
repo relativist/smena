@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-16",
+  "applicationCommit": "cb8e526",
+  "gatewayCommit": "2e937fa",
+  "postgres": "18.4, existing chess-quest-postgres service; dedicated smena database and role",
+  "sourceSnapshotUtc": "2026-10-16T07:57:05.650Z",
+  "tablesCompared": 35,
+  "allCountsAndContentFingerprintsMatch": true,
+  "counts": {
+    "lessons": 181325,
+    "catalog_groups": 74,
+    "catalog_teachers": 131,
+    "catalog_rooms": 177,
+    "admin_users": 1
+  },
+  "activeSourceSessionsImported": false,
+  "containerHealth": "healthy",
+  "backupVolumeWritable": true,
+  "publicAndLanHealth": 200,
+  "unauthenticatedRequests": {
+    "state": 401,
+    "archiveExport": 401,
+    "archiveInspect": 401,
+    "archiveRestore": 401
+  },
+  "visualChecks": [
+    "gateway card with schoolboy",
+    "card opens /smena/",
+    "student and teacher pages",
+    "login desktop and 320px mobile",
+    "mascot and Lato font loaded",
+    "no horizontal overflow"
+  ],
+  "protectedPageVisualCheck": "Not performed: automatic approval review rejected creation of a temporary administrator session. Existing administrator credentials preserved.",
+  "tests": {
+    "mainPassed": 340,
+    "mainSkippedPostgresScenarios": 9,
+    "mainFailed": 0,
+    "deploymentTestsPassed": 5,
+    "rootBuild": "passed",
+    "basePathBuild": "passed",
+    "dockerBuild": "passed"
+  },
+  "screenshots": [
+    "artifacts/rich-gateway-20261016.png",
+    "artifacts/rich-login-desktop-20261016.png",
+    "artifacts/rich-login-mobile-20261016.png",
+    "artifacts/rich-students-20261016.png",
+    "artifacts/rich-teachers-20261016.png",
+    "artifacts/rich-login-lan-20261016.png"
+  ],
+  "neighborApplications": {
+    "foxy-chat": 200,
+    "chess-questAfterRedirect": 200,
+    "pc-man": 200
+  },
+  "applicationFaviconStatus": 200
+}
