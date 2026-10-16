@@ -16,6 +16,7 @@ import { newTeacherConflict, teacherConflictMessage } from "../shared/teacherCon
 import { teacherLabel, roomKinds } from "../shared/catalog";
 import { roomSuitabilityReason } from "../shared/roomSuitability";
 import { lessonUnavailability, newUnavailabilityViolation, unavailabilityViolationMessage } from "../shared/unavailability";
+import { scopeAvailabilityPreview } from "./availabilityPreview";
 
 export type TimeValues = {
   start: number;
@@ -169,34 +170,36 @@ export function LessonForm({
     const startMinute = parseTime(start);
     if (Number.isFinite(startMinute) && Number.isFinite(duration) && duration > 0) {
       const originalTime = day.times[slot];
-      const previewOccupancies = (nextTeacherId: string, nextRoomId: string) =>
-        dayOccupancies.map((entry) => {
+      const changedOccupancies = (nextTeacherId: string, nextRoomId: string) =>
+        dayOccupancies.flatMap((entry) => {
           const isEdited = entry.lessonId === lesson.id || Boolean(lesson.jointId && entry.jointId === lesson.jointId);
-          if (isEdited) return { ...entry, start: startMinute, end: startMinute + duration, teacherId: nextTeacherId, roomId: nextRoomId };
-          if (entry.groupId !== groupId) return entry;
+          if (isEdited) return [{ previous: entry, next: { ...entry, start: startMinute, end: startMinute + duration, teacherId: nextTeacherId, roomId: nextRoomId } }];
+          if (entry.groupId !== groupId) return [];
           if (entry.start === originalTime.start && entry.end === originalTime.start + originalTime.duration)
-            return { ...entry, start: startMinute, end: startMinute + duration };
+            return [{ previous: entry, next: { ...entry, start: startMinute, end: startMinute + duration } }];
           if (shiftFollowing && entry.start > originalTime.start) {
             const delta = startMinute - originalTime.start;
-            return { ...entry, start: entry.start + delta, end: entry.end + delta };
+            return [{ previous: entry, next: { ...entry, start: entry.start + delta, end: entry.end + delta } }];
           }
-          return entry;
+          return [];
         });
       for (const teacher of teachers) {
-        const projected = previewOccupancies(teacher.id, roomId);
-        const unavailable = newUnavailabilityViolation(projected.map(entry => ({ ...entry, roomId: undefined })), dayOccupancies, catalog);
-        const conflict = newTeacherConflict(projected, dayOccupancies);
+        const scoped = scopeAvailabilityPreview(dayOccupancies, changedOccupancies(teacher.id, roomId), "teacher");
+        const unavailable = newUnavailabilityViolation(scoped.next.map(entry => ({ ...entry, roomId: undefined })), scoped.previous, catalog);
+        const conflict = newTeacherConflict(scoped.next, scoped.previous);
         if (conflict) teacherReasons.set(teacher.id, teacherConflictMessage(conflict, catalog));
         if (unavailable?.kind === "teacher") teacherReasons.set(teacher.id, unavailabilityViolationMessage(unavailable, catalog));
       }
       for (const room of allRooms) {
-        const conflict = newRoomConflict(
-          previewOccupancies(teacherId, room.id),
-          dayOccupancies,
-        );
+        const scoped = scopeAvailabilityPreview(dayOccupancies, changedOccupancies(teacherId, room.id), "room");
+        const conflict = newRoomConflict(scoped.next, scoped.previous);
         if (conflict && !roomReasons.has(room.id))
           roomReasons.set(room.id, roomConflictMessage(conflict, catalog));
-        const unavailable = newUnavailabilityViolation(previewOccupancies(teacherId, room.id).map(entry => ({ ...entry, teacherId: undefined })), dayOccupancies, catalog);
+        const unavailable = newUnavailabilityViolation(
+          scoped.next.map(entry => ({ ...entry, teacherId: undefined })),
+          scoped.previous.map(entry => ({ ...entry, teacherId: undefined })),
+          catalog,
+        );
         if (unavailable?.kind === "room" && !roomSuitabilityReasons.has(room.id))
           roomReasons.set(room.id, unavailabilityViolationMessage(unavailable, catalog));
       }

@@ -1,0 +1,1407 @@
+{
+  "bug": "SCH-001",
+  "baseCommit": "a24c2e6",
+  "date": "2026-10-16",
+  "data": {
+    "revision": 448,
+    "displayRevision": 8,
+    "schoolName": "Тестовая школа",
+    "counts": {
+      "groups": 74,
+      "teachers": 131,
+      "rooms": 177,
+      "lessons": 181328
+    }
+  },
+  "method": {
+    "viewport": [
+      1440,
+      1000
+    ],
+    "cpuRates": [
+      1,
+      4
+    ],
+    "samplesPerActionPerRate": 12,
+    "groups": [
+      "1А",
+      "5А",
+      "10А",
+      "11А"
+    ],
+    "timer": "Playwright action through two animation frames, includes automation synchronization",
+    "sameSnapshot": true
+  },
+  "before": {
+    "rows": [
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 0,
+        "group": "1А",
+        "ms": 363.69999999552965,
+        "longTasks": [
+          {
+            "start": 524.8999999985099,
+            "ms": 283
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 0,
+        "group": "1А",
+        "ms": 275.3999999985099,
+        "longTasks": [
+          {
+            "start": 857.5,
+            "ms": 231
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 0,
+        "group": "5А",
+        "ms": 349.80000000447035,
+        "longTasks": [
+          {
+            "start": 1489.8000000044703,
+            "ms": 255
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 0,
+        "group": "5А",
+        "ms": 288.70000000298023,
+        "longTasks": [
+          {
+            "start": 1815.7000000029802,
+            "ms": 233
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 0,
+        "group": "10А",
+        "ms": 342.5,
+        "longTasks": [
+          {
+            "start": 2506.3000000044703,
+            "ms": 249
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 0,
+        "group": "10А",
+        "ms": 282.80000000447035,
+        "longTasks": [
+          {
+            "start": 2817,
+            "ms": 227
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 0,
+        "group": "11А",
+        "ms": 333,
+        "longTasks": [
+          {
+            "start": 3421.2000000029802,
+            "ms": 249
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 0,
+        "group": "11А",
+        "ms": 275.79999999701977,
+        "longTasks": [
+          {
+            "start": 3724.8000000044703,
+            "ms": 226
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 1,
+        "group": "1А",
+        "ms": 345.69999999552965,
+        "longTasks": [
+          {
+            "start": 4412.60000000149,
+            "ms": 256
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 1,
+        "group": "1А",
+        "ms": 278.3999999985099,
+        "longTasks": [
+          {
+            "start": 4720.5,
+            "ms": 229
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 1,
+        "group": "5А",
+        "ms": 333.20000000298023,
+        "longTasks": [
+          {
+            "start": 5331.89999999851,
+            "ms": 251
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 1,
+        "group": "5А",
+        "ms": 274.69999999552965,
+        "longTasks": [
+          {
+            "start": 5642.10000000149,
+            "ms": 226
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 1,
+        "group": "10А",
+        "ms": 345.8999999985099,
+        "longTasks": [
+          {
+            "start": 6292.10000000149,
+            "ms": 255
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 1,
+        "group": "10А",
+        "ms": 260.1000000014901,
+        "longTasks": [
+          {
+            "start": 6606.30000000447,
+            "ms": 224
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 1,
+        "group": "11А",
+        "ms": 331.70000000298023,
+        "longTasks": [
+          {
+            "start": 7221,
+            "ms": 247
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 1,
+        "group": "11А",
+        "ms": 274.70000000298023,
+        "longTasks": [
+          {
+            "start": 7527.60000000149,
+            "ms": 226
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 2,
+        "group": "1А",
+        "ms": 327.6000000014901,
+        "longTasks": [
+          {
+            "start": 8174.20000000298,
+            "ms": 239
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 2,
+        "group": "1А",
+        "ms": 276.70000000298023,
+        "longTasks": [
+          {
+            "start": 8474,
+            "ms": 225
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 2,
+        "group": "5А",
+        "ms": 350.6000000014901,
+        "longTasks": [
+          {
+            "start": 9071.60000000149,
+            "ms": 264
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 2,
+        "group": "5А",
+        "ms": 290.3999999985099,
+        "longTasks": [
+          {
+            "start": 9395.20000000298,
+            "ms": 248
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 2,
+        "group": "10А",
+        "ms": 344.69999999552965,
+        "longTasks": [
+          {
+            "start": 10044.5,
+            "ms": 247
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 2,
+        "group": "10А",
+        "ms": 276.3999999985099,
+        "longTasks": [
+          {
+            "start": 10356,
+            "ms": 222
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 2,
+        "group": "11А",
+        "ms": 333.20000000298023,
+        "longTasks": [
+          {
+            "start": 10949.80000000447,
+            "ms": 247
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 2,
+        "group": "11А",
+        "ms": 291.69999999552965,
+        "longTasks": [
+          {
+            "start": 11258.39999999851,
+            "ms": 237
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 0,
+        "group": "1А",
+        "ms": 1061.3999999985099,
+        "longTasks": [
+          {
+            "start": 12188.70000000298,
+            "ms": 966
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 0,
+        "group": "1А",
+        "ms": 984.6999999955297,
+        "longTasks": [
+          {
+            "start": 13235.5,
+            "ms": 917
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 0,
+        "group": "5А",
+        "ms": 1128.6000000014901,
+        "longTasks": [
+          {
+            "start": 14899.80000000447,
+            "ms": 1011
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 0,
+        "group": "5А",
+        "ms": 1039.6000000014901,
+        "longTasks": [
+          {
+            "start": 16063.89999999851,
+            "ms": 941
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 0,
+        "group": "10А",
+        "ms": 1101.3000000044703,
+        "longTasks": [
+          {
+            "start": 17840.30000000447,
+            "ms": 983
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 0,
+        "group": "10А",
+        "ms": 968.8999999985099,
+        "longTasks": [
+          {
+            "start": 18936.80000000447,
+            "ms": 915
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 0,
+        "group": "11А",
+        "ms": 1117.3999999985099,
+        "longTasks": [
+          {
+            "start": 20634.70000000298,
+            "ms": 1007
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 0,
+        "group": "11А",
+        "ms": 993,
+        "longTasks": [
+          {
+            "start": 21746.10000000149,
+            "ms": 930
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 1,
+        "group": "1А",
+        "ms": 1105.1000000014901,
+        "longTasks": [
+          {
+            "start": 23471.5,
+            "ms": 983
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 1,
+        "group": "1А",
+        "ms": 1064.7000000029802,
+        "longTasks": [
+          {
+            "start": 24598.89999999851,
+            "ms": 998
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 1,
+        "group": "5А",
+        "ms": 1089.8999999985099,
+        "longTasks": [
+          {
+            "start": 26315.60000000149,
+            "ms": 992
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 1,
+        "group": "5А",
+        "ms": 975.1999999955297,
+        "longTasks": [
+          {
+            "start": 27412.30000000447,
+            "ms": 919
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 1,
+        "group": "10А",
+        "ms": 1126.7000000029802,
+        "longTasks": [
+          {
+            "start": 29139.10000000149,
+            "ms": 1022
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 1,
+        "group": "10А",
+        "ms": 1047.0999999940395,
+        "longTasks": [
+          {
+            "start": 30257.80000000447,
+            "ms": 973
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 1,
+        "group": "11А",
+        "ms": 1077.1000000014901,
+        "longTasks": [
+          {
+            "start": 32065.20000000298,
+            "ms": 976
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 1,
+        "group": "11А",
+        "ms": 972.5,
+        "longTasks": [
+          {
+            "start": 33166.70000000298,
+            "ms": 908
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 2,
+        "group": "1А",
+        "ms": 1093.2000000029802,
+        "longTasks": [
+          {
+            "start": 34874.70000000298,
+            "ms": 984
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 2,
+        "group": "1А",
+        "ms": 981.8999999985099,
+        "longTasks": [
+          {
+            "start": 35960.30000000447,
+            "ms": 922
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 2,
+        "group": "5А",
+        "ms": 1077,
+        "longTasks": [
+          {
+            "start": 37600.10000000149,
+            "ms": 971
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 2,
+        "group": "5А",
+        "ms": 999.8000000044703,
+        "longTasks": [
+          {
+            "start": 38710,
+            "ms": 917
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 2,
+        "group": "10А",
+        "ms": 1076,
+        "longTasks": [
+          {
+            "start": 40391.80000000447,
+            "ms": 983
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 2,
+        "group": "10А",
+        "ms": 966.5999999940395,
+        "longTasks": [
+          {
+            "start": 41454,
+            "ms": 906
+          }
+        ]
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 2,
+        "group": "11А",
+        "ms": 1066.5,
+        "longTasks": [
+          {
+            "start": 43114.80000000447,
+            "ms": 975
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 2,
+        "group": "11А",
+        "ms": 963.2000000029802,
+        "longTasks": [
+          {
+            "start": 44173.70000000298,
+            "ms": 913
+          }
+        ]
+      }
+    ],
+    "errors": []
+  },
+  "after": {
+    "rows": [
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 0,
+        "group": "1А",
+        "ms": 133,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 0,
+        "group": "1А",
+        "ms": 55.29999999701977,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 0,
+        "group": "5А",
+        "ms": 150.5,
+        "longTasks": [
+          {
+            "start": 1167,
+            "ms": 53
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 0,
+        "group": "5А",
+        "ms": 67.70000000298023,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 0,
+        "group": "10А",
+        "ms": 148.5,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 0,
+        "group": "10А",
+        "ms": 20.599999994039536,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 0,
+        "group": "11А",
+        "ms": 131.89999999850988,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 0,
+        "group": "11А",
+        "ms": 70.79999999701977,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 1,
+        "group": "1А",
+        "ms": 129.5,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 1,
+        "group": "1А",
+        "ms": 62.600000001490116,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 1,
+        "group": "5А",
+        "ms": 116.70000000298023,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 1,
+        "group": "5А",
+        "ms": 43.19999999552965,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 1,
+        "group": "10А",
+        "ms": 140.5,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 1,
+        "group": "10А",
+        "ms": 48.29999999701977,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 1,
+        "group": "11А",
+        "ms": 116.39999999850988,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 1,
+        "group": "11А",
+        "ms": 56.70000000298023,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 2,
+        "group": "1А",
+        "ms": 122.30000000447035,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 2,
+        "group": "1А",
+        "ms": 57.899999998509884,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 2,
+        "group": "5А",
+        "ms": 116.29999999701977,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 2,
+        "group": "5А",
+        "ms": 59.399999998509884,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 2,
+        "group": "10А",
+        "ms": 138,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 2,
+        "group": "10А",
+        "ms": 53.80000000447035,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 1,
+        "repeat": 2,
+        "group": "11А",
+        "ms": 116.10000000149012,
+        "longTasks": []
+      },
+      {
+        "kind": "room-change",
+        "rate": 1,
+        "repeat": 2,
+        "group": "11А",
+        "ms": 60.100000001490116,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 0,
+        "group": "1А",
+        "ms": 177.19999999552965,
+        "longTasks": [
+          {
+            "start": 6997.79999999702,
+            "ms": 79
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 0,
+        "group": "1А",
+        "ms": 69.89999999850988,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 0,
+        "group": "5А",
+        "ms": 200.39999999850988,
+        "longTasks": [
+          {
+            "start": 7856.79999999702,
+            "ms": 102
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 0,
+        "group": "5А",
+        "ms": 80.79999999701977,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 0,
+        "group": "10А",
+        "ms": 176.5,
+        "longTasks": [
+          {
+            "start": 8881.70000000298,
+            "ms": 83
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 0,
+        "group": "10А",
+        "ms": 64.89999999850988,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 0,
+        "group": "11А",
+        "ms": 200.19999999552965,
+        "longTasks": [
+          {
+            "start": 9824.89999999851,
+            "ms": 107
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 0,
+        "group": "11А",
+        "ms": 78.59999999403954,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 1,
+        "group": "1А",
+        "ms": 245.10000000149012,
+        "longTasks": [
+          {
+            "start": 10973,
+            "ms": 83
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 1,
+        "group": "1А",
+        "ms": 81.10000000149012,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 1,
+        "group": "5А",
+        "ms": 201.10000000149012,
+        "longTasks": [
+          {
+            "start": 11891.39999999851,
+            "ms": 105
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 1,
+        "group": "5А",
+        "ms": 79.70000000298023,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 1,
+        "group": "10А",
+        "ms": 189.30000000447035,
+        "longTasks": [
+          {
+            "start": 12979.39999999851,
+            "ms": 88
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 1,
+        "group": "10А",
+        "ms": 80,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 1,
+        "group": "11А",
+        "ms": 201.30000000447035,
+        "longTasks": [
+          {
+            "start": 13907.39999999851,
+            "ms": 101
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 1,
+        "group": "11А",
+        "ms": 76.20000000298023,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 2,
+        "group": "1А",
+        "ms": 179.10000000149012,
+        "longTasks": [
+          {
+            "start": 14916.60000000149,
+            "ms": 85
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 2,
+        "group": "1А",
+        "ms": 81.69999999552965,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 2,
+        "group": "5А",
+        "ms": 200.89999999850988,
+        "longTasks": [
+          {
+            "start": 15858.39999999851,
+            "ms": 104
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 2,
+        "group": "5А",
+        "ms": 79.89999999850988,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 2,
+        "group": "10А",
+        "ms": 176.10000000149012,
+        "longTasks": [
+          {
+            "start": 16899.70000000298,
+            "ms": 88
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 2,
+        "group": "10А",
+        "ms": 64.69999999552965,
+        "longTasks": []
+      },
+      {
+        "kind": "open",
+        "rate": 4,
+        "repeat": 2,
+        "group": "11А",
+        "ms": 200.19999999552965,
+        "longTasks": [
+          {
+            "start": 17809.89999999851,
+            "ms": 101
+          }
+        ]
+      },
+      {
+        "kind": "room-change",
+        "rate": 4,
+        "repeat": 2,
+        "group": "11А",
+        "ms": 79.5,
+        "longTasks": []
+      }
+    ],
+    "errors": []
+  },
+  "summary": [
+    {
+      "rate": 1,
+      "kind": "open",
+      "before": {
+        "n": 12,
+        "medianMs": 343.5999999977648,
+        "maxMs": 363.69999999552965,
+        "maxLongTaskMs": 283
+      },
+      "after": {
+        "n": 12,
+        "medianMs": 130.69999999925494,
+        "maxMs": 150.5,
+        "maxLongTaskMs": 53
+      }
+    },
+    {
+      "rate": 1,
+      "kind": "room-change",
+      "before": {
+        "n": 12,
+        "medianMs": 276.55000000074506,
+        "maxMs": 291.69999999552965,
+        "maxLongTaskMs": 248
+      },
+      "after": {
+        "n": 12,
+        "medianMs": 57.30000000074506,
+        "maxMs": 70.79999999701977,
+        "maxLongTaskMs": 0
+      }
+    },
+    {
+      "rate": 4,
+      "kind": "open",
+      "before": {
+        "n": 12,
+        "medianMs": 1091.550000000745,
+        "maxMs": 1128.6000000014901,
+        "maxLongTaskMs": 1022
+      },
+      "after": {
+        "n": 12,
+        "medianMs": 200.19999999552965,
+        "maxMs": 245.10000000149012,
+        "maxLongTaskMs": 107
+      }
+    },
+    {
+      "rate": 4,
+      "kind": "room-change",
+      "before": {
+        "n": 12,
+        "medianMs": 983.2999999970198,
+        "maxMs": 1064.7000000029802,
+        "maxLongTaskMs": 998
+      },
+      "after": {
+        "n": 12,
+        "medianMs": 79.60000000149012,
+        "maxMs": 81.69999999552965,
+        "maxLongTaskMs": 0
+      }
+    }
+  ],
+  "availabilityEquivalence": {
+    "statesCompared": 20,
+    "equal": true,
+    "compared": "option value, label and disabled state for teacher and room selects",
+    "states": [
+      {
+        "group": "1А",
+        "state": "original"
+      },
+      {
+        "group": "1А",
+        "state": "room"
+      },
+      {
+        "group": "1А",
+        "state": "teacher"
+      },
+      {
+        "group": "1А",
+        "state": "duration"
+      },
+      {
+        "group": "1А",
+        "state": "time-and-following"
+      },
+      {
+        "group": "5А",
+        "state": "original"
+      },
+      {
+        "group": "5А",
+        "state": "room"
+      },
+      {
+        "group": "5А",
+        "state": "teacher"
+      },
+      {
+        "group": "5А",
+        "state": "duration"
+      },
+      {
+        "group": "5А",
+        "state": "time-and-following"
+      },
+      {
+        "group": "10А",
+        "state": "original"
+      },
+      {
+        "group": "10А",
+        "state": "room"
+      },
+      {
+        "group": "10А",
+        "state": "teacher"
+      },
+      {
+        "group": "10А",
+        "state": "duration"
+      },
+      {
+        "group": "10А",
+        "state": "time-and-following"
+      },
+      {
+        "group": "11А",
+        "state": "original"
+      },
+      {
+        "group": "11А",
+        "state": "room"
+      },
+      {
+        "group": "11А",
+        "state": "teacher"
+      },
+      {
+        "group": "11А",
+        "state": "duration"
+      },
+      {
+        "group": "11А",
+        "state": "time-and-following"
+      }
+    ]
+  },
+  "functional": {
+    "results": [
+      {
+        "name": "search-clear",
+        "pass": true,
+        "detail": [
+          "Матем.31 / 31",
+          "Мероприятие"
+        ]
+      },
+      {
+        "name": "underfill-filter",
+        "pass": true,
+        "detail": {
+          "filtered": 1,
+          "all": 9
+        }
+      },
+      {
+        "name": "note-save-reload-restore",
+        "pass": true,
+        "detail": "persisted across reload; restored exact schedule"
+      },
+      {
+        "name": "delete-save-undo",
+        "pass": true,
+        "detail": {
+          "before": 22,
+          "afterUndo": 22
+        }
+      },
+      {
+        "name": "placement-preview-block-add-undo",
+        "pass": true,
+        "detail": {
+          "blockedChecked": false,
+          "allowed": 3
+        }
+      },
+      {
+        "name": "save-network-failure-retry",
+        "pass": true,
+        "detail": "Нет связи с сервером. Проверьте, что приложение запущено, и повторите попытку.\nПовторить сохранение"
+      },
+      {
+        "name": "quarter-change",
+        "pass": true,
+        "detail": "historical quarter loaded"
+      },
+      {
+        "name": "class-persists-reload",
+        "pass": true,
+        "detail": "10Б persisted"
+      },
+      {
+        "name": "plan-dialog",
+        "pass": true,
+        "detail": "План четверти · 10Б\ni"
+      }
+    ],
+    "timings": [
+      {
+        "action": "note-save",
+        "ms": 644
+      },
+      {
+        "action": "placement-complete",
+        "ms": 204,
+        "apiStatus": 200,
+        "targets": 35
+      },
+      {
+        "action": "add-and-save",
+        "ms": 566
+      }
+    ]
+  },
+  "extra": [
+    {
+      "name": "blocked-placement",
+      "pass": true,
+      "reason": "В этой ячейке уже есть занятие всей группы или без подгруппы",
+      "alert": []
+    },
+    {
+      "name": "unavailable-teachers-disabled",
+      "pass": true,
+      "count": 8
+    },
+    {
+      "name": "move-save-undo",
+      "pass": true
+    },
+    {
+      "name": "copy-week-dialog",
+      "pass": true,
+      "title": "Копировать неделю"
+    }
+  ],
+  "verification": {
+    "build": "passed",
+    "focusedTests": 38,
+    "focusedTestFailures": 0,
+    "testFiles": [
+      "availability-preview.test.ts",
+      "editor.test.ts",
+      "unavailability-editor.test.ts",
+      "room-suitability-editor.test.ts"
+    ]
+  },
+  "sourceIntegrity": {
+    "before": {
+      "revision": 448,
+      "displayRevision": 8,
+      "schoolName": "Тестовая школа",
+      "counts": {
+        "groups": 74,
+        "teachers": 131,
+        "rooms": 177,
+        "lessons": 181328
+      }
+    },
+    "after": {
+      "revision": 448,
+      "displayRevision": 8,
+      "schoolName": "Тестовая школа",
+      "counts": {
+        "groups": 74,
+        "teachers": 131,
+        "rooms": 177,
+        "lessons": 181328
+      }
+    },
+    "sameRevisionAndCounts": true,
+    "temporarySchemaRemoved": true
+  }
+}

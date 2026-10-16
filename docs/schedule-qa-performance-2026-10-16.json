@@ -1,0 +1,3308 @@
+{
+  "loads": [
+    {
+      "rate": 1,
+      "i": 0,
+      "readyMs": 257.6000000014901,
+      "longTasks": [
+        {
+          "start": 157.60000000149012,
+          "ms": 52
+        }
+      ],
+      "errors": [],
+      "api": [
+        {
+          "url": "/api/public/display-settings",
+          "ms": 13.600000001490116,
+          "bytes": 60
+        },
+        {
+          "url": "/api/auth/status",
+          "ms": 2.100000001490116,
+          "bytes": 113
+        },
+        {
+          "url": "/api/editor/bootstrap",
+          "ms": 28.199999999254942,
+          "bytes": 93734
+        },
+        {
+          "url": "/api/editor/week",
+          "ms": 71,
+          "bytes": 762437
+        }
+      ]
+    },
+    {
+      "rate": 1,
+      "i": 1,
+      "readyMs": 244.10000000149012,
+      "longTasks": [
+        {
+          "start": 142.69999999925494,
+          "ms": 52
+        }
+      ],
+      "errors": [],
+      "api": [
+        {
+          "url": "/api/public/display-settings",
+          "ms": 1.3999999985098839,
+          "bytes": 60
+        },
+        {
+          "url": "/api/auth/status",
+          "ms": 1.6000000014901161,
+          "bytes": 113
+        },
+        {
+          "url": "/api/editor/bootstrap",
+          "ms": 24.300000000745058,
+          "bytes": 93734
+        },
+        {
+          "url": "/api/editor/week",
+          "ms": 76.19999999925494,
+          "bytes": 762437
+        }
+      ]
+    },
+    {
+      "rate": 1,
+      "i": 2,
+      "readyMs": 264.19999999925494,
+      "longTasks": [
+        {
+          "start": 171.80000000074506,
+          "ms": 51
+        }
+      ],
+      "errors": [],
+      "api": [
+        {
+          "url": "/api/public/display-settings",
+          "ms": 2,
+          "bytes": 60
+        },
+        {
+          "url": "/api/auth/status",
+          "ms": 2.300000000745058,
+          "bytes": 113
+        },
+        {
+          "url": "/api/editor/bootstrap",
+          "ms": 27.5,
+          "bytes": 93734
+        },
+        {
+          "url": "/api/editor/week",
+          "ms": 83.80000000074506,
+          "bytes": 762437
+        }
+      ]
+    },
+    {
+      "rate": 1,
+      "i": 3,
+      "readyMs": 247.20000000298023,
+      "longTasks": [
+        {
+          "start": 149.30000000074506,
+          "ms": 54
+        }
+      ],
+      "errors": [],
+      "api": [
+        {
+          "url": "/api/public/display-settings",
+          "ms": 2.199999999254942,
+          "bytes": 60
+        },
+        {
+          "url": "/api/auth/status",
+          "ms": 1.2000000029802322,
+          "bytes": 113
+        },
+        {
+          "url": "/api/editor/bootstrap",
+          "ms": 19.300000000745058,
+          "bytes": 93734
+        },
+        {
+          "url": "/api/editor/week",
+          "ms": 67.09999999776483,
+          "bytes": 762437
+        }
+      ]
+    },
+    {
+      "rate": 1,
+      "i": 4,
+      "readyMs": 257.4000000022352,
+      "longTasks": [],
+      "errors": [],
+      "api": [
+        {
+          "url": "/api/public/display-settings",
+          "ms": 2.099999997764826,
+          "bytes": 60
+        },
+        {
+          "url": "/api/auth/status",
+          "ms": 1.199999999254942,
+          "bytes": 113
+        },
+        {
+          "url": "/api/editor/bootstrap",
+          "ms": 34.099999997764826,
+          "bytes": 93734
+        },
+        {
+          "url": "/api/editor/week",
+          "ms": 67.19999999925494,
+          "bytes": 762437
+        }
+      ]
+    },
+    {
+      "rate": 4,
+      "i": 0,
+      "readyMs": 624.3999999985099,
+      "longTasks": [
+        {
+          "start": 271.30000000074506,
+          "ms": 190
+        },
+        {
+          "start": 500.3999999985099,
+          "ms": 96
+        }
+      ],
+      "errors": [],
+      "api": [
+        {
+          "url": "/api/public/display-settings",
+          "ms": 1.699999999254942,
+          "bytes": 60
+        },
+        {
+          "url": "/api/auth/status",
+          "ms": 2.600000001490116,
+          "bytes": 113
+        },
+        {
+          "url": "/api/editor/bootstrap",
+          "ms": 29.400000002235174,
+          "bytes": 93734
+        },
+        {
+          "url": "/api/editor/week",
+          "ms": 66,
+          "bytes": 762437
+        }
+      ]
+    },
+    {
+      "rate": 4,
+      "i": 1,
+      "readyMs": 608.1000000014901,
+      "longTasks": [
+        {
+          "start": 276.5,
+          "ms": 181
+        },
+        {
+          "start": 496.9000000022352,
+          "ms": 95
+        }
+      ],
+      "errors": [],
+      "api": [
+        {
+          "url": "/api/public/display-settings",
+          "ms": 1.2000000029802322,
+          "bytes": 60
+        },
+        {
+          "url": "/api/auth/status",
+          "ms": 1.699999999254942,
+          "bytes": 113
+        },
+        {
+          "url": "/api/editor/bootstrap",
+          "ms": 28.100000001490116,
+          "bytes": 93734
+        },
+        {
+          "url": "/api/editor/week",
+          "ms": 63.100000001490116,
+          "bytes": 762437
+        }
+      ]
+    },
+    {
+      "rate": 4,
+      "i": 2,
+      "readyMs": 614.9000000022352,
+      "longTasks": [
+        {
+          "start": 285.80000000074506,
+          "ms": 183
+        },
+        {
+          "start": 507.1000000014901,
+          "ms": 95
+        }
+      ],
+      "errors": [],
+      "api": [
+        {
+          "url": "/api/public/display-settings",
+          "ms": 1,
+          "bytes": 60
+        },
+        {
+          "url": "/api/auth/status",
+          "ms": 1.6000000014901161,
+          "bytes": 113
+        },
+        {
+          "url": "/api/editor/bootstrap",
+          "ms": 27.900000002235174,
+          "bytes": 93734
+        },
+        {
+          "url": "/api/editor/week",
+          "ms": 68.19999999925494,
+          "bytes": 762437
+        }
+      ]
+    },
+    {
+      "rate": 4,
+      "i": 3,
+      "readyMs": 604.3000000007451,
+      "longTasks": [
+        {
+          "start": 267.5,
+          "ms": 186
+        },
+        {
+          "start": 492.19999999925494,
+          "ms": 94
+        }
+      ],
+      "errors": [],
+      "api": [
+        {
+          "url": "/api/public/display-settings",
+          "ms": 1.5,
+          "bytes": 60
+        },
+        {
+          "url": "/api/auth/status",
+          "ms": 1.5,
+          "bytes": 113
+        },
+        {
+          "url": "/api/editor/bootstrap",
+          "ms": 22.5,
+          "bytes": 93734
+        },
+        {
+          "url": "/api/editor/week",
+          "ms": 72.09999999776483,
+          "bytes": 762437
+        }
+      ]
+    },
+    {
+      "rate": 4,
+      "i": 4,
+      "readyMs": 596.8999999985099,
+      "longTasks": [
+        {
+          "start": 262,
+          "ms": 188
+        },
+        {
+          "start": 488.8999999985099,
+          "ms": 98
+        }
+      ],
+      "errors": [],
+      "api": [
+        {
+          "url": "/api/public/display-settings",
+          "ms": 0.9000000022351742,
+          "bytes": 60
+        },
+        {
+          "url": "/api/auth/status",
+          "ms": 1.800000000745058,
+          "bytes": 113
+        },
+        {
+          "url": "/api/editor/bootstrap",
+          "ms": 21.900000002235174,
+          "bytes": 93734
+        },
+        {
+          "url": "/api/editor/week",
+          "ms": 68.69999999925494,
+          "bytes": 762437
+        }
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "name": "cpu1/grade1",
+      "ms": 145.5,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 69,
+          "bytes": 758777
+        }
+      ],
+      "lessons": 22
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 172,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 62.69999999925494,
+          "bytes": 758778
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 91.19999999925494,
+      "longTasks": [],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 98,
+      "longTasks": [],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 100,
+      "longTasks": [],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 376.69999999925494,
+      "longTasks": [
+        {
+          "start": 937.4000000022352,
+          "ms": 293
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/week",
+      "ms": 175.59999999776483,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 60.900000002235174,
+          "bytes": 704435
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/grade5",
+      "ms": 149,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 75.5,
+          "bytes": 706161
+        }
+      ],
+      "lessons": 24
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 169.40000000223517,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 68.30000000074506,
+          "bytes": 706161
+        }
+      ],
+      "lessons": 24
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 100.5,
+      "longTasks": [],
+      "api": [],
+      "lessons": 24
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 82.40000000223517,
+      "longTasks": [],
+      "api": [],
+      "lessons": 24
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 82.39999999850988,
+      "longTasks": [],
+      "api": [],
+      "lessons": 24
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 391.69999999925494,
+      "longTasks": [
+        {
+          "start": 2115.199999999255,
+          "ms": 296
+        }
+      ],
+      "api": [],
+      "lessons": 24
+    },
+    {
+      "name": "cpu1/grade10",
+      "ms": 136,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 60.69999999925494,
+          "bytes": 708459
+        }
+      ],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 161.89999999850988,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 61.80000000074506,
+          "bytes": 708459
+        }
+      ],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 97.80000000074506,
+      "longTasks": [],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 112.89999999850988,
+      "longTasks": [],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 82.80000000074506,
+      "longTasks": [],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 396,
+      "longTasks": [
+        {
+          "start": 3155.5,
+          "ms": 310
+        }
+      ],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/grade11",
+      "ms": 149.40000000223517,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 72.20000000298023,
+          "bytes": 708094
+        }
+      ],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 195.5,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 84.39999999850988,
+          "bytes": 708094
+        }
+      ],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 93.60000000149012,
+      "longTasks": [],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 98.69999999925494,
+      "longTasks": [],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 65.89999999850988,
+      "longTasks": [],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 332.6000000014901,
+      "longTasks": [
+        {
+          "start": 4202.800000000745,
+          "ms": 241
+        }
+      ],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu1/grade1",
+      "ms": 144.30000000074506,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 69.5,
+          "bytes": 704434
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 165.39999999850988,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 61.5,
+          "bytes": 704435
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 92.80000000074506,
+      "longTasks": [],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 98.70000000298023,
+      "longTasks": [],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 100.90000000223517,
+      "longTasks": [],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 358.0999999977648,
+      "longTasks": [
+        {
+          "start": 5205.10000000149,
+          "ms": 281
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/week",
+      "ms": 192.59999999776483,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 73.5,
+          "bytes": 758778
+        }
+      ],
+      "lessons": 22
+    },
+    {
+      "name": "cpu1/grade5",
+      "ms": 158.5,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 68.60000000149012,
+          "bytes": 760504
+        }
+      ],
+      "lessons": 30
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 167.69999999925494,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 62.599999997764826,
+          "bytes": 760504
+        }
+      ],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 92.5,
+      "longTasks": [],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 113.40000000223517,
+      "longTasks": [],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 66,
+      "longTasks": [],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 349.4000000022352,
+      "longTasks": [
+        {
+          "start": 6415,
+          "ms": 275
+        }
+      ],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/week",
+      "ms": 156.10000000149012,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 61.400000002235174,
+          "bytes": 759381
+        }
+      ],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/grade10",
+      "ms": 135.30000000074506,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 61.900000002235174,
+          "bytes": 761679
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 179.19999999925494,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 70.90000000223517,
+          "bytes": 761679
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 78,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 82.69999999925494,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 82,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 329.30000000074506,
+      "longTasks": [
+        {
+          "start": 7572.60000000149,
+          "ms": 246
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/week",
+      "ms": 220.59999999776483,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 115.5,
+          "bytes": 763910
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/grade11",
+      "ms": 140.80000000074506,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 65.19999999925494,
+          "bytes": 763545
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 171.60000000149012,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 73,
+          "bytes": 763545
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 130.09999999776483,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 113.30000000074506,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 99.39999999850988,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 332.6000000014901,
+      "longTasks": [
+        {
+          "start": 8831.800000000745,
+          "ms": 257
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/week",
+      "ms": 166.29999999701977,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 61.70000000298023,
+          "bytes": 763545
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/grade1",
+      "ms": 131.09999999776483,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 59,
+          "bytes": 759885
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 167.10000000149012,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 60.80000000074506,
+          "bytes": 759886
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 110,
+      "longTasks": [],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 99.60000000149012,
+      "longTasks": [],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 97.80000000074506,
+      "longTasks": [],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 363.80000000074506,
+      "longTasks": [
+        {
+          "start": 10021,
+          "ms": 274
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/week",
+      "ms": 165.40000000223517,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 63.30000000074506,
+          "bytes": 759886
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu1/grade5",
+      "ms": 138,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 65,
+          "bytes": 761612
+        }
+      ],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 68.39999999850988,
+      "longTasks": [],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 182.39999999850988,
+      "longTasks": [],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 98.60000000149012,
+      "longTasks": [],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 66.10000000149012,
+      "longTasks": [],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 362.1000000014901,
+      "longTasks": [
+        {
+          "start": 11148.199999999255,
+          "ms": 284
+        }
+      ],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/week",
+      "ms": 155.5,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 68.20000000298023,
+          "bytes": 759381
+        }
+      ],
+      "lessons": 28
+    },
+    {
+      "name": "cpu1/grade10",
+      "ms": 148.69999999925494,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 69.39999999850988,
+          "bytes": 761679
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 181.19999999925494,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 66.69999999925494,
+          "bytes": 761679
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 103,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 80.89999999850988,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 82.69999999925494,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 363.5999999977648,
+      "longTasks": [
+        {
+          "start": 12335.800000000745,
+          "ms": 276
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/week",
+      "ms": 195.09999999776483,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 87.30000000074506,
+          "bytes": 762802
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/grade11",
+      "ms": 173.69999999925494,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 95.80000000074506,
+          "bytes": 762437
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/variant",
+      "ms": 178.39999999850988,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 82.30000000074506,
+          "bytes": 762437
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/subject",
+      "ms": 71.80000000074506,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/placement",
+      "ms": 82.30000000074506,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/cancel",
+      "ms": 82.80000000074506,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/lesson-open",
+      "ms": 327.5999999977648,
+      "longTasks": [
+        {
+          "start": 13538.60000000149,
+          "ms": 246
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu1/week",
+      "ms": 172,
+      "longTasks": [],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 82.09999999776483,
+          "bytes": 708094
+        }
+      ],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/grade1",
+      "ms": 370.4000000022352,
+      "longTasks": [
+        {
+          "start": 764.5999999977648,
+          "ms": 138
+        },
+        {
+          "start": 922.8999999985099,
+          "ms": 88
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 71.10000000149012,
+          "bytes": 758777
+        }
+      ],
+      "lessons": 22
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 422.4000000022352,
+      "longTasks": [
+        {
+          "start": 1158.800000000745,
+          "ms": 136
+        },
+        {
+          "start": 1316.0999999977648,
+          "ms": 92
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 65.69999999925494,
+          "bytes": 758778
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 265.69999999925494,
+      "longTasks": [
+        {
+          "start": 1523.0999999977648,
+          "ms": 84
+        },
+        {
+          "start": 1616.0999999977648,
+          "ms": 56
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 204,
+      "longTasks": [
+        {
+          "start": 1811.3999999985099,
+          "ms": 69
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 198,
+      "longTasks": [
+        {
+          "start": 1965.699999999255,
+          "ms": 67
+        },
+        {
+          "start": 2041.3999999985099,
+          "ms": 60
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1181.699999999255,
+      "longTasks": [
+        {
+          "start": 2165.599999997765,
+          "ms": 1090
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/week",
+      "ms": 415,
+      "longTasks": [
+        {
+          "start": 3421.199999999255,
+          "ms": 68
+        },
+        {
+          "start": 3496,
+          "ms": 59
+        },
+        {
+          "start": 3582.199999999255,
+          "ms": 57
+        },
+        {
+          "start": 3642.699999999255,
+          "ms": 90
+        },
+        {
+          "start": 3751.699999999255,
+          "ms": 60
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 54.899999998509884,
+          "bytes": 704435
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/grade5",
+      "ms": 358.19999999925494,
+      "longTasks": [
+        {
+          "start": 3944.099999997765,
+          "ms": 127
+        },
+        {
+          "start": 4093.099999997765,
+          "ms": 89
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 69.5,
+          "bytes": 706161
+        }
+      ],
+      "lessons": 24
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 386.5,
+      "longTasks": [
+        {
+          "start": 4324.5,
+          "ms": 127
+        },
+        {
+          "start": 4475,
+          "ms": 89
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 66.60000000149012,
+          "bytes": 706161
+        }
+      ],
+      "lessons": 24
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 167.09999999776483,
+      "longTasks": [
+        {
+          "start": 4616.300000000745,
+          "ms": 58
+        }
+      ],
+      "api": [],
+      "lessons": 24
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 164.30000000074506,
+      "longTasks": [
+        {
+          "start": 4800.89999999851,
+          "ms": 61
+        }
+      ],
+      "api": [],
+      "lessons": 24
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 167,
+      "longTasks": [
+        {
+          "start": 4950.39999999851,
+          "ms": 51
+        }
+      ],
+      "api": [],
+      "lessons": 24
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1262.8999999985099,
+      "longTasks": [
+        {
+          "start": 5117.39999999851,
+          "ms": 1170
+        }
+      ],
+      "api": [],
+      "lessons": 24
+    },
+    {
+      "name": "cpu4/grade10",
+      "ms": 360.30000000074506,
+      "longTasks": [
+        {
+          "start": 6557.699999999255,
+          "ms": 129
+        },
+        {
+          "start": 6710.099999997765,
+          "ms": 89
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 69.19999999925494,
+          "bytes": 708459
+        }
+      ],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 382.1000000014901,
+      "longTasks": [
+        {
+          "start": 6832.5,
+          "ms": 54
+        },
+        {
+          "start": 6944.099999997765,
+          "ms": 129
+        },
+        {
+          "start": 7097.599999997765,
+          "ms": 89
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 64.09999999776483,
+          "bytes": 708459
+        }
+      ],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 169.69999999925494,
+      "longTasks": [
+        {
+          "start": 7216.39999999851,
+          "ms": 61
+        }
+      ],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 164.19999999925494,
+      "longTasks": [
+        {
+          "start": 7417.699999999255,
+          "ms": 66
+        }
+      ],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 180.19999999925494,
+      "longTasks": [
+        {
+          "start": 7566.39999999851,
+          "ms": 54
+        }
+      ],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1315.5999999977648,
+      "longTasks": [
+        {
+          "start": 7749.800000000745,
+          "ms": 1214
+        }
+      ],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/grade11",
+      "ms": 359.69999999925494,
+      "longTasks": [
+        {
+          "start": 9244.699999999255,
+          "ms": 128
+        },
+        {
+          "start": 9395.699999999255,
+          "ms": 90
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 68.90000000223517,
+          "bytes": 708094
+        }
+      ],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 413.1000000014901,
+      "longTasks": [
+        {
+          "start": 9515,
+          "ms": 57
+        },
+        {
+          "start": 9630.800000000745,
+          "ms": 132
+        },
+        {
+          "start": 9787,
+          "ms": 93
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 71.20000000298023,
+          "bytes": 708094
+        }
+      ],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 248.79999999701977,
+      "longTasks": [
+        {
+          "start": 10009.699999999255,
+          "ms": 60
+        }
+      ],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 243.30000000074506,
+      "longTasks": [
+        {
+          "start": 10281,
+          "ms": 51
+        }
+      ],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 277.19999999925494,
+      "longTasks": [
+        {
+          "start": 10539.39999999851,
+          "ms": 54
+        }
+      ],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1037.800000000745,
+      "longTasks": [
+        {
+          "start": 10732.099999997765,
+          "ms": 955
+        }
+      ],
+      "api": [],
+      "lessons": 32
+    },
+    {
+      "name": "cpu4/grade1",
+      "ms": 338.19999999925494,
+      "longTasks": [
+        {
+          "start": 11968.89999999851,
+          "ms": 123
+        },
+        {
+          "start": 12113.39999999851,
+          "ms": 86
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 59.69999999925494,
+          "bytes": 704434
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 369.70000000298023,
+      "longTasks": [
+        {
+          "start": 12327.39999999851,
+          "ms": 123
+        },
+        {
+          "start": 12474.199999999255,
+          "ms": 88
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 53,
+          "bytes": 704435
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 217.19999999925494,
+      "longTasks": [
+        {
+          "start": 12615.89999999851,
+          "ms": 85
+        },
+        {
+          "start": 12710.89999999851,
+          "ms": 55
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 162.10000000149012,
+      "longTasks": [
+        {
+          "start": 12850.89999999851,
+          "ms": 69
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 304,
+      "longTasks": [
+        {
+          "start": 12994.300000000745,
+          "ms": 59
+        },
+        {
+          "start": 13077,
+          "ms": 71
+        },
+        {
+          "start": 13159.599999997765,
+          "ms": 59
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1142.199999999255,
+      "longTasks": [
+        {
+          "start": 13298.5,
+          "ms": 1059
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/week",
+      "ms": 400.30000000074506,
+      "longTasks": [
+        {
+          "start": 14514.199999999255,
+          "ms": 67
+        },
+        {
+          "start": 14587.199999999255,
+          "ms": 59
+        },
+        {
+          "start": 14674.099999997765,
+          "ms": 56
+        },
+        {
+          "start": 14735.099999997765,
+          "ms": 87
+        },
+        {
+          "start": 14841.599999997765,
+          "ms": 60
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 63.899999998509884,
+          "bytes": 758778
+        }
+      ],
+      "lessons": 22
+    },
+    {
+      "name": "cpu4/grade5",
+      "ms": 370.80000000074506,
+      "longTasks": [
+        {
+          "start": 14921.300000000745,
+          "ms": 50
+        },
+        {
+          "start": 15040.199999999255,
+          "ms": 130
+        },
+        {
+          "start": 15192.699999999255,
+          "ms": 88
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 70.30000000074506,
+          "bytes": 760504
+        }
+      ],
+      "lessons": 30
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 405.80000000074506,
+      "longTasks": [
+        {
+          "start": 15316.599999997765,
+          "ms": 53
+        },
+        {
+          "start": 15435.099999997765,
+          "ms": 129
+        },
+        {
+          "start": 15590.89999999851,
+          "ms": 89
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 65.10000000149012,
+          "bytes": 760504
+        }
+      ],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 182.69999999925494,
+      "longTasks": [
+        {
+          "start": 15733.599999997765,
+          "ms": 59
+        }
+      ],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 164.5,
+      "longTasks": [
+        {
+          "start": 15933.699999999255,
+          "ms": 61
+        }
+      ],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 167,
+      "longTasks": [
+        {
+          "start": 16082.199999999255,
+          "ms": 50
+        }
+      ],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1208.199999999255,
+      "longTasks": [
+        {
+          "start": 16248.300000000745,
+          "ms": 1133
+        }
+      ],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/week",
+      "ms": 339.3999999985099,
+      "longTasks": [
+        {
+          "start": 17724.89999999851,
+          "ms": 82
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 61.20000000298023,
+          "bytes": 759381
+        }
+      ],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/grade10",
+      "ms": 376.19999999925494,
+      "longTasks": [
+        {
+          "start": 18012.699999999255,
+          "ms": 133
+        },
+        {
+          "start": 18171.199999999255,
+          "ms": 92
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 75.59999999776483,
+          "bytes": 761679
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 426.80000000074506,
+      "longTasks": [
+        {
+          "start": 18299,
+          "ms": 66
+        },
+        {
+          "start": 18441.099999997765,
+          "ms": 135
+        },
+        {
+          "start": 18607.89999999851,
+          "ms": 90
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 71.69999999925494,
+          "bytes": 761679
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 263.80000000074506,
+      "longTasks": [
+        {
+          "start": 18800.39999999851,
+          "ms": 63
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 245.5,
+      "longTasks": [
+        {
+          "start": 19078.5,
+          "ms": 51
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 288.3999999985099,
+      "longTasks": [
+        {
+          "start": 19349.699999999255,
+          "ms": 54
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1070.199999999255,
+      "longTasks": [
+        {
+          "start": 19583.099999997765,
+          "ms": 952
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/week",
+      "ms": 337.19999999925494,
+      "longTasks": [
+        {
+          "start": 20873.300000000745,
+          "ms": 86
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 84.5,
+          "bytes": 763910
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/grade11",
+      "ms": 366.0999999977648,
+      "longTasks": [
+        {
+          "start": 21171.39999999851,
+          "ms": 128
+        },
+        {
+          "start": 21323.300000000745,
+          "ms": 87
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 77.60000000149012,
+          "bytes": 763545
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 421.8999999985099,
+      "longTasks": [
+        {
+          "start": 21448.199999999255,
+          "ms": 62
+        },
+        {
+          "start": 21589.199999999255,
+          "ms": 129
+        },
+        {
+          "start": 21751.800000000745,
+          "ms": 87
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 72.19999999925494,
+          "bytes": 763545
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 178.30000000074506,
+      "longTasks": [
+        {
+          "start": 21865.099999997765,
+          "ms": 58
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 234.5,
+      "longTasks": [
+        {
+          "start": 22127.699999999255,
+          "ms": 53
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 265.3999999985099,
+      "longTasks": [
+        {
+          "start": 22372.89999999851,
+          "ms": 55
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1080.9000000022352,
+      "longTasks": [
+        {
+          "start": 22566.199999999255,
+          "ms": 983
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/week",
+      "ms": 336.69999999925494,
+      "longTasks": [
+        {
+          "start": 23890.39999999851,
+          "ms": 86
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 76.60000000149012,
+          "bytes": 763545
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/grade1",
+      "ms": 364.80000000074506,
+      "longTasks": [
+        {
+          "start": 24170.39999999851,
+          "ms": 124
+        },
+        {
+          "start": 24317.699999999255,
+          "ms": 89
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 57.5,
+          "bytes": 759885
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 374.19999999925494,
+      "longTasks": [
+        {
+          "start": 24569.699999999255,
+          "ms": 123
+        },
+        {
+          "start": 24716.39999999851,
+          "ms": 86
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 54.100000001490116,
+          "bytes": 759886
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 202.60000000149012,
+      "longTasks": [
+        {
+          "start": 24831.89999999851,
+          "ms": 85
+        },
+        {
+          "start": 24927.39999999851,
+          "ms": 55
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 181.69999999925494,
+      "longTasks": [
+        {
+          "start": 25066.599999997765,
+          "ms": 79
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 298.5,
+      "longTasks": [
+        {
+          "start": 25225.300000000745,
+          "ms": 58
+        },
+        {
+          "start": 25307.5,
+          "ms": 69
+        },
+        {
+          "start": 25394.099999997765,
+          "ms": 58
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1165.699999999255,
+      "longTasks": [
+        {
+          "start": 25531.300000000745,
+          "ms": 1067
+        }
+      ],
+      "api": [],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/week",
+      "ms": 420.4000000022352,
+      "longTasks": [
+        {
+          "start": 26781.39999999851,
+          "ms": 65
+        },
+        {
+          "start": 26852.699999999255,
+          "ms": 56
+        },
+        {
+          "start": 26918.39999999851,
+          "ms": 55
+        },
+        {
+          "start": 27002.800000000745,
+          "ms": 91
+        },
+        {
+          "start": 27112.599999997765,
+          "ms": 58
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 73.69999999925494,
+          "bytes": 759886
+        }
+      ],
+      "lessons": 21
+    },
+    {
+      "name": "cpu4/grade5",
+      "ms": 362.30000000074506,
+      "longTasks": [
+        {
+          "start": 27306.599999997765,
+          "ms": 127
+        },
+        {
+          "start": 27455.800000000745,
+          "ms": 88
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 75.19999999925494,
+          "bytes": 761612
+        }
+      ],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 410.0999999977648,
+      "longTasks": [
+        {
+          "start": 27581.5,
+          "ms": 52
+        },
+        {
+          "start": 27707.89999999851,
+          "ms": 130
+        },
+        {
+          "start": 27865.199999999255,
+          "ms": 87
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 63.70000000298023,
+          "bytes": 761612
+        }
+      ],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 167,
+      "longTasks": [
+        {
+          "start": 27998,
+          "ms": 58
+        }
+      ],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 164.5,
+      "longTasks": [
+        {
+          "start": 28184.199999999255,
+          "ms": 60
+        }
+      ],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 167.69999999925494,
+      "longTasks": [],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1262.8999999985099,
+      "longTasks": [
+        {
+          "start": 28498.89999999851,
+          "ms": 1169
+        }
+      ],
+      "api": [],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/week",
+      "ms": 348.4000000022352,
+      "longTasks": [
+        {
+          "start": 30016.199999999255,
+          "ms": 84
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 82.80000000074506,
+          "bytes": 759381
+        }
+      ],
+      "lessons": 28
+    },
+    {
+      "name": "cpu4/grade10",
+      "ms": 441.5,
+      "longTasks": [
+        {
+          "start": 30332.800000000745,
+          "ms": 153
+        },
+        {
+          "start": 30523.39999999851,
+          "ms": 88
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 78.19999999925494,
+          "bytes": 761679
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 477.5,
+      "longTasks": [
+        {
+          "start": 30707.89999999851,
+          "ms": 60
+        },
+        {
+          "start": 30839.39999999851,
+          "ms": 127
+        },
+        {
+          "start": 31003.199999999255,
+          "ms": 85
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 62.100000001490116,
+          "bytes": 761679
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 236.20000000298023,
+      "longTasks": [
+        {
+          "start": 31214.699999999255,
+          "ms": 55
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 153,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 165.80000000074506,
+      "longTasks": [],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1215,
+      "longTasks": [
+        {
+          "start": 31731.699999999255,
+          "ms": 1123
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/week",
+      "ms": 337.80000000074506,
+      "longTasks": [
+        {
+          "start": 33191.599999997765,
+          "ms": 85
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 81.69999999925494,
+          "bytes": 762802
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/grade11",
+      "ms": 359.70000000298023,
+      "longTasks": [
+        {
+          "start": 33480.89999999851,
+          "ms": 127
+        },
+        {
+          "start": 33631.599999997765,
+          "ms": 88
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 68.89999999850988,
+          "bytes": 762437
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/variant",
+      "ms": 416.30000000074506,
+      "longTasks": [
+        {
+          "start": 33748.39999999851,
+          "ms": 60
+        },
+        {
+          "start": 33888.39999999851,
+          "ms": 128
+        },
+        {
+          "start": 34044.300000000745,
+          "ms": 91
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 75.5,
+          "bytes": 762437
+        }
+      ],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/subject",
+      "ms": 188.39999999850988,
+      "longTasks": [
+        {
+          "start": 34180.89999999851,
+          "ms": 59
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/placement",
+      "ms": 229.19999999925494,
+      "longTasks": [
+        {
+          "start": 34427.300000000745,
+          "ms": 52
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/cancel",
+      "ms": 295.5,
+      "longTasks": [
+        {
+          "start": 34708.800000000745,
+          "ms": 53
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/lesson-open",
+      "ms": 1058.6000000014901,
+      "longTasks": [
+        {
+          "start": 34906.300000000745,
+          "ms": 965
+        }
+      ],
+      "api": [],
+      "lessons": 38
+    },
+    {
+      "name": "cpu4/week",
+      "ms": 323.3999999985099,
+      "longTasks": [
+        {
+          "start": 36203.599999997765,
+          "ms": 79
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/editor/week",
+          "ms": 67.80000000074506,
+          "bytes": 708094
+        }
+      ],
+      "lessons": 32
+    }
+  ],
+  "errors": [],
+  "environment": {
+    "date": "2026-10-16",
+    "commit": "a24c2e6",
+    "cpu": "локальный тестовый CPU",
+    "browserViewport": {
+      "width": 1440,
+      "height": 1000
+    },
+    "database": "PostgreSQL; isolated archive snapshot schema",
+    "sourceRevision": 448,
+    "groups": 74,
+    "teachers": 131,
+    "rooms": 177,
+    "lessons": 181328,
+    "timingMethod": "Playwright action through ready state and two requestAnimationFrame callbacks; includes automation synchronization; 5 warm reloads per CPU rate. CPU throttling affects browser only. Long tasks deduplicated by start and duration."
+  },
+  "functional": {
+    "results": [
+      {
+        "name": "search-clear",
+        "pass": true,
+        "detail": [
+          "Матем.31 / 31",
+          "Мероприятие"
+        ]
+      },
+      {
+        "name": "underfill-filter",
+        "pass": true,
+        "detail": {
+          "filtered": 1,
+          "all": 9
+        }
+      },
+      {
+        "name": "note-save-reload-restore",
+        "pass": true,
+        "detail": "persisted across reload; restored exact schedule"
+      },
+      {
+        "name": "delete-save-undo",
+        "pass": true,
+        "detail": {
+          "before": 22,
+          "afterUndo": 22
+        }
+      },
+      {
+        "name": "placement-preview-block-add-undo",
+        "pass": true,
+        "detail": {
+          "blockedChecked": false,
+          "allowed": 3
+        }
+      },
+      {
+        "name": "save-network-failure-retry",
+        "pass": true,
+        "detail": "Нет связи с сервером. Проверьте, что приложение запущено, и повторите попытку.\nПовторить сохранение"
+      },
+      {
+        "name": "quarter-change",
+        "pass": true,
+        "detail": "historical quarter loaded"
+      },
+      {
+        "name": "class-persists-reload",
+        "pass": true,
+        "detail": "10Б persisted"
+      },
+      {
+        "name": "plan-dialog",
+        "pass": true,
+        "detail": "План четверти · 10Б\ni"
+      }
+    ],
+    "timings": [
+      {
+        "action": "note-save",
+        "ms": 617
+      },
+      {
+        "action": "placement-complete",
+        "ms": 204,
+        "apiStatus": 200,
+        "targets": 35
+      },
+      {
+        "action": "add-and-save",
+        "ms": 553
+      }
+    ]
+  },
+  "layout": {
+    "layout": [
+      {
+        "width": 1440,
+        "pageWidth": {
+          "viewport": 1440,
+          "document": 1440,
+          "calendar": 2040
+        },
+        "modal": {
+          "x": 380,
+          "y": 149.390625,
+          "width": 680,
+          "height": 601.203125,
+          "scrollWidth": 678,
+          "clientWidth": 678
+        }
+      },
+      {
+        "width": 1280,
+        "pageWidth": {
+          "viewport": 1280,
+          "document": 1280,
+          "calendar": 2040
+        },
+        "modal": {
+          "x": 300,
+          "y": 149.390625,
+          "width": 680,
+          "height": 601.203125,
+          "scrollWidth": 678,
+          "clientWidth": 678
+        }
+      },
+      {
+        "width": 768,
+        "pageWidth": {
+          "viewport": 768,
+          "document": 768,
+          "calendar": 2040
+        },
+        "modal": {
+          "x": 44,
+          "y": 149.390625,
+          "width": 680,
+          "height": 601.203125,
+          "scrollWidth": 678,
+          "clientWidth": 678
+        }
+      },
+      {
+        "width": 390,
+        "pageWidth": {
+          "viewport": 390,
+          "document": 390,
+          "calendar": 1740
+        },
+        "modal": {
+          "x": 14,
+          "y": 25.890625,
+          "width": 362,
+          "height": 848.203125,
+          "scrollWidth": 360,
+          "clientWidth": 360
+        }
+      }
+    ],
+    "fieldTimings": [
+      {
+        "rate": 1,
+        "kind": "room-change",
+        "ms": 358.69999999925494
+      },
+      {
+        "rate": 1,
+        "kind": "room-change",
+        "ms": 339.1000000014901
+      },
+      {
+        "rate": 1,
+        "kind": "room-change",
+        "ms": 340.70000000298023
+      },
+      {
+        "rate": 1,
+        "kind": "room-change",
+        "ms": 338.19999999925494
+      },
+      {
+        "rate": 4,
+        "kind": "room-change",
+        "ms": 1300.5
+      },
+      {
+        "rate": 4,
+        "kind": "room-change",
+        "ms": 1301
+      },
+      {
+        "rate": 4,
+        "kind": "room-change",
+        "ms": 1305.4000000022352
+      },
+      {
+        "rate": 4,
+        "kind": "room-change",
+        "ms": 1307.5
+      }
+    ]
+  },
+  "api": [
+    {
+      "name": "bootstrap",
+      "concurrency": 1,
+      "ms": 73.170463,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 1,
+      "ms": 32.66328,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 1,
+      "ms": 25.802933999999993,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 1,
+      "ms": 20.873797999999994,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 1,
+      "ms": 17.20122699999999,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 1,
+      "ms": 16.955241,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 1,
+      "ms": 16.869203,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 1,
+      "ms": 21.275802000000027,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 1,
+      "ms": 21.392261999999988,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 1,
+      "ms": 18.82406899999995,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 1,
+      "ms": 65.97463899999997,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 1,
+      "ms": 63.44330100000002,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 1,
+      "ms": 58.99860799999999,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 1,
+      "ms": 56.85829799999999,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 1,
+      "ms": 57.493979999999965,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 1,
+      "ms": 55.649279999999976,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 1,
+      "ms": 57.400991999999974,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 1,
+      "ms": 59.713149000000044,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 1,
+      "ms": 57.193913000000066,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 1,
+      "ms": 61.98111700000004,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 1,
+      "ms": 62.730136000000016,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 1,
+      "ms": 59.99650800000006,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 1,
+      "ms": 61.795498000000066,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 1,
+      "ms": 59.42358899999999,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 1,
+      "ms": 66.80294099999992,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 1,
+      "ms": 62.51817399999982,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 1,
+      "ms": 64.24322100000018,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 1,
+      "ms": 61.454173999999966,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 1,
+      "ms": 67.54393300000015,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 1,
+      "ms": 76.87797999999998,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 1,
+      "ms": 65.55066199999987,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 1,
+      "ms": 65.12210200000004,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 1,
+      "ms": 71.32619899999986,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 1,
+      "ms": 66.07221699999991,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 1,
+      "ms": 67.83839200000011,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 1,
+      "ms": 63.10251100000005,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 1,
+      "ms": 64.88553999999999,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 1,
+      "ms": 66.17794499999991,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 1,
+      "ms": 65.85856199999989,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 1,
+      "ms": 63.46266800000012,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 1,
+      "ms": 64.79224499999964,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 1,
+      "ms": 62.11038700000017,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 1,
+      "ms": 67.12827500000003,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 1,
+      "ms": 62.592353,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 1,
+      "ms": 63.0662440000001,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 1,
+      "ms": 62.97017499999993,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 1,
+      "ms": 70.68813799999998,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 1,
+      "ms": 60.951392999999825,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 1,
+      "ms": 65.09125499999982,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 1,
+      "ms": 73.32580700000017,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 5,
+      "ms": 38.3066289999997,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 5,
+      "ms": 116.0160450000003,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 5,
+      "ms": 117.536384,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 5,
+      "ms": 119.74510599999985,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 5,
+      "ms": 125.22835900000018,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 5,
+      "ms": 29.642409000000043,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 5,
+      "ms": 99.08765099999982,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 5,
+      "ms": 102.1929439999999,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 5,
+      "ms": 103.79283400000031,
+      "status": 200,
+      "bytes": 762802
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 5,
+      "ms": 112.67101600000024,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "bootstrap",
+      "concurrency": 5,
+      "ms": 31.257036999999855,
+      "status": 200,
+      "bytes": 93734
+    },
+    {
+      "name": "grade-1-А",
+      "concurrency": 5,
+      "ms": 97.6320539999997,
+      "status": 200,
+      "bytes": 758777
+    },
+    {
+      "name": "grade-5-А",
+      "concurrency": 5,
+      "ms": 103.55497299999979,
+      "status": 200,
+      "bytes": 760504
+    },
+    {
+      "name": "grade-11-А",
+      "concurrency": 5,
+      "ms": 106.6233299999999,
+      "status": 200,
+      "bytes": 762437
+    },
+    {
+      "name": "grade-10-А",
+      "concurrency": 5,
+      "ms": 109.35562499999969,
+      "status": 200,
+      "bytes": 762802
+    }
+  ],
+  "extra": [
+    {
+      "name": "blocked-placement",
+      "pass": true,
+      "reason": "В этой ячейке уже есть занятие всей группы или без подгруппы",
+      "alert": []
+    },
+    {
+      "name": "unavailable-teachers-disabled",
+      "pass": true,
+      "count": 8
+    },
+    {
+      "name": "move-save-undo",
+      "pass": true
+    },
+    {
+      "name": "copy-week-dialog",
+      "pass": true,
+      "title": "Копировать неделю"
+    }
+  ],
+  "publication": {
+    "ms": 593,
+    "status": 200,
+    "canPublish": true,
+    "errorCount": 0,
+    "warningCount": 282,
+    "summary": {
+      "groupCount": 74,
+      "lessonCount": 16606,
+      "added": 4,
+      "removed": 1,
+      "changed": 14,
+      "affectedGroupIds": [
+        "grade-1-А",
+        "grade-1-В",
+        "grade-1-Г",
+        "grade-10-В",
+        "grade-11-А",
+        "grade-11-В",
+        "grade-11-Г",
+        "grade-11-Е",
+        "grade-11-Ж",
+        "grade-3-Ж",
+        "grade-5-А"
+      ],
+      "settingsChanged": true
+    },
+    "errorCodes": [],
+    "publishDisabled": false
+  },
+  "resilience": {
+    "weekFailureRetry": {
+      "pass": true,
+      "message": "QA temporary week failure"
+    },
+    "rapidClassSwitch": {
+      "pass": true,
+      "group": "grade-1-Ж",
+      "selected": "1Ж",
+      "lessons": 21
+    }
+  },
+  "sourceIntegrity": {
+    "before": {
+      "revision": 448,
+      "displayRevision": 8,
+      "schoolName": "Тестовая школа",
+      "counts": {
+        "groups": 74,
+        "teachers": 131,
+        "rooms": 177,
+        "lessons": 181328
+      }
+    },
+    "after": {
+      "revision": 448,
+      "displayRevision": 8,
+      "schoolName": "Тестовая школа",
+      "counts": {
+        "groups": 74,
+        "teachers": 131,
+        "rooms": 177,
+        "lessons": 181328
+      }
+    },
+    "sameRevisionAndCounts": true,
+    "temporarySchemaRemoved": true
+  },
+  "automated": {
+    "nodeTestPassed": 55,
+    "nodeTestFailed": 0,
+    "nodeTestSkipped": 1,
+    "skipReason": "PostgreSQL trial requires SMENA_TEST_DATABASE_URL",
+    "additionalAssertionScriptsPassed": [
+      "schedule-copy.test.ts",
+      "publication.test.ts"
+    ]
+  }
+}
