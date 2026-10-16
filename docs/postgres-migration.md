@@ -71,7 +71,7 @@ npm run test:postgres
 
 Команды `db:backup` и `db:restore` остаются для прежнего SQLite-контура и не выгружают PostgreSQL. Эксплуатационные шаги: [operations.md](operations.md).
 
-Деплой выполняется последним шагом. Предусмотрены два варианта: самостоятельный Docker Compose и включение в общий пул `/home/rest/proj/app-docker-container`. На этом этапе файлы и контейнеры общего пула не менялись.
+Предусмотрены два варианта: самостоятельный Docker Compose с PostgreSQL 18 и включение в общий пул `/home/rest/proj/app-docker-container` с существующим PostgreSQL. Порядок размещения на rich, начальный перенос данных и обновление описаны в [deployment.md](deployment.md).
 
 ## Проверка архива от 16.10.2026
 

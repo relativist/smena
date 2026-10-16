@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { withBasePath } from "./basePath";
 import InfoTooltip from "./InfoTooltip";
 import { ApiError, type AuthSession } from "./api";
 import { MAX_ARCHIVE_UPLOAD_BYTES, type ArchiveAvailability, type ArchivePreview, type ArchiveRestoreStatus } from "../shared/dataTransfer";
@@ -11,7 +12,7 @@ const OPERATION_KEY = "smena-data-transfer-operation";
 async function checkedFetch(path: string, init: RequestInit = {}, timeout = 15000) {
   let response: Response;
   try {
-    response = await fetch(path, { ...init, credentials: "same-origin", cache: "no-store", signal: init.signal ?? AbortSignal.timeout(timeout) });
+    response = await fetch(withBasePath(path), { ...init, credentials: "same-origin", cache: "no-store", signal: init.signal ?? AbortSignal.timeout(timeout) });
   } catch {
     throw new ApiError("Нет связи с сервером. Можно проверить результат или повторить операцию.", 0);
   }

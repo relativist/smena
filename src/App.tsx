@@ -63,6 +63,7 @@ import ServiceEventDialog from "./ServiceEventDialog";
 import { LessonForm, TimeForm, BreakForm } from "./EditorForms";
 import type { EditorPreviewResponse, StateResponse } from "../server/contracts";
 import { api, ApiError, type AuthSession } from "./api";
+import { withBasePath } from "./basePath";
 import { useAutosave } from "./useAutosave";
 import "./admin-navigation.css";
 
@@ -1171,10 +1172,10 @@ export default function App({
           <button type="button" className="admin-rail-item" disabled={reloading || loggingOut} onClick={() => void openPrint()} title="Печать расписания">
             <Icon name="print" /><span>Печать расписания</span><Icon name="chevron" size={14} />
           </button>
-          <a className="admin-rail-item" href="/" title="Посмотреть опубликованное расписание" aria-label="Расписание для учеников">
+          <a className="admin-rail-item" href={withBasePath("/")} title="Посмотреть опубликованное расписание" aria-label="Расписание для учеников">
             <Icon name="calendar" /><span>Ученикам</span><Icon name="chevron" size={14} />
           </a>
-          <a className="admin-rail-item" href="/teachers" title="Посмотреть расписание преподавателя" aria-label="Расписание для учителей">
+          <a className="admin-rail-item" href={withBasePath("/teachers")} title="Посмотреть расписание преподавателя" aria-label="Расписание для учителей">
             <Icon name="people" /><span>Учителям</span><Icon name="chevron" size={14} />
           </a>
         </nav>

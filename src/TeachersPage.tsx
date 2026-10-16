@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "./api";
+import { withBasePath } from "./basePath";
 import { chooseTeacherLocation, dateIso, isValidIsoDate, mondayOf, nearestLessonDate, TEACHER_STORAGE_KEY, weekDatesFor } from "../shared/teacherNavigation.ts";
 import { visibleQuarters } from "../shared/plans.ts";
 import type { PublicTeacher, PublicTeacherDay, PublicTeacherGroup, PublicTeacherLesson, PublicTeacherSchedule, PublicTeachersIndex } from "../shared/teacherTypes.ts";
@@ -223,7 +224,7 @@ export default function TeachersPage() {
   const retry = () => loadIndex(undefined, selection);
 
   return <div className="teachers-page">
-    <header className="teachers-header"><div className="teachers-header-top"><a className="teachers-brand" href="/teachers" aria-label="Смена — главная страница учителей"><span className="teachers-brand-mark">С</span><span>смена</span></a><span className="teachers-header-title">Учителям</span><SchoolName className="teachers-header-school-name" /><nav className="teachers-public-links" aria-label="Публичные страницы"><a className="teachers-student-link" href="/">Ученикам</a><a className="teachers-admin-link" href="/admin" aria-label="Вход для администратора"><span className="teachers-admin-label">Вход для администратора</span><span className="teachers-admin-short">Вход</span></a></nav></div></header>
+    <header className="teachers-header"><div className="teachers-header-top"><a className="teachers-brand" href={withBasePath("/teachers")} aria-label="Смена — главная страница учителей"><span className="teachers-brand-mark">С</span><span>смена</span></a><span className="teachers-header-title">Учителям</span><SchoolName className="teachers-header-school-name" /><nav className="teachers-public-links" aria-label="Публичные страницы"><a className="teachers-student-link" href={withBasePath("/")}>Ученикам</a><a className="teachers-admin-link" href={withBasePath("/admin")} aria-label="Вход для администратора"><span className="teachers-admin-label">Вход для администратора</span><span className="teachers-admin-short">Вход</span></a></nav></div></header>
     <main className="teachers-main">
       {indexError && <div className="teachers-state teachers-error" role="alert"><p>{indexError}</p><button onClick={retry}>Повторить</button></div>}
       {!indexError && loading && !selection && <div className="teachers-state" role="status">Загружаем опубликованное расписание…</div>}

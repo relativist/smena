@@ -1,0 +1,16 @@
+.git
+.agents
+.codex
+node_modules
+dist
+artifacts
+.playwright-cli
+data
+backups
+.env
+.env.*
+*.log
+*.sqlite*
+*.smena.gz
+assets
+screenshot.png

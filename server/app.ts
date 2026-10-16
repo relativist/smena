@@ -3780,7 +3780,8 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
     const db = options.dbPath || (options.databaseUrl === undefined && process.env.SMENA_DB_PATH !== undefined)
         ? await makeSqliteDatabase(dbPath!)
         : await makePostgresDatabase(databaseUrl!);
-    const app = Fastify({ logger: false, bodyLimit: MAX_BODY_BYTES });
+    const app = Fastify({ logger: false, bodyLimit: MAX_BODY_BYTES, trustProxy: process.env.SMENA_TRUST_PROXY === "1" });
+    const cookiePath = process.env.SMENA_BASE_PATH || "/";
     await app.register(cookie);
     const maintenance = new MaintenanceGate();
     const activeHandlers = new WeakSet<object>();
@@ -3908,7 +3909,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         gate: maintenance,
         getSession, isSameOrigin,
         sessionKey: (request) => hash(request.cookies[COOKIE_NAME] ?? ""),
-        setCookie: (reply, token, secure) => { reply.setCookie(COOKIE_NAME, token, { httpOnly: true, sameSite: "strict", path: "/", secure, maxAge: Math.floor(SESSION_MS / 1000) }); },
+        setCookie: (reply, token, secure) => { reply.setCookie(COOKIE_NAME, token, { httpOnly: true, sameSite: "strict", path: cookiePath, secure, maxAge: Math.floor(SESSION_MS / 1000) }); },
         drainGenerationWrites: () => generationControl.drainWrites(),
         beforeWrite: options.archiveBeforeWrite,
         onRestored: () => {
@@ -4233,7 +4234,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         reply.setCookie(COOKIE_NAME, token, {
             httpOnly: true,
             sameSite: "strict",
-            path: "/",
+            path: cookiePath,
             secure: request.protocol === "https",
             maxAge: Math.floor(SESSION_MS / 1000),
         });
@@ -4287,7 +4288,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         reply.setCookie(COOKIE_NAME, token, {
             httpOnly: true,
             sameSite: "strict",
-            path: "/",
+            path: cookiePath,
             secure: request.protocol === "https",
             maxAge: Math.floor(SESSION_MS / 1000),
         });
@@ -4310,7 +4311,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         if (token)
             await db.prepare("DELETE FROM sessions WHERE token_hash = ?").run(hash(token));
         reply.clearCookie(COOKIE_NAME, {
-            path: "/",
+            path: cookiePath,
             sameSite: "strict",
             secure: request.protocol === "https",
         });

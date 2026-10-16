@@ -1,0 +1,37 @@
+services:
+  smena:
+    build:
+      context: .
+      args:
+        APP_BASE_PATH: /
+    environment:
+      SMENA_DATABASE_URL: postgresql://smena:${SMENA_POSTGRES_PASSWORD:?Set SMENA_POSTGRES_PASSWORD}@smena-postgres:5432/smena
+      SMENA_HOST: 0.0.0.0
+      SMENA_PORT: 3001
+    ports:
+      - "${SMENA_BIND_ADDRESS:-127.0.0.1}:${SMENA_PORT:-3001}:3001"
+    depends_on:
+      smena-postgres:
+        condition: service_healthy
+    volumes:
+      - smena-backups:/app/backups
+    restart: unless-stopped
+
+  smena-postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: smena
+      POSTGRES_USER: smena
+      POSTGRES_PASSWORD: ${SMENA_POSTGRES_PASSWORD:?Set SMENA_POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - smena-postgres-data:/var/lib/postgresql
+    restart: unless-stopped
+
+volumes:
+  smena-postgres-data:
+  smena-backups:

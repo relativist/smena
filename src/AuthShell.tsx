@@ -18,6 +18,7 @@ import TeacherReassignmentsPage, { type TeacherReassignmentsContext } from "./Te
 import SchedulePrintPage from "./SchedulePrintPage";
 import DocumentationPage from "./DocumentationPage";
 import { pathForView, viewForPath, type AppView } from "./navigation";
+import { withBasePath } from "./basePath";
 import { api, ApiError, type AuthSession, type AuthStatus } from "./api";
 import type { StateResponse } from "../server/contracts";
 import "./auth.css";
@@ -424,7 +425,7 @@ function Brand() {
   return (
     <>
       <div className="auth-brand">
-        <img className="auth-mascot" src="/schoolboy.png" alt="" width="80" height="80" decoding="async" />
+        <img className="auth-mascot" src={withBasePath("/schoolboy.png")} alt="" width="80" height="80" decoding="async" />
         <span className="auth-brand-name">Смена</span>
       </div>
       <SchoolName className="auth-school-name" />

@@ -2,6 +2,7 @@ import { matchesGroupSearch } from "../shared/groupSearch";
 import GroupSearchHint from "./GroupSearchHint";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "./api";
+import { withBasePath } from "./basePath";
 import { chooseStudentLocation, dateIso, groupFor, isValidIsoDate, mondayOf, nearestLessonDate, STUDENT_GROUP_STORAGE_KEY, weekDatesFor } from "../shared/studentNavigation.ts";
 import { visibleQuarters } from "../shared/plans.ts";
 import type { PublicStudentDay, PublicStudentGroup, PublicStudentLesson, PublicStudentSchedule, PublicStudentsIndex } from "../shared/studentTypes.ts";
@@ -219,7 +220,7 @@ export default function StudentsPage() {
   const retry = () => loadIndex();
 
   return <div className="students-page">
-    <header className="students-header"><div className="students-header-top"><a className="students-brand" href="/" aria-label="Смена — главная страница учеников"><span className="students-brand-mark">С</span><span>смена</span></a><span className="students-header-title">Ученикам</span><SchoolName className="students-header-school-name" /><nav className="students-public-links" aria-label="Публичные страницы"><a className="students-admin-link" href="/teachers">Учителям</a><a className="students-admin-link" href="/admin" aria-label="Вход для администратора">Администратору</a></nav></div></header>
+    <header className="students-header"><div className="students-header-top"><a className="students-brand" href={withBasePath("/")} aria-label="Смена — главная страница учеников"><span className="students-brand-mark">С</span><span>смена</span></a><span className="students-header-title">Ученикам</span><SchoolName className="students-header-school-name" /><nav className="students-public-links" aria-label="Публичные страницы"><a className="students-admin-link" href={withBasePath("/teachers")}>Учителям</a><a className="students-admin-link" href={withBasePath("/admin")} aria-label="Вход для администратора">Администратору</a></nav></div></header>
     <main className="students-main">
       {indexError && <div className="students-state students-error" role="alert"><p>{indexError}</p><button onClick={retry}>Повторить</button></div>}
       {!indexError && loading && !selection && <div className="students-state" role="status">Загружаем опубликованное расписание…</div>}

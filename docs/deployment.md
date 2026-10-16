@@ -1,0 +1,51 @@
+# Деплой Смены
+
+Приложение работает с PostgreSQL 18. При старте применяются недостающие миграции и добавляются готовые школьные предметы. Повторный запуск сохраняет школьные данные и администратора. Пароли и дампы в Git не добавляются.
+
+## Самостоятельный Docker Compose
+
+Создайте игнорируемый `.env` с `SMENA_POSTGRES_PASSWORD=<случайный пароль>` и запустите:
+
+```bash
+docker compose config --quiet
+docker compose up -d --build
+docker compose ps
+```
+
+По умолчанию приложение доступно на `http://127.0.0.1:3001/`, PostgreSQL не публикует порт. Для доступа из сети задайте `SMENA_BIND_ADDRESS=0.0.0.0` или используйте reverse proxy. В новой базе администратор создаётся на странице `/admin`; первоначальную настройку выполните до открытия доступа из внешней сети.
+
+Именованные тома `smena-postgres-data` и `smena-backups` сохраняют базу и автоматические копии перед восстановлением архива. Для PostgreSQL 18 том базы монтируется в `/var/lib/postgresql`. Не используйте `docker compose down -v`, если данные нужны.
+
+## Общий пул на rich
+
+Общий проект: `/volume1/security/docker/app-docker-container`; исходники Смены: `/volume1/security/docker/smena`. Сборка получает `APP_BASE_PATH=/smena/`. Nginx снимает префикс `/smena/` перед передачей запросов приложению на внутренний порт 3001.
+
+Для этого варианта используется существующий PostgreSQL сервиса `chess-quest-postgres`: отдельная база `smena`, отдельный пользователь `smena`. Сервис Смены подключён к сетям `frontend-gateway` и `chess-quest-db`; наружу публикуется только общий gateway. Пароль пользователя хранится в серверном `.env` как `SMENA_POSTGRES_PASSWORD`. Изменение этой переменной само по себе не меняет пароль роли PostgreSQL.
+
+Runtime-переменные: `SMENA_BASE_PATH=/smena/` ограничивает путь cookie; `SMENA_TRUST_PROXY=1` позволяет учитывать протокол, переданный доверенным gateway. Этот режим предназначен для внутреннего контейнера за прокси. Сборка без `APP_BASE_PATH` остаётся доступной от `/`.
+
+Первое размещение выполнено с переносом согласованного снимка локальной базы PostgreSQL, включая учётную запись администратора. Активные сеансы входа не переносятся. На сервере не требуется повторно создавать администратора: используется прежний логин и пароль.
+
+Обновление приложения без пересборки соседних сервисов:
+
+```bash
+git -C /volume1/security/docker/smena pull --ff-only
+cd /volume1/security/docker/app-docker-container
+sudo /usr/local/bin/docker compose config --quiet
+sudo /usr/local/bin/docker compose up -d --build --no-deps smena
+sudo /usr/local/bin/docker exec app-gateway nginx -t
+sudo /usr/local/bin/docker exec app-gateway nginx -s reload
+```
+
+Повторное обновление не импортирует локальную базу. Перенос школьных данных после первого размещения выполняется через архив `.smena.gz` в общих настройках.
+
+Проверка:
+
+```bash
+curl -f http://127.0.0.1:4173/smena/api/health
+curl -I http://127.0.0.1:4173/smena/admin
+```
+
+Адреса: [список приложений](http://sitnikov.synology.me:4173/), [Смена](http://sitnikov.synology.me:4173/smena/), [администратор](http://sitnikov.synology.me:4173/smena/admin). В локальной сети доступны те же пути на `http://192.168.1.6:4173/`.
+
+`npm run test:deployment` проверяет маршрутизацию для `/` и `/smena/`, cookie входа/выхода за HTTPS-прокси и запрет запросов с чужого origin.
