@@ -1,5 +1,6 @@
 import Fastify, { type FastifyInstance, type FastifyRequest } from "fastify";
 import cookie from "@fastify/cookie";
+import fastifyCompress from "@fastify/compress";
 import fastifyStatic from "@fastify/static";
 import { openSqliteDatabase, openPostgresDatabase, type AsyncDatabase } from "./database.ts";
 import { initializePostgresSchema } from "./postgresSchema.ts";
@@ -3781,6 +3782,15 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         ? await makeSqliteDatabase(dbPath!)
         : await makePostgresDatabase(databaseUrl!);
     const app = Fastify({ logger: false, bodyLimit: MAX_BODY_BYTES, trustProxy: process.env.SMENA_TRUST_PROXY === "1" });
+    await app.register(fastifyCompress, {
+        globalCompression: true,
+        globalDecompression: false,
+        encodings: ["gzip"],
+        threshold: 1024,
+        zlibOptions: { level: 6 },
+        // Keep the default text/data types and include the bundled TTF fonts.
+        customTypes: /^text\/(?!event-stream)|(?:\+|\/)(?:json|text|xml)(?:;|$)|octet-stream(?:;|$)|^font\/(?:ttf|otf)(?:;|$)/u,
+    });
     const cookiePath = process.env.SMENA_BASE_PATH || "/";
     await app.register(cookie);
     const maintenance = new MaintenanceGate();

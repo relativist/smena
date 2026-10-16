@@ -49,6 +49,7 @@ import {
   setSlotTime,
   setBreak,
   appendSlot,
+  removeEmptySlot,
   canPlace,
   canSwapLessons,
   swapLessons,
@@ -68,6 +69,7 @@ import type { EditorPreviewResponse, StateResponse } from "../server/contracts";
 import { api, ApiError, type AuthSession } from "./api";
 import { withBasePath } from "./basePath";
 import { useAutosave } from "./useAutosave";
+import ScheduleLessonCard from "./ScheduleLessonCard";
 import "./admin-navigation.css";
 
 type IconName =
@@ -188,6 +190,13 @@ function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
 const weekdays = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
 const weekdayIndex = (date: string) => (new Date(`${date}T00:00:00Z`).getUTCDay() + 6) % 7;
 const weekdayName = (date: string) => weekdays[weekdayIndex(date)];
+const compactSubgroupSlot = (lessons: EditorLesson[]) => lessons.length > 1
+  && lessons.every(lesson => !lesson.event && Boolean(lesson.subgroupId || lesson.subgroup));
+const compactSubjectName = (name: string) => {
+  const letters = (name.match(/\p{L}/gu) ?? []).slice(0, 3);
+  if (letters.length) letters[0] = letters[0].toLocaleUpperCase("ru");
+  return letters.join("") || "—";
+};
 const dateLabel = (value: string, long = false) =>
   new Date(`${value}T12:00:00`)
     .toLocaleDateString("ru-RU", {
@@ -1715,7 +1724,7 @@ export default function App({
                       </div>
                     ) : (
                       <button
-                        className={`day-note ${day.times.every((t) => t.duration === 35) ? "shortened" : ""}`}
+                        className={`day-note ${day.times.length > 0 && day.times.every((t) => t.duration === 35) ? "shortened" : ""}`}
                         onClick={() =>
                           setTimeDialog({
                             location: locationFor(day.date, 0),
@@ -1727,7 +1736,7 @@ export default function App({
                         title="Настроить время дня"
                       >
                         <Icon name="clock" size={12} />
-                        {day.times.every((t) => t.duration === 35)
+                        {day.times.length > 0 && day.times.every((t) => t.duration === 35)
                           ? "Уроки по 35 мин"
                           : `Начало в ${day.start}`}
                         <span aria-hidden="true">⌄</span>
@@ -1750,6 +1759,7 @@ export default function App({
                     ) : (
                       <>
                         {day.slots.map((lessons, slot) => {
+                          const compactSlot = compactSubgroupSlot(lessons);
                           const location = locationFor(day.date, slot);
                           const targetId = `${day.date}:${slot}`;
                           const dropTarget = dropTargets.get(targetId);
@@ -1771,9 +1781,23 @@ export default function App({
                                 >
                                   {timeLabel(day, slot)}
                                 </button>
+                                {lessons.length === 0 && slot === day.slots.length - 1 && (
+                                  <button
+                                    className="remove-empty-slot-button"
+                                    onClick={() => attempt(() => applyChange(
+                                      value => removeEmptySlot(value, location),
+                                      "Пустая ячейка удалена",
+                                      location,
+                                    ))}
+                                    aria-label={`Удалить пустую ячейку ${slot + 1}, ${weekdayName(day.date)}`}
+                                    title="Удалить пустую ячейку и перемену перед ней"
+                                  >
+                                    <Icon name="trash" size={13} />
+                                  </button>
+                                )}
                               </div>
                               <div
-                                className={`lesson-slot ${isGap ? "schedule-gap" : ""} ${lessons.length > 1 ? "split-slot" : ""} ${dropTarget ? dropTarget.self ? "drop-source" : dropReason ? "drop-blocked" : "drop-allowed" : ""} ${hovered === targetId ? "drop-hover" : ""}`}
+                                className={`lesson-slot ${isGap ? "schedule-gap" : ""} ${lessons.length > 1 ? "split-slot" : ""} ${compactSlot ? "compact-slot" : ""} ${dropTarget ? dropTarget.self ? "drop-source" : dropReason ? "drop-blocked" : "drop-allowed" : ""} ${hovered === targetId ? "drop-hover" : ""}`}
                                 data-date={day.date}
                                 data-slot={slot}
                                 style={
@@ -1782,23 +1806,7 @@ export default function App({
                                       1,
                                       ...week.map((other) => {
                                         const entries = other.slots[slot] ?? [];
-                                        const addingSubgroup =
-                                          activePlacement &&
-                                          entries.length > 0 &&
-                                          entries.every(
-                                            (lesson) => lesson.subgroup,
-                                          ) &&
-                                          !canPlace(
-                                            schedule,
-                                            locationFor(other.date, slot),
-                                            activePlacement.lesson,
-                                            activePlacement.from?.id,
-                                            catalog,
-                                          );
-                                        return (
-                                          entries.length +
-                                          (addingSubgroup ? 1 : 0)
-                                        );
+                                        return compactSubgroupSlot(entries) ? 1 : entries.length;
                                       }),
                                     ),
                                   } as CSSProperties
@@ -1862,6 +1870,9 @@ export default function App({
                                     const teacher = teacherLabel(
                                       lesson.teacher ?? "",
                                     );
+                                    const fullTeacher = catalog.teachers.find(item => item.id === lesson.teacherId)?.name
+                                      || lesson.teacher || "Преподаватель не задан";
+                                    const subgroup = lesson.subgroup || catalog.subgroups.find(item => item.id === lesson.subgroupId)?.name;
                                     const room = lesson.room ?? "Не задан";
                                     const roomLabel = /^\d/.test(room)
                                       ? `Каб. ${room}`
@@ -1876,8 +1887,20 @@ export default function App({
                                       from: { location, id: lesson.id },
                                     };
                                     return (
-                                      <button
+                                      <ScheduleLessonCard
                                         key={lesson.id}
+                                        compact={compactSlot}
+                                        abbreviation={compactSubjectName(subject?.name ?? "")}
+                                        previewEnabled={!activePlacement}
+                                        preview={<>
+                                          <strong>{subject?.name}{lesson.lessonKind === "lab" ? " · лабораторная" : ""}</strong>
+                                          <span>{subgroup}</span>
+                                          <span>{fullTeacher}</span>
+                                          <span>{roomLabel} · {timeLabel(day, slot)}</span>
+                                          {lesson.jointId && <span>Совместное занятие</span>}
+                                          {lesson.note && <span>{lesson.note}</span>}
+                                          {unavailable.length > 0 && <span className="lesson-availability-label">{unavailable.map(entry => entry.message).join("; ")}</span>}
+                                        </>}
                                         draggable={!lesson.event && !lesson.jointId}
                                         onDragStart={(event) =>
                                           beginDrag(event, payload)
@@ -1892,6 +1915,10 @@ export default function App({
                                             placeAt(location);
                                             return;
                                           }
+                                          if (compactSlot && placement && !dropReason && !dropTarget?.self) {
+                                            placeAt(location);
+                                            return;
+                                          }
                                           if (placement) setPlacement(null);
                                           if (lesson.event) {
                                             void openServiceEvent({ title: lesson.event, location, lessonId: lesson.id });
@@ -1903,7 +1930,7 @@ export default function App({
                                           });
                                         }}
                                         className={`lesson-card ${lesson.event ? "event-card" : (subject?.color ?? "blue")} ${selected === lesson.subjectId ? "highlighted" : ""} ${unavailable.length ? "lesson-unavailable" : ""}`}
-                                        aria-label={`${lesson.event ?? subject?.name}, ${lesson.subgroup ?? "вся группа"}, ${weekdayName(day.date)}, ${timeLabel(day, slot)}${unavailable.length ? `, ${availabilityLabel}` : ""}`}
+                                        aria-label={`${lesson.event ?? subject?.name}, ${subgroup ?? "вся группа"}, ${weekdayName(day.date)}, ${timeLabel(day, slot)}${unavailable.length ? `, ${availabilityLabel}` : ""}`}
                                         title={activePlacement ? dropTarget?.label : `${fullTitle} · ${roomLabel}${lesson.subgroup ? ` · ${lesson.subgroup}` : ""}${lesson.note ? ` · ${lesson.note}` : ""}${unavailable.length ? ` · ${unavailable.map(entry => entry.message).join("; ")}` : ""}`}
                                       >
                                         {lesson.event ? <span className="event-card-icon"><Icon name="calendar" size={29} /></span> : showSubjectIcons && subject && <SubjectIcon subject={subject} />}
@@ -1941,20 +1968,21 @@ export default function App({
                                           </span>
                                           {unavailable.length > 0 && <span className="lesson-availability-label">{availabilityLabel}</span>}
                                         </span>
-                                      </button>
+                                      </ScheduleLessonCard>
                                     );
                                   })
                                 )}
                                 {lessons.length > 0 &&
-                                  lessons.every((lesson) => lesson.subgroup) &&
+                                  lessons.every((lesson) => lesson.subgroupId || lesson.subgroup) &&
                                   activePlacement &&
                                   !dropReason && (
                                     <button
                                       className="add-subgroup-button"
                                       onClick={() => placeAt(location)}
                                       aria-label={`Добавить подгруппу, ${weekdayName(day.date)}, урок ${slot + 1}`}
+                                      title="Добавить выбранную подгруппу"
                                     >
-                                      + Подгруппа
+                                      +
                                     </button>
                                   )}
                               </div>
@@ -1982,6 +2010,10 @@ export default function App({
                         })}
                         <button
                           className="add-slot-button"
+                          disabled={day.slots.at(-1)?.length === 0 || day.slots.length >= 12}
+                          title={day.slots.at(-1)?.length === 0
+                            ? "Сначала заполните пустую ячейку в конце дня"
+                            : day.slots.length >= 12 ? "В день можно добавить не больше 12 ячеек" : undefined}
                           onClick={() =>
                             attempt(() =>
                               applyChange(

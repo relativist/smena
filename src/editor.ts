@@ -902,6 +902,8 @@ export function appendSlot(schedule: Schedule, location: Location, profile?: Bel
   const day = days?.find((entry) => entry.date === location.date);
   if (!day) fail("Не найден день расписания");
   if (day.holiday) fail("В этот день каникулы");
+  if (day.slots.at(-1)?.length === 0)
+    fail("В конце дня уже есть пустая ячейка — сначала заполните её");
   if (day.slots.length >= 12) fail("В день можно добавить не больше 12 ячеек");
   const effectiveProfile = profile ?? day.bellProfile ?? DEFAULT_BELL_PROFILE;
   const previous = day.times.at(-1);
@@ -912,11 +914,27 @@ export function appendSlot(schedule: Schedule, location: Location, profile?: Bel
   const duration = day.duration !== (day.bellProfile ?? DEFAULT_BELL_PROFILE).duration
     ? day.duration
     : effectiveProfile.duration;
-  const next = updateDay(schedule, { ...location, slot: 0 }, (copy) => {
-    copy.slots.push([]);
-    copy.times.push({ start, duration });
+  const copy = cloneDay(day);
+  copy.slots.push([]);
+  copy.times.push({ start, duration });
+  validateTimes(copy);
+  return {
+    ...schedule,
+    [key(location.groupId, location.weekOffset)]: days.map(entry => entry === day ? copy : entry),
+  };
+}
+
+export function removeEmptySlot(schedule: Schedule, location: Location): Schedule {
+  const { day } = locate(schedule, location);
+  if (day.holiday) fail("В этот день каникулы");
+  if (location.slot !== day.slots.length - 1)
+    fail("Можно удалить только последнюю пустую ячейку дня");
+  if (day.slots[location.slot].length)
+    fail("Сначала удалите или перенесите занятие из ячейки");
+  return updateDay(schedule, location, copy => {
+    copy.slots.pop();
+    copy.times.pop();
     validateTimes(copy);
     return copy;
   });
-  return next;
 }

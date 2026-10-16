@@ -98,6 +98,7 @@ test("validates selection and timing inputs", () => {
 
 test("shortening preserves the bell snapshot and appended slots use the shorter duration and breaks", () => {
   const input = base();
+  input["g1:0"][0].slots.at(-1)!.push({ id: "tail-lesson", subjectId: "math" });
   input["g1:0"][0].bellProfile = { start: 480, duration: 45, breaks: [10, 15] };
   const next = applyDayTiming(input, { ...options(["g1"]), uniformBreak: 5 }, catalog);
   assert.deepEqual(next["g1:0"][0].bellProfile, input["g1:0"][0].bellProfile);

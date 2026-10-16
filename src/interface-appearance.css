@@ -129,6 +129,8 @@ body :is(.students-page, .teachers-page) { font-size: var(--ui-text); }
 
 .admin-workspace {
   --schedule-day-width: 260px;
+  --subjects-panel-width: 216px;
+  --palette-panel-width: 238px;
   --panel-subject-icon-size: 32px;
   --lesson-subject-icon-size: 36px;
   font-size: var(--ui-text);
@@ -152,7 +154,7 @@ body :is(.students-page, .teachers-page) { font-size: var(--ui-text); }
 .admin-workspace .context-actions { flex-wrap: wrap; }
 .admin-workspace .context-actions button { min-height: 36px; font-size: var(--ui-text); }
 .admin-workspace .context-actions .edit-status { font-size: var(--ui-text); line-height: 1.3; }
-.admin-workspace .workspace { grid-template-columns: 216px 238px minmax(0, 1fr); }
+.admin-workspace .workspace { grid-template-columns: var(--subjects-panel-width) var(--palette-panel-width) minmax(0, 1fr); }
 .admin-workspace :is(.subjects-panel, .palette-panel) { padding: 10px; }
 .admin-workspace .panel-heading { min-height: 26px; margin-bottom: 8px; }
 .admin-workspace .panel-heading h2 { font-size: var(--ui-heading); }
@@ -187,7 +189,40 @@ body :is(.students-page, .teachers-page) { font-size: var(--ui-text); }
 .admin-workspace .day-note { top: 48px; height: 24px; font-size: var(--ui-secondary); }
 .admin-workspace .slot-time { height: 20px; font-size: var(--ui-secondary); }
 .admin-workspace .slot-number { height: 20px; min-width: 16px; }
+.admin-workspace .remove-empty-slot-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  padding: 2px 4px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: #7887a0;
+  cursor: pointer;
+}
+.admin-workspace .remove-empty-slot-button:is(:hover, :focus-visible) {
+  background: #fff0ee;
+  color: #b33b32;
+}
+.admin-workspace .add-slot-button:disabled { opacity: .5; cursor: default; }
 .admin-workspace .lesson-slot { --card-min-height: 60px; --card-gap: 4px; }
+.admin-workspace .lesson-slot:has(> .add-subgroup-button) { position: relative; }
+.admin-workspace .lesson-slot > .add-subgroup-button {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  border: 1px solid #a9b8e9;
+  border-radius: 5px;
+  background: #fff;
+  color: #4260d5;
+  font-size: 18px;
+  line-height: 1;
+}
 .admin-workspace .lesson-card { padding: 6px 8px; gap: 8px; border-radius: 6px; }
 .admin-workspace .lesson-card > .subject-icon { width: var(--lesson-subject-icon-size); height: var(--lesson-subject-icon-size); flex-basis: var(--lesson-subject-icon-size); }
 .admin-workspace .lesson-card > .event-card-icon { width: var(--lesson-subject-icon-size); height: var(--lesson-subject-icon-size); flex: 0 0 var(--lesson-subject-icon-size); }
@@ -214,8 +249,36 @@ body :is(.students-page, .teachers-page) { font-size: var(--ui-text); }
 .admin-rail .admin-rail-item > svg:first-child { width: 28px; height: 28px; flex: 0 0 28px; }
 
 @media (max-width: 1100px) and (min-width: 761px) {
-  .admin-workspace .workspace { grid-template-columns: 180px 220px minmax(0, 1fr); }
+  .admin-workspace { --subjects-panel-width: 180px; --palette-panel-width: 220px; }
   .admin-workspace .context-bar { gap: 9px; }
+}
+/* Mouse users can open the lesson palette over the wider, stationary grid.
+   Keyboard focus also reveals it; touch layouts keep the ordinary panel. */
+@media (min-width: 761px) and (hover: hover) and (pointer: fine) {
+  .admin-workspace .workspace {
+    position: relative;
+    grid-template-columns: var(--subjects-panel-width) minmax(0, 1fr);
+  }
+  .admin-workspace .palette-panel {
+    position: absolute;
+    inset-block: 0;
+    left: var(--subjects-panel-width);
+    width: var(--palette-panel-width);
+    z-index: 10;
+    /* Keep the drag source rendered when the pointer leaves the palette. */
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 8px 0 18px rgb(29 43 75 / 12%);
+  }
+  .admin-workspace .workspace:has(
+    > .subjects-panel:hover,
+    > .palette-panel:hover,
+    > .subjects-panel :focus-visible:not(input),
+    > .palette-panel :focus-visible
+  ) > .palette-panel {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 @media (max-width: 760px) {
   .admin-workspace { --schedule-day-width: 290px; font-size: var(--ui-secondary); }

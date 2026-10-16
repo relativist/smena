@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   appendSlot,
+  removeEmptySlot,
   canPlace,
   createSchedule,
   editLesson,
@@ -63,6 +64,7 @@ test("date-filtered room occupancies match full results for one day, including j
 
 test("shortened day changes every slot and its breaks without changing other dates or groups", () => {
   const { schedule, location } = setup();
+  schedule[key("5a", 0)][0].slots.at(-1)!.push({ id: "last-lesson", subjectId: "math" });
   const original = structuredClone(schedule);
   const day = schedule[key(location.groupId, location.weekOffset)][0];
   const breaks = Array(day.times.length - 1).fill(5);
@@ -555,6 +557,7 @@ test("moving a joint slot with following lessons enabled is blocked", () => {
 
 test("append uses the day, adds a 45 minute slot after the final break", () => {
   const { schedule, location } = setup();
+  schedule[key("5a", 0)][0].slots.at(-1)!.push({ id: "last-lesson", subjectId: "math" });
   const appended = appendSlot(schedule, { ...location, slot: 99 });
   const before = schedule[key("5a", 0)][0];
   const after = appended[key("5a", 0)][0];
@@ -569,6 +572,7 @@ test("append uses the day, adds a 45 minute slot after the final break", () => {
 test("append follows the configured break position and preserves a shortened day", () => {
   const { schedule, location } = setup();
   const before = schedule[key("5a", 0)][0];
+  before.slots.at(-1)!.push({ id: "last-lesson", subjectId: "math" });
   const profile = { start: 840, duration: 40, breaks: [10, 10, 15, 10, 10, 10, 25] };
   const after = appendSlot(schedule, location, profile)[key("5a", 0)][0];
   assert.equal(after.times.at(-1)?.start, before.times.at(-1)!.start + before.times.at(-1)!.duration + 25);
@@ -578,6 +582,61 @@ test("append follows the configured break position and preserves a shortened day
   const shortened = structuredClone(schedule);
   shortened[key("5a", 0)][0].duration = 35;
   assert.equal(appendSlot(shortened, location, profile)[key("5a", 0)][0].times.at(-1)?.duration, 35);
+});
+
+test("append rejects an empty tail and allows one new cell after an occupied tail", () => {
+  const { schedule, location } = setup();
+  const original = structuredClone(schedule);
+  assert.throws(() => appendSlot(schedule, location), /уже есть пустая ячейка/);
+  assert.deepEqual(schedule, original);
+  schedule[key("5a", 0)][0].slots.at(-1)!.push({ id: "tail-lesson", subjectId: "math" });
+  const next = appendSlot(schedule, location);
+  assert.equal(next[key("5a", 0)][0].slots.at(-1)?.length, 0);
+  const snapshot = structuredClone(next);
+  assert.throws(() => appendSlot(next, location), /уже есть пустая ячейка/);
+  assert.deepEqual(next, snapshot);
+});
+
+test("removing trailing empty cells removes their breaks and preserves lessons, times and undo snapshots", () => {
+  const { schedule, location } = setup();
+  const before = schedule[key("5a", 0)][0];
+  // Existing schedules may already contain several empty cells at the end.
+  before.slots[before.slots.length - 2] = [];
+  const original = structuredClone(schedule);
+  const tailLocation = { ...location, slot: before.slots.length - 1 };
+  const next = removeEmptySlot(schedule, tailLocation);
+  const after = next[key("5a", 0)][0];
+  assert.deepEqual(after.slots, before.slots.slice(0, -1));
+  assert.deepEqual(after.times, before.times.slice(0, -1));
+  assert.deepEqual(after.breaks, before.breaks.slice(0, -1));
+  assert.deepEqual(schedule, original);
+  assert.equal(next[key("5b", 0)], schedule[key("5b", 0)]);
+  assert.equal(next[key("5a", 0)][1], schedule[key("5a", 0)][1]);
+  const twice = removeEmptySlot(next, { ...tailLocation, slot: tailLocation.slot - 1 });
+  assert.deepEqual(twice[key("5a", 0)][0].times, before.times.slice(0, -2));
+  assert.deepEqual(twice[key("5a", 0)][0].breaks, before.breaks.slice(0, -2));
+  assert.throws(() => removeEmptySlot(schedule, location), /только последнюю/);
+  before.slots.at(-1)!.push({ id: "occupied-tail", subjectId: "math" });
+  const occupied = structuredClone(schedule);
+  assert.throws(() => removeEmptySlot(schedule, tailLocation), /удалите или перенесите/);
+  assert.deepEqual(schedule, occupied);
+});
+
+test("the only empty cell can be removed and added back with the same day timing", () => {
+  const { schedule, location } = setup();
+  const day = schedule[key("5a", 0)][0];
+  day.slots = [[]];
+  day.times = [{ start: parseTime(day.start), duration: day.duration }];
+  day.breaks = [];
+  const removed = removeEmptySlot(schedule, location);
+  const emptyDay = removed[key("5a", 0)][0];
+  assert.deepEqual(emptyDay.slots, []);
+  assert.deepEqual(emptyDay.times, []);
+  assert.deepEqual(emptyDay.breaks, []);
+  const restored = appendSlot(removed, location)[key("5a", 0)][0];
+  assert.deepEqual(restored.slots, day.slots);
+  assert.deepEqual(restored.times, day.times);
+  assert.deepEqual(restored.breaks, []);
 });
 
 test("teacher alternatives share one plan and replacement preserves the lesson and hour count", () => {
