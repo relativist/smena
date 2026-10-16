@@ -4,6 +4,7 @@ services:
       context: .
       args:
         APP_BASE_PATH: /
+        APP_VERSION: ${APP_VERSION:-0.1.0}
     environment:
       SMENA_DATABASE_URL: postgresql://smena:${SMENA_POSTGRES_PASSWORD:?Set SMENA_POSTGRES_PASSWORD}@smena-postgres:5432/smena
       SMENA_HOST: 0.0.0.0

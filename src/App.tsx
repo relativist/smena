@@ -1,4 +1,5 @@
 import { createId } from "../shared/createId.ts";
+import { appVersion } from "./appVersion";
 import SchoolName from "./SchoolSettings";
 import InfoTooltip from "./InfoTooltip";
 import ScheduleGroupSelect from "./ScheduleGroupSelect";
@@ -543,19 +544,6 @@ export default function App({
     });
     return () => { active = false; controller.abort(); };
   }, [scopedMode, activePlacement, scopeLoading, save.status.kind, save.revision, groupId, quarterId, weekOffset, paletteRoomId, auth.csrfToken]);
-  const selectedSubject =
-    subjects.find((subject) => subject.id === selected) ?? subjects[0];
-  const assignmentScope = `${groupId}|${quarterId}|${selectedSubject?.id ?? ""}`;
-  const [paletteAssignmentChoice, setPaletteAssignmentChoice] = useState({ scope: "", id: "" });
-  const selectedAssignment = selectedSubject?.assignments.length === 1
-    ? selectedSubject.assignments[0]
-    : selectedSubject?.assignments.find(assignment =>
-      paletteAssignmentChoice.scope === assignmentScope && assignment.id === paletteAssignmentChoice.id);
-  const paletteReady = Boolean(selectedAssignment);
-  // Until a subgroup is chosen, show each teacher once as an inactive preview.
-  const paletteSubject = selectedSubject ? { ...selectedSubject,
-    assignments: selectedAssignment ? [selectedAssignment] : selectedSubject.assignments.slice(0, 1),
-  } : undefined;
   const isHoliday = week.every((day) => day.holiday);
   const lessonCount = week.reduce(
     (n, day) => n + day.slots.filter((slot) => slot.length > 0).length,
@@ -607,6 +595,20 @@ export default function App({
       (!onlyRemaining || hasDeficit(subject)),
   );
   const deficits = subjects.filter(hasDeficit).length;
+  const selectableSubjects = onlyRemaining ? visibleSubjects : subjects;
+  const selectedSubject =
+    selectableSubjects.find((subject) => subject.id === selected) ?? selectableSubjects[0];
+  const assignmentScope = `${groupId}|${quarterId}|${selectedSubject?.id ?? ""}`;
+  const [paletteAssignmentChoice, setPaletteAssignmentChoice] = useState({ scope: "", id: "" });
+  const selectedAssignment = selectedSubject?.assignments.length === 1
+    ? selectedSubject.assignments[0]
+    : selectedSubject?.assignments.find(assignment =>
+      paletteAssignmentChoice.scope === assignmentScope && assignment.id === paletteAssignmentChoice.id);
+  const paletteReady = Boolean(selectedAssignment);
+  // Until a subgroup is chosen, show each teacher once as an inactive preview.
+  const paletteSubject = selectedSubject ? { ...selectedSubject,
+    assignments: selectedAssignment ? [selectedAssignment] : selectedSubject.assignments.slice(0, 1),
+  } : undefined;
   const palette = (
     paletteSubject
       ? teacherChoices(catalog, paletteSubject, paletteRoomId || undefined)
@@ -1228,7 +1230,7 @@ export default function App({
           </a>
         </nav>
         <div className="admin-rail-footer">
-          <span className="admin-rail-user" title={auth.username}>{auth.username}</span>
+          <span className="admin-rail-user" title={`${auth.username} (${appVersion})`}>{auth.username} ({appVersion})</span>
           <button type="button" className="admin-rail-item" disabled={reloading || loggingOut} onClick={() => void openDocumentation()} title="Документация">
             <Icon name="book" /><span>Документация</span><Icon name="chevron" size={14} />
           </button>
@@ -1408,7 +1410,14 @@ export default function App({
               <input
                 type="checkbox"
                 checked={onlyRemaining}
-                onChange={(event) => setOnlyRemaining(event.target.checked)}
+                onChange={(event) => {
+                  const checked = event.target.checked;
+                  setOnlyRemaining(checked);
+                  if (checked) {
+                    setSelected(visibleSubjects.find(hasDeficit)?.id ?? "");
+                    setPlacement(null);
+                  }
+                }}
               />
               Недобор
             </label>

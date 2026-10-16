@@ -14,3 +14,5 @@ backups
 *.smena.gz
 assets
 screenshot.png
+.deploy-version
+.deploy-rich.lock

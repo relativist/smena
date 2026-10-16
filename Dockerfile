@@ -6,13 +6,16 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 ARG APP_BASE_PATH=/
-ENV APP_BASE_PATH=${APP_BASE_PATH}
+ARG APP_VERSION=0.1.0
+ENV APP_BASE_PATH=${APP_BASE_PATH} APP_VERSION=${APP_VERSION}
 RUN npm run build && npm prune --omit=dev
 
 FROM node:24-bookworm-slim AS runtime
 ARG VCS_REF=unknown
+ARG APP_VERSION=0.1.0
 LABEL org.opencontainers.image.source="https://github.com/relativist/smena" \
-      org.opencontainers.image.revision=${VCS_REF}
+      org.opencontainers.image.revision=${VCS_REF} \
+      org.opencontainers.image.version=${APP_VERSION}
 WORKDIR /app
 ENV NODE_ENV=production SMENA_HOST=0.0.0.0 SMENA_PORT=3001
 COPY --from=build --chown=node:node /app/package.json ./

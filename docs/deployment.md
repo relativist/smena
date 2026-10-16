@@ -30,12 +30,15 @@ Runtime-переменные: `SMENA_BASE_PATH=/smena/` ограничивает
 
 ```bash
 git -C /volume1/security/docker/smena pull --ff-only
-cd /volume1/security/docker/app-docker-container
-sudo /usr/local/bin/docker compose config --quiet
-sudo /usr/local/bin/docker compose up -d --build --no-deps smena
-sudo /usr/local/bin/docker exec app-gateway nginx -t
-sudo /usr/local/bin/docker exec app-gateway nginx -s reload
+cd /volume1/security/docker/smena
+sh scripts/deploy-rich.sh
 ```
+
+Скрипт увеличивает patch-номер версии: `0.1.0` → `0.1.1` → `0.1.2`. Начальная версия берётся из `package.json`, предыдущая — из `.deploy-version` и метки работающего контейнера. Счётчик `.deploy-version` хранится на rich, не попадает в Git и записывается после успешной проверки здоровья контейнера. Одновременные запуски блокируются. При неуспешной сборке счётчик не увеличивается; неуспешный запуск может использовать тот же номер при повторной попытке.
+
+Версия передаётся через временный Compose override как `APP_VERSION`, встраивается в интерфейс и записывается в метку образа `org.opencontainers.image.version`. В раскрытом левом меню над «Документацией» отображается `admin (0.1.1)` (с фактическим именем пользователя). Обычная локальная сборка показывает версию из `package.json`; для проверки можно задать `APP_VERSION=0.1.42 npm run build`.
+
+Для обновления Смены используйте именно скрипт: прямой `docker compose up --build smena` и общая пересборка пула обходят счётчик версии. Скрипт пересобирает и пересоздаёт только Смену, затем проверяет конфигурацию и перезагружает Nginx в `app-gateway`, чтобы обновить адрес контейнера в upstream.
 
 Повторное обновление не импортирует локальную базу. Перенос школьных данных после первого размещения выполняется через архив `.smena.gz` в общих настройках.
 
