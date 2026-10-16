@@ -43,19 +43,18 @@
   font-display: swap;
 }
 
-/* Shared screen type scale. Print layout keeps its own typography.
-   Editor proportions follow screenshot.png. */
+/* Shared screen type scale. Print layout keeps its own typography. */
 :root {
   --ui-font-family: "Cheyenne Infanity", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --school-code-font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --brand-font-family: "Comfortaa", var(--ui-font-family);
   font-family: var(--ui-font-family);
-  --ui-min-text: 20px;
-  --ui-text: var(--ui-min-text);
+  --ui-min-text: 14px;
+  --ui-text: 16px;
   --ui-secondary: var(--ui-min-text);
-  --ui-heading: var(--ui-min-text);
+  --ui-heading: 18px;
   --ui-caption: var(--ui-min-text);
-  font-size: var(--ui-min-text);
+  font-size: var(--ui-text);
 }
 
 :is(.brand, .admin-rail-brand, .students-brand, .teachers-brand) {
@@ -129,27 +128,27 @@ body :is(.students-page, .teachers-page) { font-size: var(--ui-text); }
 .admin-page-header .admin-page-back { font-size: var(--ui-secondary); }
 
 .admin-workspace {
-  --schedule-day-width: 340px;
+  --schedule-day-width: 260px;
   --panel-subject-icon-size: 32px;
-  --lesson-subject-icon-size: 48px;
-  font-size: var(--ui-heading);
+  --lesson-subject-icon-size: 36px;
+  font-size: var(--ui-text);
 }
 .admin-workspace .app-header,
-.admin-workspace .app-header:has(.app-school-name) { height: 70px; min-height: 70px; padding: 10px 18px; gap: 14px; }
+.admin-workspace .app-header:has(.app-school-name) { height: 60px; min-height: 60px; padding: 8px 18px; gap: 14px; }
 .admin-workspace .brand { font-size: 27px; }
 .admin-workspace .brand-mark { width: 34px; height: 34px; margin-right: 9px; border-radius: 9px; }
 .admin-workspace .app-school-name { font-size: var(--ui-heading); }
 .admin-workspace .school-label { display: block; font-size: var(--ui-heading); line-height: 1.25; }
 .admin-workspace .demo-badge { font-size: var(--ui-heading); line-height: 1.25; }
-.admin-workspace .schedule-main { height: calc(100dvh - 70px); padding: 12px 10px 10px; gap: 8px; }
-.admin-workspace .context-bar { min-height: 56px; padding: 7px 10px; gap: 12px; }
+.admin-workspace .schedule-main { height: calc(100dvh - 60px); padding: 10px 10px 8px; gap: 8px; }
+.admin-workspace .context-bar { min-height: 48px; padding: 5px 10px; gap: 12px; }
 .admin-workspace .context-bar h1 { font-size: var(--ui-heading); }
-.admin-workspace .context-bar :is(select, .group-tab) { height: 36px; font-size: var(--ui-heading); }
-.admin-workspace .schedule-group-select__label { font-size: var(--ui-heading); }
+.admin-workspace .context-bar :is(select, .group-tab) { height: 36px; font-size: var(--ui-text); }
+.admin-workspace .schedule-group-select__label { font-size: var(--ui-text); }
 .admin-workspace .context-bar .schedule-group-select > select { width: 150px; min-width: 150px; }
-.admin-workspace .schedule-group-select__variants button { min-height: 36px; font-size: var(--ui-heading); }
-.admin-workspace .context-bar :is(.group-meta, .group-leader, .quarter-select) { font-size: var(--ui-heading); }
-.admin-workspace .context-bar .quarter-select select { width: 270px; min-width: 270px; max-width: none; font-size: var(--ui-heading); }
+.admin-workspace .schedule-group-select__variants button { min-height: 36px; font-size: var(--ui-text); }
+.admin-workspace .context-bar :is(.group-meta, .group-leader, .quarter-select) { font-size: var(--ui-secondary); }
+.admin-workspace .context-bar .quarter-select select { width: 270px; min-width: 270px; max-width: none; font-size: var(--ui-text); }
 .admin-workspace .context-actions { flex-wrap: wrap; }
 .admin-workspace .context-actions button { min-height: 36px; font-size: var(--ui-text); }
 .admin-workspace .context-actions .edit-status { font-size: var(--ui-text); line-height: 1.3; }
@@ -162,42 +161,42 @@ body :is(.students-page, .teachers-page) { font-size: var(--ui-text); }
 .admin-workspace .search-box { height: 34px; font-size: var(--ui-text); }
 .admin-workspace .search-box input { font-size: var(--ui-text); }
 .admin-workspace .filter { font-size: var(--ui-text); margin: 9px 1px; }
-.admin-workspace .subject-row { min-height: 64px; padding: 6px 7px; gap: 10px; }
+.admin-workspace .subject-row { min-height: 56px; padding: 6px 7px; gap: 8px; }
 .admin-workspace .subject-row-copy { gap: 3px; }
-.admin-workspace .subject-row-copy b { font-size: var(--ui-heading); line-height: 1.2; }
-.admin-workspace :is(.subject-row-copy > span, .subject-row-copy small, .subject-hours) { font-size: var(--ui-text); line-height: 1.25; }
+.admin-workspace .subject-row-copy b { font-size: var(--ui-text); line-height: 1.25; }
+.admin-workspace :is(.subject-row-copy > span, .subject-row-copy small, .subject-hours) { font-size: var(--ui-secondary); line-height: 1.3; }
 .admin-workspace .subject-row > .subject-icon { width: var(--panel-subject-icon-size); height: var(--panel-subject-icon-size); flex-basis: var(--panel-subject-icon-size); }
 .admin-workspace :is(.panel-caption, .palette-room) { font-size: var(--ui-text); }
 .admin-workspace .palette-room select { flex: 1 1 100%; width: 100%; max-width: 100%; height: 40px; font-size: var(--ui-text); }
 .admin-workspace .teacher-cards { gap: 6px; }
 .admin-workspace .teacher-card { padding: 8px 9px; }
-.admin-workspace .teacher-name { font-size: var(--ui-heading); font-weight: 700; line-height: 24px; }
-.admin-workspace .room-label { font-size: var(--ui-text); line-height: 22px; }
-.admin-workspace .teacher-card :is(.hours, .hours > b, .remaining-hours) { font-size: var(--ui-text); line-height: 22px; }
-.admin-workspace .teacher-card .plan-line { margin-top: 10px; font-size: var(--ui-heading); line-height: 24px; }
+.admin-workspace .teacher-name { font-size: var(--ui-text); font-weight: 700; line-height: 1.3; }
+.admin-workspace .room-label { font-size: var(--ui-secondary); line-height: 1.3; }
+.admin-workspace .teacher-card :is(.hours, .hours > b, .remaining-hours) { font-size: var(--ui-text); line-height: 1.3; }
+.admin-workspace .teacher-card .plan-line { margin-top: 8px; font-size: var(--ui-text); line-height: 1.3; }
 .admin-workspace .teacher-card .plan-line > span { white-space: nowrap; }
-.admin-workspace .teacher-card .plan-line > b { flex: none; white-space: nowrap; font-size: var(--ui-heading); }
+.admin-workspace .teacher-card .plan-line > b { flex: none; white-space: nowrap; font-size: var(--ui-text); }
 .admin-workspace :is(.palette-hint, .room-choice-reasons, .palette-assignments) { font-size: var(--ui-caption); }
 .admin-workspace .week-toolbar { height: 65px; flex-basis: 65px; padding: 8px 12px; }
 .admin-workspace .week-title h2 { font-size: var(--ui-heading); }
 .admin-workspace .week-title > span { font-size: var(--ui-text); }
 .admin-workspace .week-navigation button { min-height: 32px; font-size: var(--ui-caption); }
 .admin-workspace .day-column { padding: 0 7px; }
-.admin-workspace .day-heading { min-height: 60px; margin: 0 -7px; padding: 6px 9px; }
-.admin-workspace .day-heading :is(span, b) { font-size: var(--ui-heading); line-height: 24px; }
-.admin-workspace .day-note { top: 60px; height: 30px; font-size: var(--ui-text); }
-.admin-workspace .slot-time { height: 24px; font-size: var(--ui-text); }
+.admin-workspace .day-heading { min-height: 48px; margin: 0 -7px; padding: 5px 9px; }
+.admin-workspace .day-heading :is(span, b) { font-size: var(--ui-text); line-height: 1.3; }
+.admin-workspace .day-note { top: 48px; height: 24px; font-size: var(--ui-secondary); }
+.admin-workspace .slot-time { height: 20px; font-size: var(--ui-secondary); }
 .admin-workspace .slot-number { height: 20px; min-width: 16px; }
-.admin-workspace .lesson-slot { --card-min-height: 72px; --card-gap: 4px; }
-.admin-workspace .lesson-card { padding: 8px 10px; gap: 12px; border-radius: 6px; }
+.admin-workspace .lesson-slot { --card-min-height: 60px; --card-gap: 4px; }
+.admin-workspace .lesson-card { padding: 6px 8px; gap: 8px; border-radius: 6px; }
 .admin-workspace .lesson-card > .subject-icon { width: var(--lesson-subject-icon-size); height: var(--lesson-subject-icon-size); flex-basis: var(--lesson-subject-icon-size); }
 .admin-workspace .lesson-card > .event-card-icon { width: var(--lesson-subject-icon-size); height: var(--lesson-subject-icon-size); flex: 0 0 var(--lesson-subject-icon-size); }
 .admin-workspace .event-card-icon > svg { width: 100%; height: 100%; }
-.admin-workspace .lesson-title { font-size: var(--ui-heading); line-height: 24px; }
-.admin-workspace .lesson-meta { min-height: 22px; line-height: 22px; }
-.admin-workspace .lesson-room { font-size: var(--ui-text); line-height: 22px; }
+.admin-workspace .lesson-title { font-size: var(--ui-text); line-height: 1.3; }
+.admin-workspace .lesson-meta { min-height: 18px; line-height: 1.3; }
+.admin-workspace .lesson-room { font-size: var(--ui-secondary); line-height: 1.3; }
 .admin-workspace .subgroup-label { font-size: var(--ui-caption); }
-.admin-workspace .break-label { height: 26px; font-size: var(--ui-heading); color: #78869b; }
+.admin-workspace .break-label { height: 20px; font-size: var(--ui-secondary); color: #78869b; }
 .admin-workspace .empty-slot { min-height: 32px; flex-basis: 32px; font-size: var(--ui-text); }
 .admin-workspace :is(.add-subgroup-button, .add-slot-button) { min-height: 28px; font-size: var(--ui-caption); }
 .admin-workspace .week-strip button { font-size: var(--ui-caption); }
@@ -262,8 +261,8 @@ body :is(.students-page, .teachers-page) { font-size: var(--ui-text); }
 .admin-workspace :is(.slot-number, .primary-teacher, .palette-assignments > small, .lesson-availability-label, .joint-lesson-label, .group-chip, .scope-loading-indicator) { font-size: var(--ui-secondary); line-height: 1.3; }
 .admin-workspace .slot-number { height: auto; min-width: 20px; }
 .admin-workspace .week-navigation button { font-size: var(--ui-text); }
-.admin-workspace .week-strip button { flex: 0 0 230px; min-width: 230px; min-height: 64px; }
-.admin-workspace .week-strip button :is(b, span, small) { font-size: var(--ui-heading); line-height: 1.2; }
+.admin-workspace .week-strip button { flex: 0 0 180px; min-width: 180px; min-height: 52px; }
+.admin-workspace .week-strip button :is(b, span, small) { font-size: var(--ui-secondary); line-height: 1.3; }
 .admin-workspace .week-strip button > svg { width: 20px; height: 20px; flex: 0 0 20px; }
 .admin-workspace .week-strip button.selected :is(span, small) { font-weight: 700; }
 .admin-workspace .week-toolbar { height: auto; min-height: 65px; flex-basis: auto; flex-wrap: wrap; gap: 8px; }
@@ -272,7 +271,7 @@ body :is(.students-page, .teachers-page) { font-size: var(--ui-text); }
 .admin-workspace .palette-room select { max-width: 100%; }
 .auth-page, .auth-overlay { font-size: var(--ui-text); }
 
-/* Native small/option defaults must not introduce a second, smaller scale. */
+/* Native small/option defaults follow the shared secondary text size. */
 body :is(.admin-workspace, .catalog-page, .teacher-load-page, .teacher-reassignments-page, .plan-coverage-page, .documentation-page, .students-page, .teachers-page, dialog, [role="dialog"]) small { font-size: var(--ui-secondary); }
 body option { font-size: inherit; }
 @media (max-width: 700px) {
@@ -291,7 +290,7 @@ body option { font-size: inherit; }
 .admin-workspace .hours-summary .summary-icon { flex: 0 0 26px; }
 .admin-workspace .hours-summary .summary-icon > svg { width: 26px; height: 26px; }
 
-/* Lesson editor uses the common 20 px minimum without cramped inline fields. */
+/* Lesson editor leaves enough room for inline fields. */
 .modal:has(.lesson-form) { width: min(680px, calc(100vw - 28px)); }
 .modal:has(.lesson-form) .lesson-field-row { grid-template-columns: minmax(180px, max-content) minmax(0, 1fr); }
 @media (max-width: 560px) {
@@ -318,23 +317,23 @@ body input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([
 body select:not([multiple]):not([size]),
 body textarea {
   box-sizing: border-box;
-  min-height: 44px;
+  min-height: 36px;
   padding-block: 6px;
   line-height: 1.3;
 }
 body :is(.search-box, .admin-workspace .search-box, .ru-date-control, .ru-time-control) {
   height: auto;
-  min-height: 46px;
+  min-height: 38px;
 }
 body :is(.ru-date-control, .ru-time-control) input {
-  height: 44px;
-  min-height: 44px;
+  height: 36px;
+  min-height: 36px;
 }
 .catalog-filter-row th { height: auto; }
 .catalog-tabs { flex-wrap: wrap; overflow: visible; }
-.catalog-tabs button { height: auto; min-height: 44px; }
-.catalog-tabs small { height: auto; min-height: 26px; }
-body :is(.month-year-picker-trigger, .pc-group-trigger, .tr-group-filter > button, .sp-picker-trigger) { min-height: 44px; }
+.catalog-tabs button { height: auto; min-height: 36px; }
+.catalog-tabs small { height: auto; min-height: 22px; }
+body :is(.month-year-picker-trigger, .pc-group-trigger, .tr-group-filter > button, .sp-picker-trigger) { min-height: 36px; }
 
 body .quarter-plan-dialog { width: min(780px, calc(100vw - 32px)); }
 .quarter-plan-dialog .modal-head h2 { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }

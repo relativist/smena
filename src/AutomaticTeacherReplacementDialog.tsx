@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ActionLabel from "./ActionLabel";
 import InfoTooltip from "./InfoTooltip";
@@ -14,7 +15,7 @@ type Props = { state: StateResponse; auth: AuthSession; initialRequest: Replacem
 type PendingWrite = { kind: "apply" | "undo"; body: Record<string, unknown>; path: string };
 const dateLabel = (value: string) => { const [y,m,d] = value.split("-"); return `${d}.${m}.${y}`; };
 const clock = (minutes: number) => `${String(Math.floor(minutes/60)).padStart(2,"0")}:${String(minutes%60).padStart(2,"0")}`;
-const newId = () => crypto.randomUUID();
+const newId = () => createId();
 
 export default function AutomaticTeacherReplacementDialog({ state, auth, initialRequest, onStateChange, onRefresh, onUnauthorized, onClose }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);

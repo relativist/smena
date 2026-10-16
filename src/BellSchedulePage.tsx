@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import AdminPageHeader from "./AdminPageHeader";
 import ActionLabel from "./ActionLabel";
 import GroupSelection from "./GroupSelection";
@@ -28,7 +29,7 @@ type Pending = { settings: BellSettings; apply?: BellApplyOptions; revision: num
 type Preview = Omit<import("../shared/bellSchedule.ts").BellApplyResult, "schedule">;
 
 const collator = new Intl.Collator("ru", { numeric: true, sensitivity: "base" });
-const makeId = () => crypto.randomUUID();
+const makeId = () => createId();
 const dateText = (date: string) => new Intl.DateTimeFormat("ru", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }).format(new Date(`${date}T00:00:00Z`));
 const timeValue = (minutes: number) => `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`;
 const timeSpan = (times: Array<{ start: number; duration: number }>) => times.length

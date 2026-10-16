@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import { useEffect, useRef, useState } from "react";
 import type { StateResponse } from "../server/contracts";
 import type { Schedule } from "./editor";
@@ -50,7 +51,7 @@ export function useAutosave(
       pending.current ??= {
         schedule: desired.current,
         revision: revision.current,
-        requestId: crypto.randomUUID(),
+        requestId: createId(),
       };
       const snapshot = pending.current;
       report({ kind: "saving", message: "Сохраняется…" });

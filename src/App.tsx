@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import SchoolName from "./SchoolSettings";
 import InfoTooltip from "./InfoTooltip";
 import ScheduleGroupSelect from "./ScheduleGroupSelect";
@@ -350,7 +351,7 @@ export default function App({
     const response = await api<{ revision: number; updatedAt: string; changedDays?: unknown[] }>("/api/schedule-operations/apply", {
       method: "POST",
       headers: { "x-csrf-token": auth.csrfToken },
-      body: JSON.stringify({ revision: save.currentRevision(), requestId: crypto.randomUUID(), operation, options }),
+      body: JSON.stringify({ revision: save.currentRevision(), requestId: createId(), operation, options }),
     });
     if (!Number.isInteger(response.revision)) throw new Error("Сервер не подтвердил изменение расписания.");
     setHistory([]);

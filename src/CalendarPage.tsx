@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import AdminPageHeader from "./AdminPageHeader";
 import ActionLabel from "./ActionLabel";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -35,7 +36,7 @@ type Pending = {
 };
 const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 const collator = new Intl.Collator("ru", { numeric: true, sensitivity: "base" });
-const id = () => crypto.randomUUID();
+const id = () => createId();
 const formatDate = (date: string) =>
   new Intl.DateTimeFormat("ru", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }).format(new Date(`${date}T00:00:00Z`));
 const kindLabel = (kind: CalendarPeriod["kind"]) =>

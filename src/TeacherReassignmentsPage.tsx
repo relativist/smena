@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import { teacherInitials } from "../shared/catalog";
 import { matchesGroupSearch } from "../shared/groupSearch";
 import GroupSearchHint from "./GroupSearchHint";
@@ -39,7 +40,7 @@ const compactTeacherName = (teachers: { id: string; name: string }[], id?: strin
   const teacher = teachers.find(entry => entry.id === id);
   return teacher ? teacherInitials(teacher.name) : nameOf(teachers, id);
 };
-const id = () => crypto.randomUUID();
+const id = () => createId();
 const sortRu = (a: string, b: string) => a.localeCompare(b, "ru", { sensitivity: "base", numeric: true });
 const percentLabel = (value: number | null) => value === null ? "—" : `${new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 1 }).format(value)}%`;
 

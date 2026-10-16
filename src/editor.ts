@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import { newUnavailabilityViolation, unavailabilityViolationMessage } from "../shared/unavailability.ts";
 import { getWeek, groups, subjects, type Day, type Lesson } from "./demo.ts";
 import type { Catalog } from "../shared/catalog.ts";
@@ -404,7 +405,7 @@ export function placeLesson(
 ): Schedule {
   const error = locationError(schedule, location, lesson, undefined, catalog);
   if (error) fail(error);
-  const id = crypto.randomUUID();
+  const id = createId();
   const next = updateDay(schedule, location, (day) => {
     day.slots[location.slot].push({ ...lesson, id });
     return day;
@@ -579,7 +580,7 @@ export function transferTeacherLesson(
       fail("Нельзя переносить мероприятие или совместное занятие как обычный урок");
   }
 
-  const id = from?.id ?? crypto.randomUUID();
+  const id = from?.id ?? createId();
   const candidate: EditorLesson = { ...(source ?? lesson), id };
   const conflicts = teacherPlacementConflicts(schedule, location, candidate, from?.id);
   for (const conflict of conflicts) {

@@ -1,3 +1,4 @@
+import { createId } from "./createId.ts";
 import type { Catalog } from "./catalog.ts";
 import type { Quarter, StudyPlan, LessonKind } from "./plans.ts";
 
@@ -116,9 +117,9 @@ export function projectCurricula(curricula: Curriculum[], currentPlans: StudyPla
         active.length ? active.filter(s => !selectedIds || selectedIds.includes(s.id)).map(s => s.id) : groupArchived ? [...bySubgroup.keys()] : [];
       const assignments = participants.map((subgroupId, i) => {
         const old = subgroupId ? bySubgroup.get(subgroupId) : previous?.assignments[i];
-        return { id: old?.id ?? crypto.randomUUID(), subgroupId, target: row.hours };
+        return { id: old?.id ?? createId(), subgroupId, target: row.hours };
       });
-      const plan: StudyPlan = { id: previous?.id ?? crypto.randomUUID(), quarterId: curriculum.quarterId, groupId, subjectId: row.subjectId, mode: row.mode, lessonKind: row.lessonKind, assignments };
+      const plan: StudyPlan = { id: previous?.id ?? createId(), quarterId: curriculum.quarterId, groupId, subjectId: row.subjectId, mode: row.mode, lessonKind: row.lessonKind, assignments };
       const index = result.findIndex(p => p.groupId === groupId && p.quarterId === curriculum.quarterId && p.subjectId === row.subjectId && p.lessonKind === row.lessonKind);
       if (index < 0) result.push(plan); else result[index] = plan;
     }
@@ -156,7 +157,7 @@ export function replacementGroups(next: Curriculum[], previous: Curriculum[], cu
 export function fromGroupPlan(name: string, groupId: string, quarterId: string, studyPlans: StudyPlan[], catalog: Catalog): Curriculum {
   const plans = studyPlans.filter(p => p.groupId === groupId && p.quarterId === quarterId);
   const rows = plans.map(p => {
-    const row: CurriculumRow = { id: crypto.randomUUID(), subjectId: p.subjectId, lessonKind: p.lessonKind, mode: p.mode, hours: Math.max(...p.assignments.map(a => a.target)) };
+    const row: CurriculumRow = { id: createId(), subjectId: p.subjectId, lessonKind: p.lessonKind, mode: p.mode, hours: Math.max(...p.assignments.map(a => a.target)) };
     if (p.mode === "subgroups") {
       const active = catalog.subgroups.filter(subgroup => subgroup.groupId === groupId && !subgroup.archived).map(subgroup => subgroup.id);
       const assigned = p.assignments.map(assignment => assignment.subgroupId).filter((id): id is string => id !== null && active.includes(id));
@@ -164,5 +165,5 @@ export function fromGroupPlan(name: string, groupId: string, quarterId: string, 
     }
     return row;
   });
-  return { id: crypto.randomUUID(), name, quarterId, groupIds: [groupId], rows };
+  return { id: createId(), name, quarterId, groupIds: [groupId], rows };
 }

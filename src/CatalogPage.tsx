@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import AdminPageHeader from "./AdminPageHeader";
 import ActionLabel from "./ActionLabel";
 import InfoTooltip from "./InfoTooltip";
@@ -67,7 +68,7 @@ const emptyCatalog = (): Catalog => ({
   rooms: [],
   subjects: [],
 });
-const newId = () => crypto.randomUUID();
+const newId = () => createId();
 const message = (error: unknown) =>
   error instanceof Error ? error.message : "Не удалось сохранить изменения.";
 const russianSort = new Intl.Collator("ru", {

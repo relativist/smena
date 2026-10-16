@@ -1,3 +1,4 @@
+import { createId } from "./createId.ts";
 import { roomKinds } from "./catalog.ts";
 import type { CatalogRoom, CatalogTeacher, RoomKind } from "./catalog.ts";
 import type { Quarter, StudyPlan } from "./plans.ts";
@@ -217,7 +218,7 @@ function dateOrdinal(date: string): number {
 }
 
 function id(): string {
-  return globalThis.crypto.randomUUID();
+  return createId();
 }
 
 function formatTime(minutes: number): string {

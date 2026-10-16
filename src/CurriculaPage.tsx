@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import AdminPageHeader from "./AdminPageHeader";
 import ActionLabel from "./ActionLabel";
 import InfoTooltip from "./InfoTooltip";
@@ -31,7 +32,7 @@ type PendingSave = {
   confirmGroupReplacement: boolean;
 };
 
-const newId = () => crypto.randomUUID();
+const newId = () => createId();
 const collator = new Intl.Collator("ru", { sensitivity: "base", numeric: true });
 const emptyRow = (): RowDraft => ({ subjectId: "", lessonKind: "regular", mode: "whole", hours: 1 });
 const errorText = (error: unknown) => error instanceof Error ? error.message : "Не удалось сохранить учебные планы.";

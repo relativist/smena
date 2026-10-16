@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import { useEffect, useRef, useState } from "react";
 import { ApiError, api } from "./api.ts";
 import InfoTooltip from "./InfoTooltip.tsx";
@@ -59,7 +60,7 @@ export default function PublicationDialog({ quarterId, csrfToken, groupNames, on
     if (!preview?.canPublish || busy || stale || published) return;
     setBusy(true);
     setError("");
-    const requestId = requestIdRef.current ?? crypto.randomUUID();
+    const requestId = requestIdRef.current ?? createId();
     requestIdRef.current = requestId;
     try {
       const result = await api<PublishResponse>("/api/publications", {

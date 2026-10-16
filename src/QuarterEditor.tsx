@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { StateResponse } from "../server/contracts";
 import type { Quarter } from "../shared/plans";
@@ -49,7 +50,7 @@ export default function QuarterEditor({ state, auth, quarterId, disabled, onUnau
     setCreating(create);
     setError("");
     setConflict(false);
-    setDraft(create ? { id: crypto.randomUUID(), name: "", startDate: "", endDate: "" } : current ? { ...current } : null);
+    setDraft(create ? { id: createId(), name: "", startDate: "", endDate: "" } : current ? { ...current } : null);
   }
   function close() {
     if (busy || pending) return;
@@ -90,7 +91,7 @@ export default function QuarterEditor({ state, auth, quarterId, disabled, onUnau
       setError("Даты пересекаются с другой четвертью."); return;
     }
     const quarter = { ...draft, name: draft.name.trim() };
-    const request = { quarters: creating ? [...state.quarters, quarter] : state.quarters.map((q) => q.id === draft.id ? quarter : q), metadataOnly: true as const, responseQuarterId: draft.id, revision: state.revision, requestId: crypto.randomUUID() };
+    const request = { quarters: creating ? [...state.quarters, quarter] : state.quarters.map((q) => q.id === draft.id ? quarter : q), metadataOnly: true as const, responseQuarterId: draft.id, revision: state.revision, requestId: createId() };
     setPending(request);
     void persist(request);
   }

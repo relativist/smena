@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import AdminPageHeader from "./AdminPageHeader";
 import ActionLabel from "./ActionLabel";
 import InfoTooltip from "./InfoTooltip";
@@ -10,7 +11,7 @@ import "./display-settings.css";
 
 type Props = { auth: AuthSession; onUnauthorized: () => void; onBack: () => Promise<void> };
 type PendingWrite = { settings: DisplaySettings; revision: number; requestId: string };
-const makeId = () => crypto.randomUUID();
+const makeId = () => createId();
 const message = (error: unknown) => error instanceof Error ? error.message : "Не удалось загрузить общие настройки.";
 const same = (a: DisplaySettings, b: DisplaySettings) => a.schoolName === b.schoolName && a.adminSubjectIcons === b.adminSubjectIcons && a.studentSubjectIcons === b.studentSubjectIcons;
 
@@ -82,13 +83,13 @@ export default function DisplaySettingsPage({ auth, onUnauthorized, onBack }: Pr
 
   async function persist(operation?: PendingWrite) {
     if (busy || loading) return;
-    const write = pendingRef.current ?? operation ?? { settings, revision, requestId: makeId() };
-    pendingRef.current = write;
-    setPending(write);
     setBusy(true);
     setError("");
     setSaved(false);
     try {
+      const write = pendingRef.current ?? operation ?? { settings, revision, requestId: makeId() };
+      pendingRef.current = write;
+      setPending(write);
       const result = await api<DisplaySettingsResponse>("/api/display-settings", {
         method: "PUT",
         headers: { "x-csrf-token": auth.csrfToken },

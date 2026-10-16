@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CatalogRoom, CatalogTeacher } from "../shared/catalog";
 import ActionLabel from "./ActionLabel";
@@ -159,7 +160,7 @@ export default function AvailabilityDialog({ kind, resource, auth, revision, onU
     if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) { setError("Укажите интервал времени в формате ЧЧ:ММ."); return; }
     if (draft.reason.length > 300) { setError("Причина не должна превышать 300 символов."); return; }
     const rule: UnavailabilityRule = {
-      id: draft.id ?? crypto.randomUUID(), startDate: draft.startDate, endDate: draft.endDate,
+      id: draft.id ?? createId(), startDate: draft.startDate, endDate: draft.endDate,
       start, end, ...(draft.recurring ? { weekdays: [...draft.weekdays].sort() } : {}),
       ...(draft.reason.trim() ? { reason: draft.reason.trim() } : {}),
     };
@@ -181,7 +182,7 @@ export default function AvailabilityDialog({ kind, resource, auth, revision, onU
       if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) { setError("Укажите интервал времени в формате ЧЧ:ММ."); return; }
       if (draft.reason.length > 300) { setError("Причина не должна превышать 300 символов."); return; }
       const rule: UnavailabilityRule = {
-        id: draft.id ?? editingId ?? crypto.randomUUID(), startDate: draft.startDate, endDate: draft.endDate,
+        id: draft.id ?? editingId ?? createId(), startDate: draft.startDate, endDate: draft.endDate,
         start, end, ...(draft.recurring ? { weekdays: [...draft.weekdays].sort() } : {}),
         ...(draft.reason.trim() ? { reason: draft.reason.trim() } : {}),
       };

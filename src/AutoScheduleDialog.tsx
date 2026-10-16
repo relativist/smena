@@ -1,3 +1,4 @@
+import { createId } from "../shared/createId.ts";
 import ActionLabel from "./ActionLabel";
 import GroupSelection from "./GroupSelection";
 import InfoTooltip from "./InfoTooltip";
@@ -235,7 +236,7 @@ export default function AutoScheduleDialog({
       if (!jobId || generatedRevision === null) throw new Error("Расчёт устарел. Запустите его ещё раз.");
       const pending = applyRequestRef.current?.jobId === jobId && applyRequestRef.current.revision === generatedRevision
         ? applyRequestRef.current
-        : { jobId, revision: generatedRevision, requestId: `generation-${crypto.randomUUID()}` };
+        : { jobId, revision: generatedRevision, requestId: `generation-${createId()}` };
       applyRequestRef.current = pending;
       await api(`/api/generation-jobs/${encodeURIComponent(jobId)}/apply`, {
         method: "POST",
