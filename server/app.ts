@@ -6461,6 +6461,15 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         const curriculumError = validateCurricula(await readCurricula(db), next, await readQuarters(db), await readCurricula(db));
         if (curriculumError)
             return reply.code(400).send({ error: curriculumError });
+        // Availability changes do not affect catalogue links or curriculum
+        // assignments. Avoid rebuilding unrelated data for this common dialog save.
+        const withoutAvailability = (catalog: Catalog) => ({
+            ...catalog,
+            subjects: catalog.subjects.map(({ iconId, ...subject }) => iconId === undefined ? subject : { ...subject, iconId }),
+            teachers: catalog.teachers.map(({ unavailability: _rules, ...teacher }) => teacher),
+            rooms: catalog.rooms.map(({ unavailability: _rules, ...room }) => room),
+        });
+        const availabilityOnly = stableJson(withoutAvailability(before)) === stableJson(withoutAvailability(next));
         const updatedAt = nowIso();
         try {
             await db.transaction(async () => {
@@ -6481,84 +6490,98 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
                 };
                 if (meta.revision !== body.revision)
                     throw new Error("revision-conflict");
-                const blocked = await deletionError(await readCatalog(db));
-                if (blocked)
-                    throw new Error(`catalog-deletion-blocked:${blocked}`);
-                const oldGroups = new Map(before.groups.map((entry) => [entry.id, entry]));
-                const upsertSubject = db.prepare("INSERT INTO catalog_subjects(id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,short_name=excluded.short_name,color=excluded.color,room_kind=excluded.room_kind,lab_room_kind=excluded.lab_room_kind,joint_group_sets=excluded.joint_group_sets,joint_same_grade=excluded.joint_same_grade,max_joint_groups=excluded.max_joint_groups,icon_id=excluded.icon_id,archived=excluded.archived");
-                for (const entry of next.subjects) {
-                    await upsertSubject.run(entry.id, entry.name, entry.shortName, entry.color, entry.roomKind, entry.labRoomKind, JSON.stringify(entry.jointGroupSets ?? []), Number(entry.jointSameGrade ?? false), entry.maxJointGroups ?? 2, entry.iconId === null ? "none" : entry.iconId ?? null, Number(entry.archived));
-                }
-                const upsertRoom = db.prepare("INSERT INTO catalog_rooms(id,name,capacity,kind,archived,unavailability_json) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,capacity=excluded.capacity,kind=excluded.kind,archived=excluded.archived,unavailability_json=excluded.unavailability_json");
-                for (const entry of next.rooms) {
-                    await upsertRoom.run(entry.id, entry.name, entry.capacity, entry.kind, Number(entry.archived), JSON.stringify(entry.unavailability ?? []));
-                }
-                // Rooms must exist before teachers and groups that reference them.
-                // Keep this dependency order inside the transaction so a valid catalog
-                // can introduce linked rows together without a transient FK failure.
-                const upsertTeacher = db.prepare("INSERT INTO catalog_teachers(id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json) VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,archived=excluded.archived,default_room_id=excluded.default_room_id,preferred_group_ids=excluded.preferred_group_ids,preferred_shift=excluded.preferred_shift,unavailability_json=excluded.unavailability_json");
-                for (const entry of next.teachers) {
-                    await upsertTeacher.run(entry.id, entry.name, Number(entry.archived), entry.defaultRoomId, JSON.stringify(entry.preferredGroupIds ?? []), entry.preferredShift ?? null, JSON.stringify(entry.unavailability ?? []));
-                }
-                const upsertGroup = db.prepare("INSERT INTO catalog_groups(id,name,students,leader_id,room_id,archived) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,students=excluded.students,leader_id=excluded.leader_id,room_id=excluded.room_id,archived=excluded.archived");
-                for (const entry of next.groups) {
-                    await upsertGroup.run(entry.id, entry.name, entry.students, entry.leaderId, entry.roomId, Number(entry.archived));
-                }
-                await db.prepare("DELETE FROM catalog_group_auto_rooms").run();
-                const insertAutoRoom = db.prepare("INSERT INTO catalog_group_auto_rooms(group_id,room_id,position) VALUES(?,?,?)");
-                for (const entry of next.groups)
-                    for (const [position, roomId] of entry.autoRoomIds.entries()) {
-                        await insertAutoRoom.run(entry.id, roomId, position);
-                    }
-                const upsertSubgroup = db.prepare("INSERT INTO catalog_subgroups(id,group_id,name,students,archived) VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,students=excluded.students,archived=excluded.archived");
-                for (const entry of next.subgroups) {
-                    await upsertSubgroup.run(entry.id, entry.groupId, entry.name, entry.students, Number(entry.archived));
-                }
-                for (const entry of next.groups)
-                    if (!oldGroups.has(entry.id))
-                        await addGroupSchedule(db, entry.id);
-                const oldSubgroups = new Map(before.subgroups.map((entry) => [entry.id, entry]));
-                const renameBaseline = db.prepare("UPDATE plan_baselines SET subgroup=? WHERE group_id=? AND subgroup=?");
-                for (const entry of next.subgroups) {
-                    const old = oldSubgroups.get(entry.id);
-                    if (old && old.name !== entry.name)
-                        await renameBaseline.run(entry.name, old.groupId, old.name);
-                }
-                await reprojectCurriculumAssignments(db, next);
-                await db.prepare("DELETE FROM catalog_teacher_subjects").run();
-                const insertTeacherSubject = db.prepare("INSERT INTO catalog_teacher_subjects(teacher_id,subject_id) VALUES(?,?)");
-                for (const teacher of next.teachers)
-                    for (const subjectId of teacher.subjectIds)
-                        await insertTeacherSubject.run(teacher.id, subjectId);
-                for (const [kind, column, reference] of [
-                    ["subgroups", "subgroup", "subgroup_ref"],
-                    ["teachers", "teacher", "teacher_ref"],
-                    ["rooms", "room", "room_ref"],
-                ] as const) {
-                    const oldNames = new Map(before[kind].map((entry) => [entry.id, entry.name]));
-                    const updateLabel = db.prepare(`UPDATE lessons SET ${column}=? WHERE ${reference}=? AND ${column} IS NOT ?`);
-                    for (const entry of next[kind])
-                        if (oldNames.get(entry.id) !== entry.name)
-                            await updateLabel.run(entry.name, entry.id, entry.name);
-                }
-                for (const kind of ["subjects", "teachers", "rooms", "subgroups"] as const) {
-                    const keep = new Set(next[kind].map((entry) => entry.id));
-                    const remove = before[kind].filter((entry) => !keep.has(entry.id));
-                    const table = ({ subjects: "catalog_subjects", teachers: "catalog_teachers", rooms: "catalog_rooms", subgroups: "catalog_subgroups" } as const)[kind];
-                    const del = db.prepare(`DELETE FROM ${table} WHERE id=?`);
-                    for (const entry of remove) {
-                        await del.run(entry.id);
+                if (availabilityOnly) {
+                    for (const kind of ["teachers", "rooms"] as const) {
+                        const previous = new Map(before[kind].map((entry) => [entry.id, entry.unavailability ?? []]));
+                        const table = kind === "teachers" ? "catalog_teachers" : "catalog_rooms";
+                        const update = db.prepare(`UPDATE ${table} SET unavailability_json=? WHERE id=?`);
+                        for (const entry of next[kind]) {
+                            const rules = entry.unavailability ?? [];
+                            if (stableJson(previous.get(entry.id)) !== stableJson(rules))
+                                await update.run(JSON.stringify(rules), entry.id);
+                        }
                     }
                 }
-                const keepGroups = new Set(next.groups.map((entry) => entry.id));
-                const removedGroups = before.groups.filter((entry) => !keepGroups.has(entry.id));
-                const deleteGroupDays = db.prepare("DELETE FROM schedule_days WHERE group_id=?");
-                for (const entry of removedGroups) {
-                    await deleteGroupDays.run(entry.id);
-                }
-                const deleteGroup = db.prepare("DELETE FROM catalog_groups WHERE id=?");
-                for (const entry of removedGroups) {
-                    await deleteGroup.run(entry.id);
+                else {
+                    const blocked = await deletionError(await readCatalog(db));
+                    if (blocked)
+                        throw new Error(`catalog-deletion-blocked:${blocked}`);
+                    const oldGroups = new Map(before.groups.map((entry) => [entry.id, entry]));
+                    const upsertSubject = db.prepare("INSERT INTO catalog_subjects(id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,short_name=excluded.short_name,color=excluded.color,room_kind=excluded.room_kind,lab_room_kind=excluded.lab_room_kind,joint_group_sets=excluded.joint_group_sets,joint_same_grade=excluded.joint_same_grade,max_joint_groups=excluded.max_joint_groups,icon_id=excluded.icon_id,archived=excluded.archived");
+                    for (const entry of next.subjects) {
+                        await upsertSubject.run(entry.id, entry.name, entry.shortName, entry.color, entry.roomKind, entry.labRoomKind, JSON.stringify(entry.jointGroupSets ?? []), Number(entry.jointSameGrade ?? false), entry.maxJointGroups ?? 2, entry.iconId === null ? "none" : entry.iconId ?? null, Number(entry.archived));
+                    }
+                    const upsertRoom = db.prepare("INSERT INTO catalog_rooms(id,name,capacity,kind,archived,unavailability_json) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,capacity=excluded.capacity,kind=excluded.kind,archived=excluded.archived,unavailability_json=excluded.unavailability_json");
+                    for (const entry of next.rooms) {
+                        await upsertRoom.run(entry.id, entry.name, entry.capacity, entry.kind, Number(entry.archived), JSON.stringify(entry.unavailability ?? []));
+                    }
+                    // Rooms must exist before teachers and groups that reference them.
+                    // Keep this dependency order inside the transaction so a valid catalog
+                    // can introduce linked rows together without a transient FK failure.
+                    const upsertTeacher = db.prepare("INSERT INTO catalog_teachers(id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json) VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,archived=excluded.archived,default_room_id=excluded.default_room_id,preferred_group_ids=excluded.preferred_group_ids,preferred_shift=excluded.preferred_shift,unavailability_json=excluded.unavailability_json");
+                    for (const entry of next.teachers) {
+                        await upsertTeacher.run(entry.id, entry.name, Number(entry.archived), entry.defaultRoomId, JSON.stringify(entry.preferredGroupIds ?? []), entry.preferredShift ?? null, JSON.stringify(entry.unavailability ?? []));
+                    }
+                    const upsertGroup = db.prepare("INSERT INTO catalog_groups(id,name,students,leader_id,room_id,archived) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,students=excluded.students,leader_id=excluded.leader_id,room_id=excluded.room_id,archived=excluded.archived");
+                    for (const entry of next.groups) {
+                        await upsertGroup.run(entry.id, entry.name, entry.students, entry.leaderId, entry.roomId, Number(entry.archived));
+                    }
+                    await db.prepare("DELETE FROM catalog_group_auto_rooms").run();
+                    const insertAutoRoom = db.prepare("INSERT INTO catalog_group_auto_rooms(group_id,room_id,position) VALUES(?,?,?)");
+                    for (const entry of next.groups)
+                        for (const [position, roomId] of entry.autoRoomIds.entries()) {
+                            await insertAutoRoom.run(entry.id, roomId, position);
+                        }
+                    const upsertSubgroup = db.prepare("INSERT INTO catalog_subgroups(id,group_id,name,students,archived) VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,students=excluded.students,archived=excluded.archived");
+                    for (const entry of next.subgroups) {
+                        await upsertSubgroup.run(entry.id, entry.groupId, entry.name, entry.students, Number(entry.archived));
+                    }
+                    for (const entry of next.groups)
+                        if (!oldGroups.has(entry.id))
+                            await addGroupSchedule(db, entry.id);
+                    const oldSubgroups = new Map(before.subgroups.map((entry) => [entry.id, entry]));
+                    const renameBaseline = db.prepare("UPDATE plan_baselines SET subgroup=? WHERE group_id=? AND subgroup=?");
+                    for (const entry of next.subgroups) {
+                        const old = oldSubgroups.get(entry.id);
+                        if (old && old.name !== entry.name)
+                            await renameBaseline.run(entry.name, old.groupId, old.name);
+                    }
+                    await reprojectCurriculumAssignments(db, next);
+                    await db.prepare("DELETE FROM catalog_teacher_subjects").run();
+                    const insertTeacherSubject = db.prepare("INSERT INTO catalog_teacher_subjects(teacher_id,subject_id) VALUES(?,?)");
+                    for (const teacher of next.teachers)
+                        for (const subjectId of teacher.subjectIds)
+                            await insertTeacherSubject.run(teacher.id, subjectId);
+                    for (const [kind, column, reference] of [
+                        ["subgroups", "subgroup", "subgroup_ref"],
+                        ["teachers", "teacher", "teacher_ref"],
+                        ["rooms", "room", "room_ref"],
+                    ] as const) {
+                        const oldNames = new Map(before[kind].map((entry) => [entry.id, entry.name]));
+                        const updateLabel = db.prepare(`UPDATE lessons SET ${column}=? WHERE ${reference}=? AND ${column} IS NOT ?`);
+                        for (const entry of next[kind])
+                            if (oldNames.get(entry.id) !== entry.name)
+                                await updateLabel.run(entry.name, entry.id, entry.name);
+                    }
+                    for (const kind of ["subjects", "teachers", "rooms", "subgroups"] as const) {
+                        const keep = new Set(next[kind].map((entry) => entry.id));
+                        const remove = before[kind].filter((entry) => !keep.has(entry.id));
+                        const table = ({ subjects: "catalog_subjects", teachers: "catalog_teachers", rooms: "catalog_rooms", subgroups: "catalog_subgroups" } as const)[kind];
+                        const del = db.prepare(`DELETE FROM ${table} WHERE id=?`);
+                        for (const entry of remove) {
+                            await del.run(entry.id);
+                        }
+                    }
+                    const keepGroups = new Set(next.groups.map((entry) => entry.id));
+                    const removedGroups = before.groups.filter((entry) => !keepGroups.has(entry.id));
+                    const deleteGroupDays = db.prepare("DELETE FROM schedule_days WHERE group_id=?");
+                    for (const entry of removedGroups) {
+                        await deleteGroupDays.run(entry.id);
+                    }
+                    const deleteGroup = db.prepare("DELETE FROM catalog_groups WHERE id=?");
+                    for (const entry of removedGroups) {
+                        await deleteGroup.run(entry.id);
+                    }
                 }
                 const newRevision = meta.revision + 1;
                 await db.prepare("UPDATE draft_metadata SET revision=?,updated_at=? WHERE id=1").run(newRevision, updatedAt);

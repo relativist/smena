@@ -77,6 +77,85 @@ test("migration 13 preserves the existing schedule and persists teacher and room
   assert.deepEqual(reopened.snapshot.catalog.rooms.find((entry) => entry.id === item.lesson.roomId)?.unavailability, current.rooms.find((entry) => entry.id === item.lesson.roomId)?.unavailability);
 });
 
+test("compact unavailability save does not rewrite plans or other catalogue projections and replays idempotently", async () => {
+  const { app, headers, snapshot } = await setup();
+  const db = (app as unknown as { smenaDb: Database.Database }).smenaDb;
+  const item = firstLesson(snapshot);
+  const teacher = snapshot.catalog.teachers.find((entry) => entry.id === item.lesson.teacherId)!;
+  const rule = { id: "leave-2026-10", startDate: "2026-10-05", endDate: "2026-10-18", start: 0, end: 1440, reason: "Недоступность" };
+  const catalog = structuredClone(snapshot.catalog);
+  catalog.teachers.find((entry) => entry.id === teacher.id)!.unavailability = [rule];
+  const planRows = db.prepare("SELECT id,plan_id,subgroup_id,target FROM plan_assignments ORDER BY id").all();
+  const studyPlanRows = db.prepare("SELECT id,quarter_id,group_id,subject_id,mode,lesson_kind,room_kind FROM study_plans ORDER BY id").all();
+  const curriculumRows = db.prepare("SELECT id,curriculum_json FROM curricula ORDER BY id").all();
+  const scheduleRows = db.prepare("SELECT id,slot_id,subject_id,subgroup,teacher,room,event,note FROM lessons ORDER BY id").all();
+  db.exec(`
+    CREATE TRIGGER reject_plan_assignment_delete BEFORE DELETE ON plan_assignments BEGIN SELECT RAISE(ABORT, 'unexpected plan assignment DELETE'); END;
+    CREATE TRIGGER reject_plan_assignment_insert BEFORE INSERT ON plan_assignments BEGIN SELECT RAISE(ABORT, 'unexpected plan assignment INSERT'); END;
+    CREATE TRIGGER reject_plan_assignment_update BEFORE UPDATE ON plan_assignments BEGIN SELECT RAISE(ABORT, 'unexpected plan assignment UPDATE'); END;
+    CREATE TRIGGER reject_study_plan_writes BEFORE UPDATE ON study_plans BEGIN SELECT RAISE(ABORT, 'unexpected study plan UPDATE'); END;
+    CREATE TRIGGER reject_curriculum_writes BEFORE UPDATE ON curricula BEGIN SELECT RAISE(ABORT, 'unexpected curriculum UPDATE'); END;
+    CREATE TRIGGER reject_curriculum_deletes BEFORE DELETE ON curricula BEGIN SELECT RAISE(ABORT, 'unexpected curriculum DELETE'); END;
+    CREATE TRIGGER reject_curriculum_inserts BEFORE INSERT ON curricula BEGIN SELECT RAISE(ABORT, 'unexpected curriculum INSERT'); END;
+    CREATE TRIGGER reject_schedule_lesson_updates BEFORE UPDATE ON lessons BEGIN SELECT RAISE(ABORT, 'unexpected schedule lesson UPDATE'); END;
+    CREATE TRIGGER reject_group_auto_room_deletes BEFORE DELETE ON catalog_group_auto_rooms BEGIN SELECT RAISE(ABORT, 'unexpected group auto-room DELETE'); END;
+    CREATE TRIGGER reject_group_auto_room_inserts BEFORE INSERT ON catalog_group_auto_rooms BEGIN SELECT RAISE(ABORT, 'unexpected group auto-room INSERT'); END;
+    CREATE TRIGGER reject_teacher_subject_deletes BEFORE DELETE ON catalog_teacher_subjects BEGIN SELECT RAISE(ABORT, 'unexpected teacher-subject DELETE'); END;
+    CREATE TRIGGER reject_teacher_subject_inserts BEFORE INSERT ON catalog_teacher_subjects BEGIN SELECT RAISE(ABORT, 'unexpected teacher-subject INSERT'); END;
+  `);
+  const requestId = `unavailability-only-${crypto.randomUUID()}`;
+  const response = await app.inject({ method: "PUT", url: "/api/catalog?response=compact", headers, payload: { catalog, revision: snapshot.revision, requestId } });
+  assert.equal(response.statusCode, 200, response.body);
+  const saved = response.json() as StateResponse;
+  assert.equal(saved.revision, snapshot.revision + 1);
+  assert.deepEqual(saved.catalog.teachers.find((entry) => entry.id === teacher.id)?.unavailability, [rule]);
+  assert.deepEqual((await state(app, headers)).schedule, snapshot.schedule);
+  assert.deepEqual(db.prepare("SELECT id,plan_id,subgroup_id,target FROM plan_assignments ORDER BY id").all(), planRows);
+  assert.deepEqual(db.prepare("SELECT id,quarter_id,group_id,subject_id,mode,lesson_kind,room_kind FROM study_plans ORDER BY id").all(), studyPlanRows);
+  assert.deepEqual(db.prepare("SELECT id,curriculum_json FROM curricula ORDER BY id").all(), curriculumRows);
+  assert.deepEqual(db.prepare("SELECT id,slot_id,subject_id,subgroup,teacher,room,event,note FROM lessons ORDER BY id").all(), scheduleRows);
+  const replay = await app.inject({ method: "PUT", url: "/api/catalog?response=compact", headers, payload: { catalog, revision: snapshot.revision, requestId } });
+  assert.equal(replay.statusCode, 200, replay.body);
+  assert.equal((replay.json() as StateResponse).revision, saved.revision);
+});
+
+test("compact room unavailability save skips curriculum assignment writes", async () => {
+  const { app, headers, snapshot } = await setup();
+  const db = (app as unknown as { smenaDb: Database.Database }).smenaDb;
+  const roomId = firstLesson(snapshot).lesson.roomId!;
+  const catalog = structuredClone(snapshot.catalog);
+  catalog.rooms.find((entry) => entry.id === roomId)!.unavailability = [{ id: "room-leave", startDate: "2026-10-05", endDate: "2026-10-18", start: 0, end: 1440, reason: "Недоступность" }];
+  db.exec(`
+    CREATE TRIGGER reject_room_plan_assignment_delete BEFORE DELETE ON plan_assignments BEGIN SELECT RAISE(ABORT, 'unexpected plan assignment DELETE'); END;
+    CREATE TRIGGER reject_room_plan_assignment_insert BEFORE INSERT ON plan_assignments BEGIN SELECT RAISE(ABORT, 'unexpected plan assignment INSERT'); END;
+    CREATE TRIGGER reject_room_plan_assignment_update BEFORE UPDATE ON plan_assignments BEGIN SELECT RAISE(ABORT, 'unexpected plan assignment UPDATE'); END;
+  `);
+  const response = await app.inject({ method: "PUT", url: "/api/catalog?response=compact", headers, payload: { catalog, revision: snapshot.revision, requestId: `room-unavailability-only-${crypto.randomUUID()}` } });
+  assert.equal(response.statusCode, 200, response.body);
+  assert.equal((response.json() as StateResponse).catalog.rooms.find((entry) => entry.id === roomId)?.unavailability?.[0]?.id, "room-leave");
+});
+
+test("archiving a subgroup still removes its managed plan assignments", async () => {
+  const { app, headers, snapshot } = await setup();
+  const db = (app as unknown as { smenaDb: Database.Database }).smenaDb;
+  const plan = snapshot.studyPlans.find((entry) => entry.mode === "subgroups" && entry.assignments.some((assignment) => assignment.subgroupId) &&
+    snapshot.curricula?.some((curriculum) => curriculum.quarterId === entry.quarterId && curriculum.groupIds.includes(entry.groupId) && curriculum.rows.some((row) => row.subjectId === entry.subjectId)))!;
+  assert.ok(plan);
+  const subgroupId = plan.assignments.find((assignment) => assignment.subgroupId)!.subgroupId!;
+  const subgroup = snapshot.catalog.subgroups.find((entry) => entry.id === subgroupId)!;
+  assert.ok(subgroup);
+  assert.ok(db.prepare("SELECT 1 FROM curricula").get());
+  const catalog = structuredClone(snapshot.catalog);
+  catalog.subgroups.find((entry) => entry.id === subgroupId)!.archived = true;
+  const response = await saveCatalog(app, headers, snapshot, catalog);
+  assert.equal(response.statusCode, 200, response.body);
+  const saved = response.json() as StateResponse;
+  assert.equal(saved.catalog.subgroups.find((entry) => entry.id === subgroupId)?.archived, true);
+  const updatedPlan = saved.studyPlans.find((entry) => entry.id === plan.id)!;
+  assert.ok(!updatedPlan.assignments.some((assignment) => assignment.subgroupId === subgroupId));
+  assert.ok(updatedPlan.assignments.every((assignment) => assignment.subgroupId !== null));
+});
+
 test("migration from the pre-unavailability catalogue leaves existing lesson rows intact", async () => {
   const { app, dbPath, snapshot } = await setup();
   const before = structuredClone(snapshot.schedule);
