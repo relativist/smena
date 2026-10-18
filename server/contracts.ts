@@ -89,5 +89,7 @@ export type TeacherReplacementApplyResponse = {
 };
 
 export type TeacherReplacementUndoResponse = { state: StateResponse };
+export type TeacherReplacementApplyReceipt = { revision: number; updatedAt: string; operationId: string };
+export type TeacherReplacementUndoReceipt = { revision: number; updatedAt: string };
 
 export type TeacherReplacementPreviewRequest = { revision: number; request: ReplacementRequest };

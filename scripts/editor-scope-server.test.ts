@@ -4,6 +4,8 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { buildApp } from "../server/app.ts";
+import { mergeScheduleContext, scheduleDayChanges } from "../src/scheduleContext.ts";
+import type { AsyncDatabase } from "../server/database.ts";
 import type { EditorDay, Schedule } from "../src/editor.ts";
 import { teacherLessonFingerprint } from "../shared/teacherReassignment.ts";
 
@@ -82,7 +84,7 @@ test("editor bootstrap and week return only bounded editor data", async () => {
   assert.ok(scoped.editorScope.counts.length > 0);
   const dates = new Set(scoped.editorScope.dates);
   const schedule = scoped.schedule as Schedule;
-  assert.ok(Object.keys(schedule).some((key) => key.startsWith("5a:")));
+  assert.deepEqual(Object.keys(schedule), ["5a:0"], "unrelated groups must remain server-side");
   for (const days of Object.values(schedule))
     for (const day of days) assert.ok(dates.has(day.date), `unexpected day ${day.date}`);
   assert.ok(scoped.studyPlans.length > 0);
@@ -418,7 +420,7 @@ test("crossweek move preserves the lesson id and changes only its origin", async
   });
   const movedOrigin = originFor("scope-origin-moved", sourceDay.date, moved, sourceTime);
   let unaffectedOrigin: ReturnType<typeof originFor> | undefined;
-  for (const [key, days] of Object.entries(sourceSchedule)) {
+  for (const [key, days] of Object.entries(stateResponse.json().schedule as Schedule)) {
     if (key === sourceKey) continue;
     const day = days.find((entry) => entry.date === sourceDay.date);
     const lesson = day?.slots.flat().find((entry) => entry.teacherId && entry.roomId && entry.id !== moved.id);
@@ -596,7 +598,9 @@ test("joint lesson removal rejects a partial mirror change and accepts a full de
     headers: { cookie: headers.cookie },
   });
   assert.equal(fixtureWeek.statusCode, 200, fixtureWeek.body);
-  const fixtureSchedule = fixtureWeek.json().schedule as Schedule;
+  const fixtureState = await app.inject({ url: "/api/state", headers });
+  assert.equal(fixtureState.statusCode, 200, fixtureState.body);
+  const fixtureSchedule = fixtureState.json().schedule as Schedule;
   let fixture: { dayIndex: number; slot: number; date: string } | undefined;
   for (let dayIndex = 0; dayIndex < fixtureSchedule["5a:0"]!.length && !fixture; dayIndex += 1) {
     const dayA = fixtureSchedule["5a:0"]![dayIndex]!;
@@ -638,6 +642,7 @@ test("joint lesson removal rejects a partial mirror change and accepts a full de
   assert.equal(currentWeek.statusCode, 200, currentWeek.body);
   const current = currentWeek.json();
   const schedule = current.schedule as Schedule;
+  assert.deepEqual(Object.keys(schedule).sort(), ["5a:0", "5b:0"], "only the current group and actual joint peer are included");
   const dayAIndex = schedule["5a:0"]!.findIndex((day) => day.date === fixture!.date);
   const dayBIndex = schedule["5b:0"]!.findIndex((day) => day.date === fixture!.date);
   const beforeA = structuredClone(schedule["5a:0"]![dayAIndex]!) as EditorDay;
@@ -682,7 +687,9 @@ test("joint lesson removal rejects a partial mirror change and accepts a full de
   assert.equal(afterWeek.statusCode, 200, afterWeek.body);
   const afterSchedule = afterWeek.json().schedule as Schedule;
   assert.equal(afterSchedule["5a:0"]![dayAIndex]!.slots[fixture.slot]!.some((lesson) => lesson.id === "editor-scope-joint-5a"), false);
-  const survivor = afterSchedule["5b:0"]![dayBIndex]!.slots[fixture.slot]!.find((lesson) => lesson.id === "editor-scope-joint-5b");
+  assert.deepEqual(Object.keys(afterSchedule), ["5a:0"], "detached unrelated group is no longer included");
+  const survivorWeek = await app.inject({ url: `/api/editor/week?groupId=5b&quarterId=${QUARTER}&weekOffset=0`, headers });
+  const survivor = (survivorWeek.json().schedule as Schedule)["5b:0"]![dayBIndex]!.slots[fixture.slot]!.find((lesson) => lesson.id === "editor-scope-joint-5b");
   assert.ok(survivor);
   assert.equal(survivor.jointId, undefined);
 });
@@ -769,4 +776,115 @@ test("day command accepts surname labels for stable teacher IDs on save and undo
     },
   });
   assert.equal(rejectId.statusCode, 409, rejectId.body);
+});
+
+
+test("warm editor request reuses catalog and schema capabilities without caching mutable catalog rows", async () => {
+  const { app, headers } = await setup();
+  const db = (app as unknown as { smenaDatabase: AsyncDatabase }).smenaDatabase;
+  const weekUrl = `/api/editor/week?groupId=5a&quarterId=${QUARTER}&weekOffset=0`;
+  await app.inject({ url: weekUrl, headers });
+  const originalPragma = db.pragma.bind(db), originalPrepare = db.prepare.bind(db);
+  let schemaReads = 0, catalogReads = 0;
+  db.pragma = async (sql) => { schemaReads++; return originalPragma(sql); };
+  db.prepare = (sql) => {
+    if (/FROM catalog_subjects ORDER BY/i.test(sql)) catalogReads++;
+    if (/FROM sqlite_master/i.test(sql)) schemaReads++;
+    return originalPrepare(sql);
+  };
+  const response = await app.inject({ url: weekUrl, headers });
+  assert.equal(response.statusCode, 200, response.body);
+  assert.equal(catalogReads, 1, "calendar and bell validation must share request catalog");
+  assert.equal(schemaReads, 0, "warm requests must reuse verified schema capabilities");
+  await originalPrepare("UPDATE catalog_teachers SET name=? WHERE id=(SELECT id FROM catalog_teachers ORDER BY rowid LIMIT 1)").run("Свежая фамилия");
+  const refreshed = await app.inject({ url: weekUrl, headers });
+  assert.ok(refreshed.json().catalog.teachers.some((teacher: { name: string }) => teacher.name === "Свежая фамилия"), "catalog values are read afresh");
+});
+
+test("room conflicts in an omitted group remain red and independently rejected on save", async () => {
+  const { app, headers } = await setup();
+  const db = (app as unknown as { smenaDatabase: AsyncDatabase }).smenaDatabase;
+  const response = await app.inject({ url: "/api/state", headers });
+  const state = response.json();
+  const schedule = state.schedule as Schedule;
+  let selected: { key: string; index: number; slot: number; before: EditorDay; lesson: EditorDay["slots"][number][number] } | undefined;
+  outer: for (const [sourceKey, sourceDays] of Object.entries(schedule)) {
+    if (!sourceKey.endsWith(":0")) continue;
+    for (const sourceDay of sourceDays) for (let sourceSlot = 0; sourceSlot < sourceDay.slots.length; sourceSlot++) {
+      const source = sourceDay.slots[sourceSlot].find(lesson => lesson.roomId && !lesson.event && !lesson.jointId && !lesson.subgroupId);
+      if (!source) continue;
+      for (const [targetKey, targetDays] of Object.entries(schedule)) {
+        if (targetKey === sourceKey || !targetKey.endsWith(":0")) continue;
+        const targetGroupId = targetKey.slice(0, targetKey.lastIndexOf(":"));
+        if (!state.studyPlans.some((plan: { groupId: string; quarterId: string; subjectId: string; mode: string }) => plan.groupId === targetGroupId && plan.quarterId === QUARTER && plan.subjectId === source.subjectId && plan.mode === "whole")) continue;
+        const index = targetDays.findIndex(day => day.date === sourceDay.date);
+        if (index < 0) continue;
+        const day = targetDays[index];
+        for (let slot = 0; slot < day.slots.length; slot++) {
+          if (day.slots[slot].length || sourceDay.times[sourceSlot].start >= day.times[slot].start + day.times[slot].duration || day.times[slot].start >= sourceDay.times[sourceSlot].start + sourceDay.times[sourceSlot].duration) continue;
+          selected = { key: targetKey, index, slot, before: structuredClone(day), lesson: { ...source, id: "scope-room-conflict", teacher: "Свободный учитель", teacherId: "scope-room-teacher" } };
+          break outer;
+        }
+      }
+    }
+  }
+  assert.ok(selected, "fixture needs a cross-group occupied room and a free planned cell");
+  await db.prepare("INSERT INTO catalog_teachers(id,name,archived) VALUES(?,?,0)").run("scope-room-teacher", "Свободный учитель");
+  await db.prepare("INSERT INTO catalog_teacher_subjects(teacher_id,subject_id) VALUES(?,?)").run("scope-room-teacher", selected.lesson.subjectId);
+  const groupId = selected.key.slice(0, selected.key.lastIndexOf(":"));
+  const week = await app.inject({ url: `/api/editor/week?groupId=${groupId}&quarterId=${QUARTER}&weekOffset=0`, headers });
+  assert.deepEqual(Object.keys(week.json().schedule), [selected.key]);
+  const preview = await app.inject({ method: "POST", url: "/api/editor/preview", headers, payload: {
+    revision: state.revision, groupId, quarterId: QUARTER, weekOffset: 0, autoRoom: false, payload: { lesson: selected.lesson },
+  } });
+  assert.equal(preview.statusCode, 200, preview.body);
+  const target = preview.json().targets.find((target: { date: string; slot: number }) => target.date === selected!.before.date && target.slot === selected!.slot);
+  assert.match(target.reason, /кабинет/i);
+  const unchanged = await db.prepare("SELECT * FROM lessons ORDER BY id").all();
+  const after = structuredClone(selected.before); after.slots[selected.slot].push(selected.lesson);
+  const rejected = await app.inject({ method: "PUT", url: "/api/editor/days", headers, payload: {
+    revision: state.revision, requestId: "scope-room-rejection-0001", changes: [{ key: selected.key, dayIndex: selected.index, before: selected.before, after }],
+  } });
+  assert.equal(rejected.statusCode, 400, rejected.body);
+  assert.deepEqual(await db.prepare("SELECT * FROM lessons ORDER BY id").all(), unchanged);
+  assert.equal((await db.prepare("SELECT revision FROM draft_metadata WHERE id=1").get()).revision, state.revision);
+  const context = await app.inject({ url: `/api/schedule-operations/event-context?date=${selected.before.date}`, headers });
+  assert.equal(context.statusCode, 200, context.body);
+  assert.ok(Object.keys(context.json().schedule).length > 1, "on-demand form context retains other groups");
+});
+
+
+test("on-demand sparse date context saves and undoes the exact day without changing loaded or historical days", async () => {
+  const { app, headers } = await setup();
+  const db = (app as unknown as { smenaDatabase: AsyncDatabase }).smenaDatabase;
+  const week = await app.inject({ url: `/api/editor/week?groupId=5a&quarterId=${QUARTER}&weekOffset=0`, headers });
+  const state = week.json();
+  const context = await app.inject({ url: "/api/schedule-operations/event-context?date=2026-10-07", headers });
+  assert.equal(context.statusCode, 200, context.body);
+  const current = mergeScheduleContext(state.schedule, context.json().schedule);
+  assert.equal(current["5a:0"].length, 7, "hydrating context must preserve all loaded days");
+  const historical = structuredClone(state.schedule) as Schedule;
+  historical["5a:0"][0].note = "Ранее изменённый день";
+  const history = mergeScheduleContext(historical, context.json().schedule);
+  assert.equal(history["5a:0"][0].note, "Ранее изменённый день", "context must not overwrite historical snapshots");
+  const foreignKey = Object.keys(current).find(key => key !== "5a:0")!;
+  assert.ok(foreignKey);
+  assert.equal(current[foreignKey].length, 1);
+  const next = structuredClone(current);
+  next[foreignKey][0].note = "Проверка sparse контекста";
+  const commands = scheduleDayChanges(current, next);
+  assert.equal(commands.length, 1);
+  assert.equal(commands[0].dayIndex, 2, "Wednesday context belongs to full week index 2, not sparse array index 0");
+  const untouched = await db.prepare("SELECT * FROM lessons ORDER BY id").all();
+  const saved = await app.inject({ method: "PUT", url: "/api/editor/days", headers, payload: {
+    revision: state.revision, requestId: "scope-sparse-day-0001", changes: commands,
+  } });
+  assert.equal(saved.statusCode, 200, saved.body);
+  const undone = await app.inject({ method: "PUT", url: "/api/editor/days", headers, payload: {
+    revision: saved.json().revision, requestId: "scope-sparse-day-undo", changes: scheduleDayChanges(next, current),
+  } });
+  assert.equal(undone.statusCode, 200, undone.body);
+  assert.deepEqual(await db.prepare("SELECT * FROM lessons ORDER BY id").all(), untouched);
+  const refreshed = await app.inject({ url: "/api/schedule-operations/event-context?date=2026-10-07", headers });
+  assert.deepEqual(refreshed.json().schedule, context.json().schedule);
 });

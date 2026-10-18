@@ -169,3 +169,27 @@ test("published schedules preserve catalog references and the last active group 
   const removeLast = structuredClone(oneActive.json().catalog) as Catalog; removeLast.groups = removeLast.groups.filter((entry) => entry.id !== keepGroup.id);
   const lastGroup = await save(app, auth, oneActive.json().revision, removeLast); assert.equal(lastGroup.statusCode, 400); assert.match(lastGroup.json().error, /последнюю действующую группу/);
 });
+
+test("v2 teacher journals preserve historical references by id and raw name without blocking unused teachers", async () => {
+  const { app, db } = await start(); const auth = await login(app); const initial = await state(app, auth);
+  const catalog = structuredClone(initial.catalog) as Catalog;
+  const historical = ["id", "name", "unused"].map(kind => ({
+    id: `v2-history:${kind}`, name: `История v2 ${kind}`, archived: false, subjectIds: [], defaultRoomId: null, preferredGroupIds: [], unavailability: [],
+  }));
+  catalog.teachers.push(...historical);
+  const saved = await save(app, auth, initial.revision, catalog); assert.equal(saved.statusCode, 200, saved.body);
+  const journal = { format: "teacher-reassignment-v2", dates: ["2020-01-01"], teachers: [
+    { id: "historical-lesson-id", teacher: "legacy raw label", teacher_ref: historical[0]!.id },
+    { id: "historical-lesson-name", teacher: historical[1]!.name, teacher_ref: null },
+  ] };
+  db.prepare(`INSERT INTO teacher_replacement_operations(operation_id,apply_request_id,apply_fingerprint,apply_response_json,applied_revision,previous_schedule_json,previous_policies_json,previous_origins_json,previous_assignments_json)
+    VALUES('v2-history-operation','v2-history-request','fingerprint','{}',0,?,'[]','[]','[]')`).run(JSON.stringify(journal));
+  const current = await state(app, auth);
+  for (const teacher of historical.slice(0, 2))
+    assert.ok(current.catalogDeletionBlockers.teachers[teacher.id].includes("история операций"), teacher.id);
+  assert.deepEqual(current.catalogDeletionBlockers.teachers[historical[2]!.id], [], "a valid v2 journal must not fail closed for every teacher");
+  const remove = structuredClone(current.catalog) as Catalog;
+  remove.teachers = remove.teachers.filter(teacher => teacher.id !== historical[0]!.id);
+  const rejected = await save(app, auth, current.revision, remove);
+  assert.equal(rejected.statusCode, 400); assert.match(rejected.json().error, /история операций/);
+});

@@ -70,6 +70,7 @@ import type { EditorPreviewResponse, StateResponse } from "../server/contracts";
 import { api, ApiError, type AuthSession } from "./api";
 import { withBasePath } from "./basePath";
 import { useAutosave } from "./useAutosave";
+import { mergeScheduleContext } from "./scheduleContext";
 import ScheduleLessonCard from "./ScheduleLessonCard";
 import "./admin-navigation.css";
 
@@ -210,6 +211,7 @@ type Placement = {
   lesson: Omit<EditorLesson, "id">;
   from?: { location: Location; id: string };
 };
+type PendingDrop = { location: Location; payload: Placement; signature: string; revision: number };
 type TimeDialog = {
   location: Location;
   kind: "time" | "break";
@@ -255,7 +257,7 @@ function Modal({
   );
 }
 
-type LessonDialogHandle = { setDetail: (detail: Detail | null) => void };
+type LessonDialogHandle = { setDetail: (detail: Detail | null, context?: Schedule) => void };
 
 // Opening a lesson only updates this small subtree. The calendar and palette
 // keep their rendered state instead of rebuilding before the dialog can paint.
@@ -273,7 +275,8 @@ function LessonDetailsDialog({ controller, schedule, catalog, subjects, groupId,
   onJoint: (detail: Detail) => void;
 }) {
   const [detail, setDetail] = useState<Detail | null>(null);
-  useImperativeHandle(controller, () => ({ setDetail }), []);
+  const [context, setContext] = useState<Schedule | undefined>();
+  useImperativeHandle(controller, () => ({ setDetail: (value, nextContext) => { setDetail(value); setContext(nextContext); } }), []);
   const day = detail ? schedule[key(detail.location.groupId, detail.location.weekOffset)]?.find(day => day.date === detail.location.date) : undefined;
   const lesson = detail && day ? day.slots[detail.location.slot]?.find(lesson => lesson.id === detail.id) : undefined;
   if (!detail || !day || !lesson) return null;
@@ -284,7 +287,7 @@ function LessonDetailsDialog({ controller, schedule, catalog, subjects, groupId,
       slot={detail.location.slot}
       lesson={lesson}
       catalog={catalog}
-      schedule={schedule}
+      schedule={context ? mergeScheduleContext(schedule, context) : schedule}
       groupId={groupId}
       close={close}
       onSave={value => onSave(detail, value)}
@@ -450,21 +453,29 @@ export default function App({
   useEffect(() => {
     setPaletteRoomId("");
     setPlacement(null);
+    setPendingDrop(null);
   }, [selected, groupId, quarterId]);
   const [onlyRemaining, setOnlyRemaining] = useState(false);
   const [dialog, setDialog] = useState<"hours" | null>(null);
   const detailRef = useRef<Detail | null>(null);
   const lessonDialogRef = useRef<LessonDialogHandle>(null);
-  function setDetail(detail: Detail | null) {
+  function setDetail(detail: Detail | null, context?: Schedule) {
     detailRef.current = detail;
-    lessonDialogRef.current?.setDetail(detail);
+    lessonDialogRef.current?.setDetail(detail, context);
   }
-  const [timeDialog, setTimeDialog] = useState<TimeDialog | null>(null);
-  const [placement, setPlacement] = useState<Placement | null>(null);
+  const [timeDialog, setTimeDialog] = useState<(TimeDialog & { contextSchedule?: Schedule; revision?: number }) | null>(null);
+  const [placement, setPlacementValue] = useState<Placement | null>(null);
   const [dragging, setDragging] = useState<Placement | null>(null);
+  const [pendingDrop, setPendingDrop] = useState<PendingDrop | null>(null);
+  function setPlacement(value: Placement | null) {
+    if (value) setPendingDrop(null);
+    setPlacementValue(value);
+  }
   const [teacherTransfer, setTeacherTransfer] = useState<{
     location: Location;
     payload: Placement;
+    contextSchedule?: Schedule;
+    revision?: number;
   } | null>(null);
   const [transferError, setTransferError] = useState("");
   const [hovered, setHovered] = useState("");
@@ -498,7 +509,7 @@ export default function App({
   const subjects = allSubjects.filter(
     (subject) => subject.assignments.length > 0,
   );
-  const activePlacement = dragging ?? placement;
+  const activePlacement = dragging ?? pendingDrop?.payload ?? placement;
   const previewPayload = activePlacement ? {
     lesson: activePlacement.lesson,
     ...(activePlacement.from ? { from: activePlacement.from } : {}),
@@ -538,6 +549,7 @@ export default function App({
       }
     }).catch((error: unknown) => {
       if (active && !controller.signal.aborted) {
+        setPendingDrop(null);
         if (error instanceof ApiError && (error.status === 401 || error.status === 403)) onUnauthorized();
         setNotice({ text: error instanceof Error ? error.message : "Не удалось проверить места", error: true });
       }
@@ -636,23 +648,29 @@ export default function App({
     transform: (value: Schedule) => Schedule,
     label: string,
     location: Location,
+    contextSchedule?: Schedule,
+    contextRevision?: number,
   ) {
     if (loggingOut || reloading || scopeLoading || scopeError) return;
-    const next = transform(schedule);
-    if (next === schedule) return;
-    const roomSuitability = newRoomSuitabilityViolation(next, schedule, catalog);
+    const previous = contextSchedule ? mergeScheduleContext(schedule, contextSchedule) : schedule;
+    if (contextSchedule && contextRevision !== save.currentRevision()) throw new Error("Расписание изменилось. Откройте форму снова.");
+    const next = transform(previous);
+    if (next === previous) return;
+    const roomSuitability = newRoomSuitabilityViolation(next, previous, catalog);
     if (roomSuitability) throw new Error(roomSuitabilityViolationMessage(roomSuitability, catalog));
-    const unavailable = newUnavailabilityViolation(next, schedule, catalog);
+    const unavailable = newUnavailabilityViolation(next, previous, catalog);
     if (unavailable) throw new Error(unavailabilityViolationMessage(unavailable, catalog));
-    const roomConflict = newRoomConflict(next, schedule);
+    const roomConflict = newRoomConflict(next, previous);
     if (roomConflict)
       throw new Error(roomConflictMessage(roomConflict, catalog));
-    const teacherConflict = newTeacherConflict(next, schedule);
+    const teacherConflict = newTeacherConflict(next, previous);
     if (teacherConflict)
       throw new Error(teacherConflictMessage(teacherConflict, catalog));
+    if (contextSchedule && !save.reset(previous, save.currentRevision()))
+      throw new Error("Дождитесь сохранения изменений и откройте форму снова.");
     setHistory((entries) => [
-      ...entries.slice(-29),
-      { schedule, label, location },
+      ...entries.slice(-29).map(entry => contextSchedule ? { ...entry, schedule: mergeScheduleContext(entry.schedule, contextSchedule) } : entry),
+      { schedule: previous, label, location },
     ]);
     setSchedule(next);
     save.queue(next);
@@ -760,6 +778,54 @@ export default function App({
     } finally {
       setReloading(false);
     }
+  }
+  async function editorDayContext(date: string): Promise<{ schedule: Schedule; revision: number }> {
+    if (!(await save.flush())) throw new Error("Сначала сохраните изменения текущей недели.");
+    const context = await api<{ revision: number; schedule: Schedule }>(
+      `/api/schedule-operations/event-context?${new URLSearchParams({ date })}`,
+    );
+    if (context.revision !== save.currentRevision())
+      throw new Error("Расписание изменилось. Обновите неделю и повторите действие.");
+    return context;
+  }
+  async function openLesson(detail: Detail) {
+    if (loggingOut || reloading || scopeLoading) return;
+    setReloading(true);
+    try {
+      const context = scopedMode ? await editorDayContext(detail.location.date) : undefined;
+      setDetail(detail, context?.schedule);
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) onUnauthorized();
+      setNotice({ text: error instanceof Error ? error.message : "Не удалось открыть занятие", error: true });
+    } finally { setReloading(false); }
+  }
+  async function openTimeDialog(dialog: TimeDialog) {
+    if (loggingOut || reloading || scopeLoading) return;
+    setReloading(true);
+    try {
+      const context = scopedMode ? await editorDayContext(dialog.location.date) : undefined;
+      setTimeDialog({ ...dialog, contextSchedule: context?.schedule, revision: context?.revision });
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) onUnauthorized();
+      setNotice({ text: error instanceof Error ? error.message : "Не удалось открыть время дня", error: true });
+    } finally { setReloading(false); }
+  }
+  async function openBlockedPlacement(location: Location, payload: Placement, reason: string) {
+    if (loggingOut || reloading) return;
+    setReloading(true);
+    try {
+      const context = scopedMode ? await editorDayContext(location.date) : { schedule, revision: save.currentRevision() };
+      const combined = mergeScheduleContext(schedule, context.schedule);
+      if (!teacherPlacementConflicts(combined, location, payload.lesson, payload.from?.id).length) {
+        setNotice({ text: reason, error: true });
+        return;
+      }
+      setTransferError("");
+      setTeacherTransfer({ location, payload, contextSchedule: context.schedule, revision: context.revision });
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) onUnauthorized();
+      setNotice({ text: error instanceof Error ? error.message : reason, error: true });
+    } finally { setReloading(false); }
   }
   async function openServiceEvent(value: NonNullable<typeof serviceEvent>) {
     if (loggingOut || reloading) return;
@@ -954,6 +1020,7 @@ export default function App({
     const onKey = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement;
       if (event.key === "Escape") {
+        setPendingDrop(null);
         setPlacement(null);
         endDrag();
         setNavOpen(false);
@@ -994,6 +1061,7 @@ export default function App({
     setTimeDialog(null);
   };
   function beginDrag(event: DragEvent, payload: Placement) {
+    setPendingDrop(null);
     dragRef.current = payload;
     setDragging(payload);
     setPlacement(null);
@@ -1080,7 +1148,14 @@ export default function App({
       ? dropTargets.get(`${location.date}:${location.slot}`) ?? null
       : targetAction(location, payload);
     if (!target) {
-      setNotice({ text: "Проверяем доступность места. Повторите действие через секунду." });
+      if (scopedMode && previewSignature) {
+        setPendingDrop({ location, payload, signature: previewSignature, revision: save.currentRevision() });
+        setNotice({ text: "Проверяем выбранное место…" });
+      }
+      return;
+    }
+    if (target.reason) {
+      void openBlockedPlacement(location, target.payload, target.reason);
       return;
     }
     payload = target.payload;
@@ -1146,15 +1221,32 @@ export default function App({
     return targets;
   }, [schedule, activePlacement, week, groupId, weekOffset, quarter, catalog, paletteRoomId, scopedMode, serverTargets, serverTargetsSignature, previewSignature]);
   const hoveredTarget = dropTargets.get(hovered);
+  useEffect(() => {
+    if (!pendingDrop) return;
+    if (pendingDrop.signature !== previewSignature || pendingDrop.revision !== save.currentRevision() || scopeLoading || scopeError || save.status.kind !== "saved") {
+      setPendingDrop(null);
+      setNotice({ text: "Перенос отменён: выбранное расписание изменилось." });
+      return;
+    }
+    if (serverTargetsSignature !== pendingDrop.signature) return;
+    const target = dropTargets.get(`${pendingDrop.location.date}:${pendingDrop.location.slot}`);
+    setPendingDrop(null);
+    if (!target) {
+      setNotice({ text: "Выбранное место недоступно. Выберите другое.", error: true });
+      return;
+    }
+    placeAt(pendingDrop.location, pendingDrop.payload);
+  }, [pendingDrop, previewSignature, serverTargetsSignature, dropTargets, scopeLoading, scopeError, save.status.kind]);
+  const transferSchedule = teacherTransfer?.contextSchedule ? mergeScheduleContext(schedule, teacherTransfer.contextSchedule) : schedule;
   const transferConflicts = teacherTransfer
-    ? teacherPlacementConflicts(schedule, teacherTransfer.location, teacherTransfer.payload.lesson, teacherTransfer.payload.from?.id)
+    ? teacherPlacementConflicts(transferSchedule, teacherTransfer.location, teacherTransfer.payload.lesson, teacherTransfer.payload.from?.id)
     : [];
   let transferBlocked = "";
   let transferUndoBlocked = false;
   if (teacherTransfer) {
     try {
-      const preview = transferTeacherLesson(schedule, teacherTransfer.location, teacherTransfer.payload.lesson, catalog, teacherTransfer.payload.from);
-      transferUndoBlocked = !!(newTeacherConflict(schedule, preview) || newRoomConflict(schedule, preview) || newUnavailabilityViolation(schedule, preview, catalog));
+      const preview = transferTeacherLesson(transferSchedule, teacherTransfer.location, teacherTransfer.payload.lesson, catalog, teacherTransfer.payload.from);
+      transferUndoBlocked = !!(newTeacherConflict(transferSchedule, preview) || newRoomConflict(transferSchedule, preview) || newUnavailabilityViolation(transferSchedule, preview, catalog));
     } catch (error) {
       transferBlocked = error instanceof Error ? error.message : "Перенос невозможен";
     }
@@ -1735,7 +1827,7 @@ export default function App({
                       <button
                         className={`day-note ${day.times.length > 0 && day.times.every((t) => t.duration === 35) ? "shortened" : ""}`}
                         onClick={() =>
-                          setTimeDialog({
+                          void openTimeDialog({
                             location: locationFor(day.date, 0),
                             kind: "time",
                             wholeDay: true,
@@ -1784,7 +1876,7 @@ export default function App({
                                 <button
                                   className="time-button"
                                   onClick={() =>
-                                    setTimeDialog({ location, kind: "time" })
+                                    void openTimeDialog({ location, kind: "time" })
                                   }
                                   aria-label={`Время урока ${slot + 1}, ${weekdayName(day.date)}`}
                                 >
@@ -1933,7 +2025,7 @@ export default function App({
                                             void openServiceEvent({ title: lesson.event, location, lessonId: lesson.id });
                                             return;
                                           }
-                                          setDetail({
+                                          void openLesson({
                                             location,
                                             id: lesson.id,
                                           });
@@ -1999,7 +2091,7 @@ export default function App({
                                 <button
                                   className={`break-label ${day.breaks[slot] !== defaultGap ? "custom-break" : ""}`}
                                   onClick={() =>
-                                    setTimeDialog({ location, kind: "break" })
+                                    void openTimeDialog({ location, kind: "break" })
                                   }
                                   aria-label={`Перемена после урока ${slot + 1}, ${weekdayName(day.date)}`}
                                   title={
@@ -2043,11 +2135,19 @@ export default function App({
                 ))}
               </div>
             </div>
+            {pendingDrop && (
+              <div className="drag-feedback pending-drop" role="status">
+                Проверяем выбранное место…
+                <button type="button" className="secondary-button" onClick={() => { setPendingDrop(null); setNotice({ text: "Перенос отменён" }); }}>Отменить перенос</button>
+              </div>
+            )}
             {dragging && (
               <div className={`drag-feedback ${hoveredTarget?.reason ? "blocked" : ""}`} role="status">
                 {hoveredTarget
                   ? `${hoveredTarget.reason ? "Нельзя: " : ""}${hoveredTarget.label}`
-                  : dragging.from
+                  : scopedMode && serverTargetsSignature !== previewSignature
+                    ? "Проверяем доступность мест… Можно отпустить карточку и дождаться проверки."
+                    : dragging.from
                     ? "Зелёная рамка — перенос или обмен, красная — конфликт. Для другой недели задержите урок над её датой."
                     : "Зелёная рамка — место свободно, красная — конфликт."}
               </div>
@@ -2206,6 +2306,8 @@ export default function App({
                     (current) => transferTeacherLesson(current, teacherTransfer.location, teacherTransfer.payload.lesson, catalog, teacherTransfer.payload.from),
                     "Преподаватель перенесён",
                     teacherTransfer.location,
+                    teacherTransfer.contextSchedule,
+                    teacherTransfer.revision,
                   );
                   setTeacherTransfer(null);
                   setPlacement(null);
@@ -2334,6 +2436,8 @@ export default function App({
                   (value) => setBreak(value, timeDialog.location, minutes),
                   "Перемена изменена",
                   timeDialog.location,
+                  timeDialog.contextSchedule,
+                  timeDialog.revision,
                 );
                 setTimeDialog(null);
               }}
@@ -2342,7 +2446,7 @@ export default function App({
             <DayTimeForm
               day={timingDay}
               location={timeDialog.location}
-              schedule={schedule}
+              schedule={timeDialog.contextSchedule ? mergeScheduleContext(schedule, timeDialog.contextSchedule) : schedule}
               catalog={catalog}
               schoolProfile={bellProfile}
               close={() => setTimeDialog(null)}
@@ -2351,6 +2455,8 @@ export default function App({
                   (current) => applyDayTiming(current, options, catalog),
                   options.groupIds.length > 1 ? "Время учебного дня изменено у нескольких групп" : "Время учебного дня изменено",
                   timeDialog.location,
+                  timeDialog.contextSchedule,
+                  timeDialog.revision,
                 );
                 setTimeDialog(null);
               }}
@@ -2372,6 +2478,8 @@ export default function App({
                     ),
                   "Время изменено",
                   timeDialog.location,
+                  timeDialog.contextSchedule,
+                  timeDialog.revision,
                 );
                 setTimeDialog(null);
               }}

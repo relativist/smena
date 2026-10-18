@@ -10,6 +10,8 @@ import { Pool, types, type PoolClient } from "pg";
 import type { ArchiveManifest, ArchivePreview } from "../shared/dataTransfer.ts";
 import { openPostgresDatabase } from "./database.ts";
 import { initializePostgresSchema } from "./postgresSchema.ts";
+import { createPublicationPrintIndex } from "./publicationPrintIndex.ts";
+import type { PublicationSnapshot } from "../shared/publicationTypes.ts";
 
 const TABLES = [
   "draft_metadata", "schedule_days", "schedule_slots", "lessons", "plan_baselines", "request_replays",
@@ -291,6 +293,7 @@ export class SchoolArchiveService {
       const sourceColumns = await this.inspectSchema(stageClient, dbSchema);
       const stageColumns = await this.inspectSchema(stageClient, schema);
       const sourceTypes = new Map<Table, string[]>();
+      let archiveColumns = sourceColumns;
       for (const table of TABLES) sourceTypes.set(table, await this.columnTypes(stageClient, table, dbSchema));
       for (const table of TABLES) if (stageColumns.get(table)!.join("\0") !== sourceColumns.get(table)!.join("\0"))
         throw new ArchiveServiceError(503, `Схема приёмника таблицы ${table} несовместима`);
@@ -313,8 +316,18 @@ export class SchoolArchiveService {
           if (item?.type !== "manifest") throw clientError("Первая строка архива не содержит описание данных");
           manifest = this.validateManifest(item.manifest);
           if (manifest.postgresMajorVersion !== pgMajor) throw clientError("Архив создан для другой основной версии PostgreSQL");
-          if (JSON.stringify(manifest.schemaVersions) !== JSON.stringify(schemaVersions)) throw clientError("Версия схемы архива не совместима с приложением");
-          for (const t of manifest.tables) if (JSON.stringify(t.columns) !== JSON.stringify(sourceColumns.get(t.name as Table))) throw clientError(`Столбцы таблицы ${t.name} не соответствуют текущей схеме`);
+          // v5 adds only derived publication metadata. Older v4 archives can
+          // supply their exact old columns; no other schema differences pass.
+          const legacyPrintIndex = JSON.stringify(schemaVersions) === "[1,2,3,4,5]" && JSON.stringify(manifest.schemaVersions) === "[1,2,3,4]";
+          if (!legacyPrintIndex && JSON.stringify(manifest.schemaVersions) !== JSON.stringify(schemaVersions)) throw clientError("Версия схемы архива не совместима с приложением");
+          archiveColumns = new Map(sourceColumns);
+          for (const t of manifest.tables) {
+            const table = t.name as Table;
+            const expected = sourceColumns.get(table)!;
+            const accepted = legacyPrintIndex && table === "published_quarters" ? expected.filter(column => column !== "print_index_json") : expected;
+            if (JSON.stringify(t.columns) !== JSON.stringify(accepted)) throw clientError(`Столбцы таблицы ${t.name} не соответствуют текущей схеме`);
+            archiveColumns.set(table, t.columns);
+          }
           hash.update(`${line}\n`); continue;
         }
         if (!manifest) throw clientError("Описание архива отсутствует");
@@ -329,10 +342,10 @@ export class SchoolArchiveService {
         if (idx < currentTableIndex) throw clientError("Записи таблиц идут в неверном порядке");
         if (pendingTable !== table) { await flushInsert(); pendingTable = table; }
         currentTableIndex = idx;
-        const cols = sourceColumns.get(table)!;
+        const cols = archiveColumns.get(table)!;
         if (item.values.length !== cols.length || !item.values.every(scalar)) throw clientError(`Запись таблицы ${table} имеет неверный формат`);
         const types = sourceTypes.get(table)!;
-        for (let i = 0; i < types.length; i++) {
+        for (let i = 0; i < cols.length; i++) {
           const value = item.values[i];
           if (value === null) continue;
           const valid = ["text", "character varying", "character"].includes(types[i]!)
@@ -345,7 +358,18 @@ export class SchoolArchiveService {
         hash.update(`${line}\n`);
         const count = rowCounts.get(table) ?? 0; rowCounts.set(table, count + 1);
         if (count >= manifest.tables.find(t => t.name === table)!.rows) throw clientError(`В таблице ${table} больше строк, чем указано в описании`);
-        pendingRows.push(item.values);
+        if (table === "published_quarters") {
+          // Rebuild from the archived snapshot, including for current archives:
+          // archived/renamed groups and a replaced publication stay exact.
+          let compact: string;
+          try { compact = JSON.stringify(createPublicationPrintIndex(JSON.parse(item.values[cols.indexOf("snapshot_json")]) as PublicationSnapshot)); }
+          catch { throw clientError("Опубликованное расписание в архиве повреждено"); }
+          const values = [...item.values];
+          const compactColumn = cols.indexOf("print_index_json");
+          if (compactColumn < 0) values.push(compact);
+          else values[compactColumn] = compact;
+          pendingRows.push(values);
+        } else pendingRows.push(item.values);
         if (pendingRows.length >= MAX_INSERT_ROWS || pendingRows.length * cols.length >= MAX_INSERT_PARAMS) await flushInsert();
       }
       await flushInsert();

@@ -11,6 +11,8 @@ import { openPostgresDatabase } from "../server/database.ts";
 import { initializePostgresSchema } from "../server/postgresSchema.ts";
 import { migrateSqliteToPostgres } from "./migrate-sqlite-to-postgres.ts";
 import type { StateResponse } from "../server/contracts.ts";
+import { createPublicationSnapshot } from "../shared/publication.ts";
+import { createPublicationPrintIndex } from "../server/publicationPrintIndex.ts";
 
 const baseUrl = process.env.SMENA_TEST_DATABASE_URL;
 const skipReason = baseUrl
@@ -91,6 +93,47 @@ test("PostgreSQL startup seeds presets once without demo data or an administrato
     assert.deepEqual(await second.db.prepare("SELECT name FROM catalog_subjects WHERE id=?").get(customSubject.id), { name: "Имя сохранённого предмета" });
     assert.equal((await second.app.inject({ url: "/api/auth/status" })).json().needsSetup, true);
     await second.app.close();
+  });
+});
+
+test("legacy v23 SQLite import derives and verifies publication print metadata without changing source columns", { skip: skipReason }, async () => {
+  await withOwnedSchema(async databaseUrl => {
+    const root = mkdtempSync(join(tmpdir(), "smena-legacy-print-import-"));
+    const sqlitePath = join(root, "source.sqlite");
+    let sourceApp: Awaited<ReturnType<typeof buildApp>> | undefined;
+    let targetApp: Awaited<ReturnType<typeof buildApp>> | undefined;
+    try {
+      sourceApp = await buildApp({ dbPath: sqlitePath });
+      const auth = await startAdmin(sourceApp);
+      const state = (await sourceApp.inject({ url: "/api/state", headers: auth.headers })).json() as StateResponse;
+      const snapshot = createPublicationSnapshot(state, state.quarters[0]!.id);
+      const sourceDb = (sourceApp as unknown as { smenaDb: AsyncDatabase }).smenaDb;
+      await sourceDb.prepare(`INSERT INTO published_quarters(quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json,print_index_json)
+        VALUES(?,3,'2026-10-18T00:00:00.000Z',?,'publisher',?,'{}',?)`)
+        .run(snapshot.quarter.id, state.revision, JSON.stringify(snapshot), JSON.stringify(createPublicationPrintIndex(snapshot)));
+      const sourceStateAfterPublication = (await sourceApp.inject({ url: "/api/state", headers: auth.headers })).json() as StateResponse;
+      await sourceDb.exec("ALTER TABLE published_quarters DROP COLUMN print_index_json");
+      await sourceDb.prepare("DELETE FROM schema_migrations WHERE version=24").run();
+      const original = await sourceDb.prepare("SELECT * FROM published_quarters").all();
+      await sourceApp.close(); sourceApp = undefined;
+      const targetDb = openPostgresDatabase(databaseUrl);
+      try { await initializePostgresSchema(targetDb); } finally { await targetDb.close(); }
+      const digests = await migrateSqliteToPostgres({ from: sqlitePath, databaseUrl });
+      assert.equal(digests.get("published_quarters")!.count, 1);
+      targetApp = await buildApp({ databaseUrl });
+      const db = (targetApp as unknown as { smenaDb: AsyncDatabase }).smenaDb;
+      assert.deepEqual(await db.prepare("SELECT quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json FROM published_quarters").all(), original);
+      assert.deepEqual(JSON.parse((await db.prepare("SELECT print_index_json FROM published_quarters").get()).print_index_json), createPublicationPrintIndex(snapshot));
+      const targetAuth = await startAdmin(targetApp);
+      const index = await targetApp.inject({ url: "/api/schedule-print/index", headers: targetAuth.headers });
+      assert.equal(index.statusCode, 200, index.body);
+      assert.deepEqual(index.json().published[0].groups, createPublicationPrintIndex(snapshot).groups);
+      assert.deepEqual((await targetApp.inject({ url: "/api/state", headers: targetAuth.headers })).json(), sourceStateAfterPublication);
+    } finally {
+      await sourceApp?.close();
+      await targetApp?.close();
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 });
 

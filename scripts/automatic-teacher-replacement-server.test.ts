@@ -128,10 +128,17 @@ test("automatic teacher replacement is protected, recomputed, persisted and undo
   db.prepare(`INSERT INTO published_quarters(quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json) VALUES(?,?,?,?,?,?,?)`)
     .run("f2-isolation-test", 1, new Date().toISOString(), state.revision, "test", JSON.stringify({ unchanged: true }), JSON.stringify({}));
   const publicationBefore = db.prepare("SELECT snapshot_json,summary_json,version FROM published_quarters WHERE quarter_id=?").get("f2-isolation-test");
-  const applied = await app.inject({ method: "POST", url: "/api/teacher-replacements/apply", headers, payload: { revision: state.revision, requestId: applyId, request: replacementRequest, expectedAssignments: proposed } });
+  const applied = await app.inject({ method: "POST", url: "/api/teacher-replacements/apply?response=receipt", headers, payload: { revision: state.revision, requestId: applyId, request: replacementRequest, expectedAssignments: proposed } });
   assert.equal(applied.statusCode, 200, applied.body);
-  const applyBody = applied.json() as { state: StateResponse; operationId: string };
-  state = applyBody.state;
+  const applyBody = applied.json() as { revision: number; updatedAt: string; operationId: string };
+  assert.deepEqual(Object.keys(applyBody).sort(), ["operationId", "revision", "updatedAt"]);
+  assert.equal(applyBody.revision, state.revision + 1);
+  assert.ok(Buffer.byteLength(applied.body) < 400, "a receipt must not contain the school state");
+  assert.deepEqual(JSON.parse((db.prepare("SELECT apply_response_json FROM teacher_replacement_operations WHERE operation_id=?").get(applyBody.operationId) as { apply_response_json: string }).apply_response_json), applyBody);
+  const teacherJournal = JSON.parse((db.prepare("SELECT previous_schedule_json FROM teacher_replacement_operations WHERE operation_id=?").get(applyBody.operationId) as { previous_schedule_json: string }).previous_schedule_json);
+  assert.equal(teacherJournal.format, "teacher-reassignment-v2");
+  assert.deepEqual(teacherJournal.teachers.map((teacher: { id: string }) => teacher.id), [chosen.lesson.id]);
+  state = (await app.inject({ url: "/api/state", headers })).json() as StateResponse;
   const changed = state.schedule[chosen.key]![chosen.dayIndex]!.slots[chosen.slotIndex]![0]!;
   assert.equal(changed.teacherId, proposed[0]!.teacherId);
   assert.equal(state.schedule[chosen.key]![chosen.dayIndex]!.slots[chosen.slotIndex]![0]!.roomId, chosen.lesson.roomId);
@@ -146,8 +153,8 @@ test("automatic teacher replacement is protected, recomputed, persisted and undo
   const persistedState = await reopened.inject({ url: "/api/state", headers: reopenedHeaders });
   assert.equal(persistedState.statusCode, 200, persistedState.body);
   assert.deepEqual((persistedState.json() as StateResponse).temporaryTeacherReplacements, state.temporaryTeacherReplacements);
-  const reopenedApplyReplay = await reopened.inject({ method: "POST", url: "/api/teacher-replacements/apply", headers: reopenedHeaders, payload: { revision: state.revision - 1, requestId: applyId, request: replacementRequest, expectedAssignments: proposed } });
-  assert.equal(reopenedApplyReplay.statusCode, 200); assert.equal(reopenedApplyReplay.json().operationId, applyBody.operationId);
+  const reopenedApplyReplay = await reopened.inject({ method: "POST", url: "/api/teacher-replacements/apply?response=receipt", headers: reopenedHeaders, payload: { revision: state.revision - 1, requestId: applyId, request: replacementRequest, expectedAssignments: proposed } });
+  assert.equal(reopenedApplyReplay.statusCode, 200); assert.deepEqual(reopenedApplyReplay.json(), applyBody);
   const applyReplay = reopenedApplyReplay;
   assert.equal(applyReplay.statusCode, 200); assert.equal(applyReplay.json().operationId, applyBody.operationId);
 
@@ -156,12 +163,18 @@ test("automatic teacher replacement is protected, recomputed, persisted and undo
   const ordinarySave = await reopened.inject({ method: "PUT", url: "/api/state", headers: reopenedHeaders, payload: { schedule: manualRestore, revision: state.revision, requestId: `auto-ordinary-${crypto.randomUUID()}` } });
   assert.equal(ordinarySave.statusCode, 400, "ordinary state writes still reject assigning the unavailable source teacher");
   const undoId = `auto-undo-${crypto.randomUUID()}`;
-  const undone = await reopened.inject({ method: "POST", url: `/api/teacher-replacements/${applyBody.operationId}/undo`, headers: reopenedHeaders, payload: { revision: state.revision, requestId: undoId } });
+  const undone = await reopened.inject({ method: "POST", url: `/api/teacher-replacements/${applyBody.operationId}/undo?response=receipt`, headers: reopenedHeaders, payload: { revision: state.revision, requestId: undoId } });
   assert.equal(undone.statusCode, 200, undone.body);
-  const undoState = (undone.json() as { state: StateResponse }).state;
+  const undoReceipt = undone.json() as { revision: number; updatedAt: string };
+  assert.deepEqual(Object.keys(undoReceipt).sort(), ["revision", "updatedAt"]);
+  assert.equal(undoReceipt.revision, applyBody.revision + 1);
+  assert.ok(Buffer.byteLength(undone.body) < 400);
+  const undoState = (await reopened.inject({ url: "/api/state", headers: reopenedHeaders })).json() as StateResponse;
+  const reopenedDb = (reopened as unknown as { smenaDb: Database.Database }).smenaDb;
+  assert.deepEqual(reopenedDb.prepare("SELECT snapshot_json,summary_json,version FROM published_quarters WHERE quarter_id=?").get("f2-isolation-test"), publicationBefore);
   assert.equal(undoState.schedule[chosen.key]![chosen.dayIndex]!.slots[chosen.slotIndex]![0]!.teacherId, chosen.teacher.id);
   assert.deepEqual(undoState.temporaryTeacherReplacements, []);
-  const undoReplay = await reopened.inject({ method: "POST", url: `/api/teacher-replacements/${applyBody.operationId}/undo`, headers: reopenedHeaders, payload: { revision: undoState.revision - 1, requestId: undoId } });
+  const undoReplay = await reopened.inject({ method: "POST", url: `/api/teacher-replacements/${applyBody.operationId}/undo?response=receipt`, headers: reopenedHeaders, payload: { revision: undoState.revision - 1, requestId: undoId } });
   assert.equal(undoReplay.statusCode, 200); assert.deepEqual(undoReplay.json(), undone.json());
   const anotherEdit = await reopened.inject({ method: "PUT", url: "/api/catalog", headers: reopenedHeaders, payload: { catalog: undoState.catalog, revision: undoState.revision, requestId: `auto-edit-${crypto.randomUUID()}` } });
   assert.equal(anotherEdit.statusCode, 200);
@@ -236,6 +249,13 @@ test("joint replacements apply every mirror, skip a closed-room unit, and undo a
   assert.equal(appliedState.schedule[`${firstGroup.id}:${fixture.offset}`]!.find((day) => day.date === fixture.date)!.slots[fixture.blockedSlot]![0]!.teacherId, fixture.teachers[0]!.id, "infeasible unit stays with source awaiting attention");
   assert.equal(appliedState.schedule[`${firstGroup.id}:${fixture.offset}`]!.find((day) => day.date === fixture.date)!.slots[fixture.capacitySlot]![0]!.teacherId, fixture.teachers[0]!.id, "capacity-blocked unit remains unchanged");
 
+  // Already persisted operations may still carry the pre-v2 Schedule journal.
+  // Exercise this real legacy representation through the same validated undo.
+  const operationDb = (app as unknown as { smenaDb: Database.Database }).smenaDb;
+  const legacySchedule = Object.fromEntries(Object.entries(refreshedState.schedule)
+    .map(([key, days]) => [key, days.filter(day => day.date === fixture.date)] as const).filter(([, days]) => days.length));
+  operationDb.prepare("UPDATE teacher_replacement_operations SET previous_schedule_json=? WHERE operation_id=?")
+    .run(JSON.stringify(legacySchedule), appliedOperation.operationId);
   const undo = await app.inject({ method: "POST", url: `/api/teacher-replacements/${appliedOperation.operationId}/undo`, headers, payload: { revision: appliedState.revision, requestId: `auto-joint-undo-${crypto.randomUUID()}` } });
   assert.equal(undo.statusCode, 200, undo.body);
   const undoneState = (undo.json() as { state: StateResponse }).state;

@@ -4,6 +4,7 @@ import fastifyCompress from "@fastify/compress";
 import fastifyStatic from "@fastify/static";
 import { openSqliteDatabase, openPostgresDatabase, type AsyncDatabase } from "./database.ts";
 import { initializePostgresSchema } from "./postgresSchema.ts";
+import { createPublicationPrintIndex, migratePublicationPrintIndex, readPublicationPrintIndex } from "./publicationPrintIndex.ts";
 import { randomBytes, scrypt as scryptCallback, timingSafeEqual, createHash, } from "node:crypto";
 import { existsSync, mkdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -234,6 +235,7 @@ async function makeSqliteDatabase(path: string): Promise<AsyncDatabase> {
     await migrateUnifiedCurricula(db);
     await migrateUnavailability(db);
     await migratePublications(db);
+    await db.transaction(() => migratePublicationPrintIndex(db))();
     await migrateTemporaryTeacherReplacements(db);
     await migrateTeacherReassignments(db);
     await migrateReassignmentPolicyHistory(db);
@@ -241,6 +243,7 @@ async function makeSqliteDatabase(path: string): Promise<AsyncDatabase> {
     // Bounded editor reads and availability checks use these date/resource keys.
     await db.exec(`
     CREATE INDEX IF NOT EXISTS schedule_days_date_group ON schedule_days(date, group_id);
+    CREATE INDEX IF NOT EXISTS plan_assignments_plan_id ON plan_assignments(plan_id);
     CREATE INDEX IF NOT EXISTS lessons_teacher_slot ON lessons(teacher_ref, slot_id);
     CREATE INDEX IF NOT EXISTS lessons_room_slot ON lessons(room_ref, slot_id);
     CREATE INDEX IF NOT EXISTS lessons_joint_id ON lessons(joint_id);
@@ -369,7 +372,7 @@ async function migrateTeacherReassignments(db: AsyncDatabase): Promise<void> {
         const originTimeline = new Map<string, TeacherLessonOrigin>();
         for (const operation of operations) {
             try {
-                const previous = JSON.parse(operation.previous_schedule_json) as Schedule;
+                const savedSchedule = JSON.parse(operation.previous_schedule_json) as Schedule | ReassignmentTeacherSnapshot;
                 const response = JSON.parse(operation.apply_response_json) as {
                     state?: StateResponse;
                 };
@@ -378,6 +381,8 @@ async function migrateTeacherReassignments(db: AsyncDatabase): Promise<void> {
                     .run(JSON.stringify([...originTimeline.values()]), JSON.stringify([]), operation.operation_id);
                 if (!next || operation.undo_request_id)
                     continue;
+                const previous = savedSchedule.format === "teacher-reassignment-v2"
+                    ? restoreReassignmentTeachers(next, savedSchedule as ReassignmentTeacherSnapshot) : savedSchedule as Schedule;
                 const previousLessons = locatedLessons(previous);
                 const nextLessons = locatedLessons(next);
                 const afterById = new Map(nextLessons.map((item) => [item.lesson.id, item]));
@@ -626,17 +631,86 @@ function syncCurriculumTemplates(next: Curriculum[], previous: Curriculum[], cha
     });
 }
 async function writeCurriculaProjection(db: AsyncDatabase, curricula: Curriculum[], projected: StudyPlan[]): Promise<void> {
-    await db.prepare("DELETE FROM curricula").run();
-    const putCurriculum = db.prepare("INSERT INTO curricula(id,curriculum_json) VALUES(?,?)");
-    for (const curriculum of curricula)
-        await putCurriculum.run(curriculum.id, JSON.stringify(curriculum));
-    await db.prepare("DELETE FROM study_plans").run();
-    const putPlan = db.prepare("INSERT INTO study_plans(id,quarter_id,group_id,subject_id,mode,lesson_kind,room_kind) VALUES(?,?,?,?,?,?,NULL)");
-    const putAssignment = db.prepare("INSERT INTO plan_assignments(id,plan_id,subgroup_id,target) VALUES(?,?,?,?)");
+    const previousCurricula = await readCurricula(db), previousPlans = await readStudyPlans(db);
+    const previousCurriculaById = new Map(previousCurricula.map(item => [item.id, item]));
+    const nextCurriculaById = new Map(curricula.map(item => [item.id, item]));
+    const deleteCurriculum = db.prepare("DELETE FROM curricula WHERE id=?");
+    const insertCurriculum = db.prepare("INSERT INTO curricula(id,curriculum_json) VALUES(?,?)");
+    const updateCurriculum = db.prepare("UPDATE curricula SET curriculum_json=? WHERE id=?");
+    for (const item of previousCurricula)
+        if (!nextCurriculaById.has(item.id)) await deleteCurriculum.run(item.id);
+    for (const item of curricula) {
+        const old = previousCurriculaById.get(item.id);
+        const json = JSON.stringify(item);
+        if (!old) await insertCurriculum.run(item.id, json);
+        else if (stableJson(old) !== stableJson(item)) await updateCurriculum.run(json, item.id);
+    }
+
+    const previousById = new Map(previousPlans.map(plan => [plan.id, plan]));
+    const nextById = new Map(projected.map(plan => [plan.id, plan]));
+    const uniqueKey = (plan: StudyPlan) => JSON.stringify([plan.quarterId, plan.groupId, plan.subjectId, plan.lessonKind]);
+    const recreate = new Set<string>();
+    for (const plan of previousPlans) {
+        const next = nextById.get(plan.id);
+        if (!next || uniqueKey(plan) !== uniqueKey(next)) recreate.add(plan.id);
+    }
+    const orderColumn = db.dialect === "postgres" ? "insertion_order" : "rowid";
+    const planOrders = new Map<string, number>();
+    const assignmentOrders = new Map<string, number>();
+    if (recreate.size && db.dialect === "sqlite") {
+        const rows = await db.prepare("SELECT id,rowid AS insertion_order FROM study_plans").all() as Array<{ id: string; insertion_order: number }>;
+        for (const row of rows) planOrders.set(row.id, row.insertion_order);
+    }
+    if (recreate.size) {
+        const rows = await db.prepare(`SELECT id,${orderColumn} AS insertion_order FROM plan_assignments`).all() as Array<{ id: string; insertion_order: number }>;
+        for (const row of rows) assignmentOrders.set(row.id, row.insertion_order);
+    }
+    const deletePlan = db.prepare("DELETE FROM study_plans WHERE id=?");
+    for (const id of recreate) await deletePlan.run(id);
+
+    const updatePlan = db.prepare("UPDATE study_plans SET quarter_id=?,group_id=?,subject_id=?,mode=?,lesson_kind=?,room_kind=NULL WHERE id=?");
+    const insertPlan = db.prepare("INSERT INTO study_plans(id,quarter_id,group_id,subject_id,mode,lesson_kind,room_kind) VALUES(?,?,?,?,?,?,NULL)");
+    const insertPlanWithOrder = db.dialect === "sqlite"
+        ? db.prepare("INSERT INTO study_plans(id,quarter_id,group_id,subject_id,mode,lesson_kind,room_kind,rowid) VALUES(?,?,?,?,?,?,NULL,?)")
+        : undefined;
+    const existingPlanIds = new Set(previousById.keys());
     for (const plan of projected) {
-        await putPlan.run(plan.id, plan.quarterId, plan.groupId, plan.subjectId, plan.mode, plan.lessonKind);
-        for (const assignment of plan.assignments)
-            await putAssignment.run(assignment.id, plan.id, assignment.subgroupId, assignment.target);
+        if (!existingPlanIds.has(plan.id) || recreate.has(plan.id)) {
+            const order = planOrders.get(plan.id);
+            if (order === undefined) await insertPlan.run(plan.id, plan.quarterId, plan.groupId, plan.subjectId, plan.mode, plan.lessonKind);
+            else if (insertPlanWithOrder) await insertPlanWithOrder.run(plan.id, plan.quarterId, plan.groupId, plan.subjectId, plan.mode, plan.lessonKind, order);
+            else await insertPlan.run(plan.id, plan.quarterId, plan.groupId, plan.subjectId, plan.mode, plan.lessonKind);
+        }
+        else {
+            const old = previousById.get(plan.id)!;
+            if (old.quarterId !== plan.quarterId || old.groupId !== plan.groupId || old.subjectId !== plan.subjectId || old.mode !== plan.mode || old.lessonKind !== plan.lessonKind)
+                await updatePlan.run(plan.quarterId, plan.groupId, plan.subjectId, plan.mode, plan.lessonKind, plan.id);
+        }
+    }
+
+    const previousAssignments = new Map(previousPlans.flatMap(plan => plan.assignments.map(assignment => [assignment.id, { ...assignment, planId: plan.id }] as const)));
+    const nextAssignments = new Map(projected.flatMap(plan => plan.assignments.map(assignment => [assignment.id, { ...assignment, planId: plan.id }] as const)));
+    const deleteAssignment = db.prepare("DELETE FROM plan_assignments WHERE id=?");
+    const insertAssignment = db.prepare("INSERT INTO plan_assignments(id,plan_id,subgroup_id,target) VALUES(?,?,?,?)");
+    const insertAssignmentWithOrder = db.prepare(`INSERT INTO plan_assignments(id,plan_id,subgroup_id,target,${orderColumn}) VALUES(?,?,?,?,?)`);
+    const updateAssignment = db.prepare("UPDATE plan_assignments SET plan_id=?,subgroup_id=?,target=? WHERE id=?");
+    for (const [id, old] of previousAssignments) {
+        const next = nextAssignments.get(id);
+        if (!next) await deleteAssignment.run(id);
+        else if (recreate.has(old.planId)) {
+            // Deleting the old plan cascaded this assignment; restore it under
+            // its projected owner below, retaining its prior insertion order.
+        }
+        else if (old.planId !== next.planId || old.subgroupId !== next.subgroupId || old.target !== next.target)
+            await updateAssignment.run(next.planId, next.subgroupId, next.target, id);
+    }
+    for (const [id, assignment] of nextAssignments) {
+        const old = previousAssignments.get(id);
+        if (!old || recreate.has(old.planId)) {
+            const order = assignmentOrders.get(id);
+            if (order === undefined) await insertAssignment.run(id, assignment.planId, assignment.subgroupId, assignment.target);
+            else await insertAssignmentWithOrder.run(id, assignment.planId, assignment.subgroupId, assignment.target, order);
+        }
     }
     await wrapOrphanPlans(db);
 }
@@ -665,19 +739,31 @@ async function wrapOrphanPlans(db: AsyncDatabase): Promise<void> {
         covered.add(key);
     }
 }
-async function reprojectCurriculumAssignments(db: AsyncDatabase, catalog: Catalog): Promise<void> {
+async function reprojectCurriculumAssignments(db: AsyncDatabase, catalog: Catalog, affectedGroupIds: Set<string>): Promise<void> {
     const curricula = await readCurricula(db), current = await readStudyPlans(db);
-    if (!curricula.length)
+    if (!curricula.length || !affectedGroupIds.size)
         return;
     const projected = projectCurricula(curricula, current, catalog);
     const managed = new Set(curricula.flatMap(c => c.groupIds.map(groupId => JSON.stringify([c.quarterId, groupId]))));
-    const put = db.prepare("INSERT INTO plan_assignments(id,plan_id,subgroup_id,target) VALUES(?,?,?,?)");
+    const currentByPlan = new Map(current.map(plan => [plan.id, plan]));
+    const deleteAssignment = db.prepare("DELETE FROM plan_assignments WHERE id=?");
+    const insertAssignment = db.prepare("INSERT INTO plan_assignments(id,plan_id,subgroup_id,target) VALUES(?,?,?,?)");
+    const updateAssignment = db.prepare("UPDATE plan_assignments SET subgroup_id=?,target=? WHERE id=?");
     for (const plan of projected) {
-        if (!managed.has(JSON.stringify([plan.quarterId, plan.groupId])))
+        if (!affectedGroupIds.has(plan.groupId) || !managed.has(JSON.stringify([plan.quarterId, plan.groupId])))
             continue;
-        await db.prepare("DELETE FROM plan_assignments WHERE plan_id=?").run(plan.id);
-        for (const assignment of plan.assignments)
-            await put.run(assignment.id, plan.id, assignment.subgroupId, assignment.target);
+        const prior = new Map((currentByPlan.get(plan.id)?.assignments ?? []).map(assignment => [assignment.id, assignment]));
+        const next = new Map(plan.assignments.map(assignment => [assignment.id, assignment]));
+        for (const assignment of prior.values())
+            if (!next.has(assignment.id))
+                await deleteAssignment.run(assignment.id);
+        for (const assignment of next.values()) {
+            const old = prior.get(assignment.id);
+            if (!old)
+                await insertAssignment.run(assignment.id, plan.id, assignment.subgroupId, assignment.target);
+            else if (old.subgroupId !== assignment.subgroupId || old.target !== assignment.target)
+                await updateAssignment.run(assignment.subgroupId, assignment.target, assignment.id);
+        }
     }
 }
 async function migrateSchoolCalendar(db: AsyncDatabase, bumpRevision: boolean): Promise<void> {
@@ -718,7 +804,7 @@ async function migrateSchoolCalendar(db: AsyncDatabase, bumpRevision: boolean): 
         await db.prepare("INSERT INTO schema_migrations(version,applied_at) VALUES(9,CURRENT_TIMESTAMP)").run();
     })();
 }
-async function readSchoolCalendar(db: AsyncDatabase): Promise<SchoolCalendar> {
+async function readSchoolCalendar(db: AsyncDatabase, catalog?: Catalog): Promise<SchoolCalendar> {
     const row = await db.prepare("SELECT calendar_json FROM school_calendar WHERE id=1").get() as {
         calendar_json: string;
     } | undefined;
@@ -726,7 +812,7 @@ async function readSchoolCalendar(db: AsyncDatabase): Promise<SchoolCalendar> {
         return defaultSchoolCalendar();
     try {
         const parsed = JSON.parse(row.calendar_json) as SchoolCalendar;
-        return validateCalendar(parsed, await readCatalog(db)) ? defaultSchoolCalendar() : parsed;
+        return validateCalendar(parsed, catalog ?? await readCatalog(db)) ? defaultSchoolCalendar() : parsed;
     }
     catch {
         return defaultSchoolCalendar();
@@ -1125,18 +1211,10 @@ async function ensureCatalogSeed(db: AsyncDatabase): Promise<void> {
     await tx();
 }
 async function readCatalog(db: AsyncDatabase): Promise<Catalog> {
-    const subjectColumns = new Set((await db.pragma("table_info(catalog_subjects)") as Array<{
-        name: string;
-    }>).map((row) => row.name));
-    const teacherColumns = new Set((await db.pragma("table_info(catalog_teachers)") as Array<{
-        name: string;
-    }>).map((row) => row.name));
-    const roomColumns = new Set((await db.pragma("table_info(catalog_rooms)") as Array<{
-        name: string;
-    }>).map((row) => row.name));
-    const hasAutoRooms = Boolean(await db
-        .prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_group_auto_rooms'")
-        .get());
+    const subjectColumns = await schemaColumns(db, "catalog_subjects");
+    const teacherColumns = await schemaColumns(db, "catalog_teachers");
+    const roomColumns = await schemaColumns(db, "catalog_rooms");
+    const hasAutoRooms = await schemaTableExists(db, "catalog_group_auto_rooms");
     const subjects = await db
         .prepare(`SELECT id,name,short_name,color,${subjectColumns.has("room_kind") ? "room_kind" : "NULL AS room_kind"},${subjectColumns.has("lab_room_kind") ? "lab_room_kind" : "NULL AS lab_room_kind"},${subjectColumns.has("joint_group_sets") ? "joint_group_sets" : "'[]' AS joint_group_sets"},${subjectColumns.has("joint_same_grade") ? "joint_same_grade" : "0 AS joint_same_grade"},${subjectColumns.has("max_joint_groups") ? "max_joint_groups" : "2 AS max_joint_groups"},${subjectColumns.has("icon_id") ? "icon_id" : "NULL AS icon_id"},archived FROM catalog_subjects ORDER BY rowid`)
         .all() as Array<{
@@ -1612,10 +1690,15 @@ async function replaceEditorDays(db: AsyncDatabase, schedule: Schedule, changes:
     VALUES(@id,@slotId,@subjectId,@subgroup,@teacher,@room,@event,@note,@teacherRef,@roomRef,@subgroupRef,@lessonKind,@jointId,@eventRemainderJson)`);
     const changedIds = new Set<string>();
     const previousIds = new Set<string>();
+    type Lesson = EditorDayChange["before"]["slots"][number][number];
+    type StoredRow = Record<string, string | number | null>;
+    const previousLessons = new Map<string, Lesson>();
+    const storedLessons = new Map<string, StoredRow>();
     const pending: Array<{
         groupId: string;
         dayId: number;
         day: EditorDayChange["after"];
+        slots: Map<number, { id: number; start_minute: number; duration: number }>;
     }> = [];
     for (const change of changes) {
         const groupId = change.key.slice(0, change.key.lastIndexOf(":"));
@@ -1629,36 +1712,109 @@ async function replaceEditorDays(db: AsyncDatabase, schedule: Schedule, changes:
         if (!row)
             throw new Error("editor-day-missing");
         const dayId = row.id;
-        await db.prepare("DELETE FROM schedule_slots WHERE day_id=?").run(dayId);
-        await db.prepare(`UPDATE schedule_days SET base_start=?,nominal_duration=?,holiday=?,note=?,bell_profile_json=? WHERE id=?`)
-            .run(day.start, day.duration, day.holiday ? 1 : 0, day.note ?? null, day.bellProfile ? JSON.stringify(day.bellProfile) : row.bell_profile_json, dayId);
+        const dayFields: string[] = [];
+        const dayValues: unknown[] = [];
+        const dayField = (column: string, before: unknown, after: unknown, value: unknown = after) => {
+            if (stableJson(before) === stableJson(after)) return;
+            dayFields.push(`${column}=?`);
+            dayValues.push(value);
+        };
+        dayField("base_start", change.before.start, day.start);
+        dayField("nominal_duration", change.before.duration, day.duration);
+        dayField("holiday", Boolean(change.before.holiday), Boolean(day.holiday), day.holiday ? 1 : 0);
+        dayField("note", change.before.note ?? null, day.note ?? null);
+        dayField("bell_profile_json", change.before.bellProfile ?? null, day.bellProfile ?? null,
+            day.bellProfile ? JSON.stringify(day.bellProfile) : row.bell_profile_json);
+        if (dayFields.length)
+            await db.prepare(`UPDATE schedule_days SET ${dayFields.join(",")} WHERE id=?`).run(...dayValues, dayId);
+        const slotRows = await db.prepare("SELECT id,slot_index,start_minute,duration FROM schedule_slots WHERE day_id=?").all(dayId) as Array<{
+            id: number; slot_index: number; start_minute: number; duration: number;
+        }>;
+        const slots = new Map(slotRows.map((slot) => [slot.slot_index, slot]));
+        const lessonRows = await db.prepare("SELECT l.* FROM lessons l JOIN schedule_slots s ON s.id=l.slot_id WHERE s.day_id=?").all(dayId) as StoredRow[];
+        for (const lesson of lessonRows) storedLessons.set(String(lesson.id), lesson);
+        for (const [slotIndex, time] of day.times.entries()) {
+            const slot = slots.get(slotIndex);
+            if (!slot) {
+                const result = await insertSlot.run(dayId, slotIndex, time.start, time.duration);
+                slots.set(slotIndex, { id: Number(result.lastInsertRowid), slot_index: slotIndex, start_minute: time.start, duration: time.duration });
+            }
+            else if (slot.start_minute !== time.start || slot.duration !== time.duration)
+                await db.prepare("UPDATE schedule_slots SET start_minute=?,duration=? WHERE id=?").run(time.start, time.duration, slot.id);
+        }
         for (const slot of change.before.slots)
-            for (const lesson of slot)
+            for (const lesson of slot) {
                 previousIds.add(lesson.id);
+                previousLessons.set(lesson.id, lesson);
+            }
         for (const slot of day.slots)
             for (const lesson of slot)
                 changedIds.add(lesson.id);
-        pending.push({ groupId, dayId, day });
+        pending.push({ groupId, dayId, day, slots });
     }
-    for (const { groupId, dayId, day } of pending) {
+    // Create destinations before moving existing lessons. Keep every original slot
+    // until all moves (including cross-day swaps and joint mirrors) are persisted.
+    for (const { groupId, day, slots } of pending) {
         for (const [slotIndex, lessons] of day.slots.entries()) {
-                    const time = day.times[slotIndex];
-                    const slotId = Number((await insertSlot.run(dayId, slotIndex, time.start, time.duration)).lastInsertRowid);
+                    const slotId = slots.get(slotIndex)!.id;
                     for (const lesson of lessons) {
                         const teacher = lesson.teacherId ? teachers.get(lesson.teacherId) : lesson.teacher ? teacherNames.get(lesson.teacher.trim().toLocaleLowerCase("ru")) : undefined;
                         const room = lesson.roomId ? rooms.get(lesson.roomId) : lesson.room ? roomNames.get(lesson.room.trim().toLocaleLowerCase("ru")) : undefined;
                         const subgroup = lesson.subgroupId ? subgroups.get(lesson.subgroupId) : catalog.subgroups.find((entry) => entry.groupId === groupId && entry.name.toLocaleLowerCase("ru") === lesson.subgroup?.trim().toLocaleLowerCase("ru"));
-                        await insertLesson.run({
+                        const values = {
                             id: lesson.id, slotId, subjectId: lesson.subjectId,
                             subgroup: lesson.subgroup ?? null, teacher: teacher?.name ?? lesson.teacher ?? null,
                             room: room?.name ?? lesson.room ?? null, event: lesson.event ?? null,
                             note: lesson.note ?? null, teacherRef: teacher?.id ?? null, roomRef: room?.id ?? null,
                             subgroupRef: subgroup?.id ?? null, lessonKind: lesson.lessonKind ?? "regular", jointId: lesson.jointId ?? null,
                             eventRemainderJson: lesson.eventRemainder ? JSON.stringify(lesson.eventRemainder) : null,
-                        });
+                        };
+                        const stored = storedLessons.get(lesson.id);
+                        if (!stored) {
+                            await insertLesson.run(values);
+                            continue;
+                        }
+                        const before = previousLessons.get(lesson.id);
+                        if (!before) throw new Error("editor-lesson-missing");
+                        const fields: string[] = [];
+                        const args: unknown[] = [];
+                        const field = (column: string, value: unknown) => {
+                            if (stored[column] === value) return;
+                            fields.push(`${column}=?`);
+                            args.push(value);
+                        };
+                        const logicalChanged = (...keys: Array<keyof Lesson>) => keys.some((key) => stableJson(before[key] ?? null) !== stableJson(lesson[key] ?? null));
+                        field("slot_id", slotId);
+                        if (logicalChanged("subjectId")) field("subject_id", values.subjectId);
+                        if (logicalChanged("note")) field("note", values.note);
+                        if (logicalChanged("event")) field("event", values.event);
+                        if (logicalChanged("lessonKind")) field("lesson_kind", values.lessonKind);
+                        if (logicalChanged("jointId")) field("joint_id", values.jointId);
+                        if (logicalChanged("eventRemainder")) field("event_remainder_json", values.eventRemainderJson);
+                        // Catalog labels are derived display values. Keeping the
+                        // same reference must not rewrite a legacy raw label.
+                        if (before.teacherId !== lesson.teacherId || (!lesson.teacherId && logicalChanged("teacher"))) {
+                            field("teacher", values.teacher);
+                            field("teacher_ref", values.teacherRef);
+                        }
+                        if (before.roomId !== lesson.roomId || (!lesson.roomId && logicalChanged("room"))) {
+                            field("room", values.room);
+                            field("room_ref", values.roomRef);
+                        }
+                        if (before.subgroupId !== lesson.subgroupId || (!lesson.subgroupId && logicalChanged("subgroup"))) {
+                            field("subgroup", values.subgroup);
+                            field("subgroup_ref", values.subgroupRef);
+                        }
+                        if (fields.length)
+                            await db.prepare(`UPDATE lessons SET ${fields.join(",")} WHERE id=?`).run(...args, lesson.id);
                     }
         }
     }
+    for (const id of previousIds)
+        if (!changedIds.has(id)) await db.prepare("DELETE FROM lessons WHERE id=?").run(id);
+    for (const { day, slots } of pending)
+        for (const [index, slot] of slots)
+            if (index >= day.slots.length) await db.prepare("DELETE FROM schedule_slots WHERE id=?").run(slot.id);
     await markScopedOriginsManual(db, new Set([...previousIds, ...changedIds]), schedule);
     const changedSchedule: Schedule = {};
     for (const { groupId, day } of pending) {
@@ -2107,8 +2263,8 @@ async function fullState(db: AsyncDatabase): Promise<StateResponse> {
             quarters: await readQuarters(db),
             studyPlans: await readStudyPlans(db),
             curricula: await readCurricula(db),
-            calendar: await readSchoolCalendar(db),
-            bellSettings: await readBellSettings(db),
+            calendar: await readSchoolCalendar(db, catalog),
+            bellSettings: await readBellSettings(db, catalog),
             displaySettings: await readDisplaySettings(db),
             temporaryTeacherReplacements: await readTemporaryTeacherReplacements(db),
             teacherLessonOrigins: await readTeacherLessonOrigins(db),
@@ -2145,7 +2301,7 @@ async function adminState(db: AsyncDatabase, options: AdminStateOptions): Promis
                 curriculumTemplates: curriculumTemplates(await readCurricula(db)),
                 ...(options.quarterId ? { plansScope: { quarterId: options.quarterId } } : {}),
             } : {}),
-            calendar: await readSchoolCalendar(db), bellSettings: await readBellSettings(db), displaySettings: await readDisplaySettings(db),
+            calendar: await readSchoolCalendar(db, catalog), bellSettings: await readBellSettings(db, catalog), displaySettings: await readDisplaySettings(db),
             ...(options.view === "operation" ? {
                 temporaryTeacherReplacements: await readTemporaryTeacherReplacements(db),
                 teachingAssignments: await readTeacherTeachingAssignments(db),
@@ -2315,10 +2471,22 @@ function stableJson(value: unknown): string {
         return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableJson(value[key])}`).join(",")}}`;
     return JSON.stringify(value) ?? "null";
 }
-async function editorWeekState(db: AsyncDatabase, groupId: string, quarter: Quarter, weekOffset: number, dates = weekDates(weekOffset)) {
+async function editorWeekState(db: AsyncDatabase, groupId: string, quarter: Quarter, weekOffset: number, dates = weekDates(weekOffset), requestCatalog?: Catalog) {
     return await db.readTransaction(async () => {
-        const catalog = await readCatalog(db);
-        const schedule = await readSchedule(db, catalog, dates);
+        const catalog = requestCatalog ?? await readCatalog(db);
+        const schedule = await readSchedule(db, catalog, dates, [groupId]);
+        // Joint edits must retain their peer days, while unrelated school weeks
+        // remain on the server for independent preview/save validation.
+        const jointIds = [...new Set(locatedLessons(schedule).flatMap(item => item.lesson.jointId ? [item.lesson.jointId] : []))];
+        if (jointIds.length) {
+            const peers = await db.prepare(`SELECT DISTINCT d.group_id FROM lessons l
+                JOIN schedule_slots s ON s.id=l.slot_id JOIN schedule_days d ON d.id=s.day_id
+                WHERE l.joint_id IN (${jointIds.map(() => "?").join(",")})
+                AND d.date IN (${dates.map(() => "?").join(",")}) AND d.group_id<>?`)
+                .all(...jointIds, ...dates, groupId) as Array<{ group_id: string }>;
+            const groupIds = [...new Set(peers.map(row => row.group_id))];
+            if (groupIds.length) Object.assign(schedule, await readSchedule(db, catalog, dates, groupIds));
+        }
         const meta = await db.prepare("SELECT revision,updated_at FROM draft_metadata WHERE id=1").get() as {
             revision: number;
             updated_at: string;
@@ -2338,10 +2506,28 @@ async function editorWeekState(db: AsyncDatabase, groupId: string, quarter: Quar
             schedule, revision: meta.revision, updatedAt: meta.updated_at,
             baseline: (await readBaseline(db, catalog, groupId)).filter((row) => row.groupId === groupId),
             catalog, quarters: await readQuarters(db), studyPlans: await readStudyPlans(db, groupId, quarter.id),
-            calendar: await readSchoolCalendar(db), bellSettings: await readBellSettings(db), displaySettings: await readDisplaySettings(db),
+            calendar: await readSchoolCalendar(db, catalog), bellSettings: await readBellSettings(db, catalog), displaySettings: await readDisplaySettings(db),
             editorScope: { groupId, quarterId: quarter.id, weekOffset, dates, counts, weeks },
         } satisfies StateResponse;
     });
+}
+async function readReplacementStudyPlans(db: AsyncDatabase, groupIds: string[], quarters: Quarter[], dates: string[]): Promise<StudyPlan[]> {
+    const quarterIds = quarters.filter((quarter) => dates.some((date) => inQuarter(date, quarter))).map((quarter) => quarter.id);
+    if (!groupIds.length || !quarterIds.length)
+        return [];
+    const scope = `p.group_id IN (${groupIds.map(() => "?").join(",")}) AND p.quarter_id IN (${quarterIds.map(() => "?").join(",")})`;
+    const args = [...groupIds, ...quarterIds];
+    const plans = await db.prepare(`SELECT p.id,p.quarter_id AS quarterId,p.group_id AS groupId,p.subject_id AS subjectId,p.mode,p.lesson_kind AS lessonKind
+      FROM study_plans p WHERE ${scope} ORDER BY p.quarter_id,p.group_id,p.subject_id,p.lesson_kind`).all(...args) as Array<Omit<StudyPlan, "assignments">>;
+    const assignments = await db.prepare(`SELECT a.id,a.plan_id,a.subgroup_id AS subgroupId,a.target FROM plan_assignments a
+      JOIN study_plans p ON p.id=a.plan_id WHERE ${scope} ORDER BY a.rowid`).all(...args) as Array<PlanAssignment & { plan_id: string }>;
+    const byPlan = new Map<string, PlanAssignment[]>();
+    for (const { plan_id, ...assignment } of assignments) {
+        const rows = byPlan.get(plan_id) ?? [];
+        rows.push(assignment);
+        byPlan.set(plan_id, rows);
+    }
+    return plans.map((plan) => ({ ...plan, assignments: byPlan.get(plan.id) ?? [] }));
 }
 async function scheduleDatesInRange(db: AsyncDatabase, startDate: string, endDate: string): Promise<string[]> {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(startDate) || !/^\d{4}-\d{2}-\d{2}$/.test(endDate) || startDate > endDate)
@@ -2477,9 +2663,14 @@ function mergeSelectedAssignments(current: TeacherTeachingAssignment[], proposed
     return [...byId.values()];
 }
 async function writeCatalogTeacherAvailability(db: AsyncDatabase, catalog: Catalog): Promise<void> {
+    const rows = await db.prepare("SELECT id,unavailability_json FROM catalog_teachers").all() as Array<{ id: string; unavailability_json: string }>;
+    const previous = new Map(rows.map((row) => [row.id, parseRuleArray(row.unavailability_json)]));
     const update = db.prepare("UPDATE catalog_teachers SET unavailability_json=? WHERE id=?");
-    for (const teacher of catalog.teachers)
-        await update.run(JSON.stringify(teacher.unavailability ?? []), teacher.id);
+    for (const teacher of catalog.teachers) {
+        const rules = teacher.unavailability ?? [];
+        if (stableJson(previous.get(teacher.id)) !== stableJson(rules))
+            await update.run(JSON.stringify(rules), teacher.id);
+    }
 }
 function trimTemporaryReplacementPolicies(policies: TemporaryTeacherReplacement[], request: Extract<TeacherReassignmentRequest, {
     mode: "return";
@@ -2606,7 +2797,13 @@ async function catalogDeletionBlockers(db: AsyncDatabase, catalog: Catalog | und
                     add("subgroups", entry.id, source);
         };
         const schedule = state.schedule;
-        if (schedule && typeof schedule === "object")
+        if (schedule?.format === "teacher-reassignment-v2") {
+            if (!Array.isArray(schedule.teachers))
+                throw new Error("Некорректный снимок преподавателей");
+            for (const teacher of schedule.teachers)
+                addByName("teachers", teacher?.teacher_ref, teacher?.teacher);
+        }
+        else if (schedule && typeof schedule === "object")
             for (const [key, days] of Object.entries(schedule)) {
                 const groupId = key.slice(0, key.lastIndexOf(":"));
                 if (!Array.isArray(days))
@@ -2904,8 +3101,8 @@ async function readPublishedQuarter(db: AsyncDatabase, quarterId: string): Promi
     };
     return { publication, snapshot: JSON.parse(row.snapshot_json) };
 }
-async function readBellSettings(db: AsyncDatabase): Promise<BellSettings> {
-    const exists = await db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='bell_settings'").get();
+async function readBellSettings(db: AsyncDatabase, catalog?: Catalog): Promise<BellSettings> {
+    const exists = await schemaTableExists(db, "bell_settings");
     if (!exists)
         return defaultBellSettings();
     const row = await db.prepare("SELECT settings_json FROM bell_settings WHERE id=1").get() as {
@@ -2916,16 +3113,43 @@ async function readBellSettings(db: AsyncDatabase): Promise<BellSettings> {
     try {
         const parsed = JSON.parse(row.settings_json);
         const normalized = normalizeBellSettings(parsed);
-        return !normalized || validateBellSettings(normalized, await readCatalog(db)) ? defaultBellSettings() : normalized;
+        return !normalized || validateBellSettings(normalized, catalog ?? await readCatalog(db)) ? defaultBellSettings() : normalized;
     }
     catch {
         return defaultBellSettings();
     }
 }
+// Capabilities are immutable between migrations/restore, unlike catalog data.
+// Startup migration readers bypass this cache until the schema is ready.
+const schemaCapabilities = new WeakMap<AsyncDatabase, {
+    columns: Map<string, Promise<Set<string>>>;
+    tables: Map<string, Promise<boolean>>;
+}>();
+function resetSchemaCapabilities(db: AsyncDatabase) {
+    schemaCapabilities.set(db, { columns: new Map(), tables: new Map() });
+}
+async function schemaColumns(db: AsyncDatabase, table: string): Promise<Set<string>> {
+    const cache = schemaCapabilities.get(db)?.columns;
+    let result = cache?.get(table);
+    if (!result) {
+        result = db.pragma(`table_info(${table})`).then((rows: Array<{ name: string }>) => new Set(rows.map(row => row.name)));
+        cache?.set(table, result);
+        result.catch(() => { if (cache?.get(table) === result) cache?.delete(table); });
+    }
+    return result;
+}
+async function schemaTableExists(db: AsyncDatabase, table: string): Promise<boolean> {
+    const cache = schemaCapabilities.get(db)?.tables;
+    let result = cache?.get(table);
+    if (!result) {
+        result = db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?").get(table).then(Boolean);
+        cache?.set(table, result);
+        result.catch(() => { if (cache?.get(table) === result) cache?.delete(table); });
+    }
+    return result;
+}
 async function hasColumn(db: AsyncDatabase, table: string, column: string): Promise<boolean> {
-    return (await db.pragma(`table_info(${table})`) as Array<{
-        name: string;
-    }>).some(row => row.name === column);
+    return (await schemaColumns(db, table)).has(column);
 }
 function validDate(value: unknown): value is string {
     return (typeof value === "string" &&
@@ -3781,6 +4005,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
     const db = options.dbPath || (options.databaseUrl === undefined && process.env.SMENA_DB_PATH !== undefined)
         ? await makeSqliteDatabase(dbPath!)
         : await makePostgresDatabase(databaseUrl!);
+    resetSchemaCapabilities(db);
     const app = Fastify({ logger: false, bodyLimit: MAX_BODY_BYTES, trustProxy: process.env.SMENA_TRUST_PROXY === "1" });
     await app.register(fastifyCompress, {
         globalCompression: true,
@@ -3923,6 +4148,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         drainGenerationWrites: () => generationControl.drainWrites(),
         beforeWrite: options.archiveBeforeWrite,
         onRestored: () => {
+            resetSchemaCapabilities(db);
             reassignmentPreviews.clear();
             publicProjectionIndexCache.clear();
             printPublishedIndexCache.clear();
@@ -4379,7 +4605,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         if (!await getSession(request))
             return reply.code(401).send({ error: "Требуется вход администратора" });
         reply.header("cache-control", "no-store");
-        return await db.transaction(async () => {
+        return await db.readTransaction(async () => {
             const revision = (await db.prepare("SELECT revision FROM draft_metadata WHERE id=1").get() as {
                 revision: number;
             }).revision;
@@ -4388,37 +4614,33 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
                 .map(({ id, name }) => ({ id, name }))
                 .sort((a, b) => a.name.localeCompare(b.name, "ru", { numeric: true }));
             const draft = visibleQuarters(quarters).map((quarter) => ({ ...quarter, groups: activeGroups }));
-            const rows = await db.prepare("SELECT p.quarter_id,p.version,p.published_at FROM published_quarters p JOIN quarters q ON q.id=p.quarter_id WHERE q.archived=0 ORDER BY p.quarter_id")
+            const rows = await db.prepare("SELECT p.quarter_id,p.version,p.published_at,p.print_index_json FROM published_quarters p JOIN quarters q ON q.id=p.quarter_id WHERE q.archived=0 ORDER BY p.quarter_id")
                 .all() as Array<{
                 quarter_id: string;
                 version: number;
                 published_at: string;
+                print_index_json: string;
             }>;
             const present = new Set(rows.map((row) => row.quarter_id));
             for (const quarterId of printPublishedIndexCache.keys())
                 if (!present.has(quarterId))
                     printPublishedIndexCache.delete(quarterId);
             const published = (await Promise.all(rows.map(async (row) => {
-                const key = publicationKey(row);
+                const key = `${publicationKey(row)}\0${row.print_index_json}`;
                 const cached = printPublishedIndexCache.get(row.quarter_id);
                 if (cached?.key === key)
                     return [cached.quarter];
-                const snapshot = await publishedSnapshot(row);
-                if (!snapshot?.quarter || !Array.isArray(snapshot.catalog?.groups))
-                    return [];
+                const index = readPublicationPrintIndex(row.print_index_json);
                 const quarter = {
-                    id: snapshot.quarter.id, name: snapshot.quarter.name,
-                    startDate: snapshot.quarter.startDate, endDate: snapshot.quarter.endDate,
+                    ...index.quarter,
                     publication: { version: row.version, publishedAt: row.published_at },
-                    groups: snapshot.catalog.groups.filter((group) => !group.archived)
-                        .map(({ id, name }) => ({ id, name }))
-                        .sort((a, b) => a.name.localeCompare(b.name, "ru", { numeric: true })),
+                    groups: index.groups,
                 } satisfies SchedulePrintIndex["published"][number];
                 printPublishedIndexCache.set(row.quarter_id, { key, quarter });
                 return [quarter];
             }))).flat();
             return { revision, published, draft };
-        })();
+        });
     });
     app.post<{
         Body: SchedulePrintPreviewRequest | unknown;
@@ -4446,7 +4668,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         const weekEnd = weekEndDate.toISOString().slice(0, 10);
         reply.header("cache-control", "no-store");
         try {
-            const result = await db.transaction(async () => {
+            const result = await db.readTransaction(async () => {
                 let snapshot: ReturnType<typeof createPublicationSnapshot>;
                 let publication: {
                     version: number;
@@ -4545,7 +4767,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
                         }>).map((group) => ({ group, days: daysFor(group.id) })),
                     } satisfies SchedulePrintPreview,
                 };
-            })();
+            });
             if ("error" in result && typeof result.error === "number")
                 return reply.code(result.error).send({ error: result.message });
             return reply.send(result.value);
@@ -4571,8 +4793,8 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         reply.header("cache-control", "no-store");
         return reply.send({
             schedule: {}, revision: meta.revision, updatedAt: meta.updated_at, baseline: [], catalog,
-            quarters: await readQuarters(db), studyPlans: [], calendar: await readSchoolCalendar(db),
-            bellSettings: await readBellSettings(db), displaySettings: await readDisplaySettings(db), editorBootstrap: true,
+            quarters: await readQuarters(db), studyPlans: [], calendar: await readSchoolCalendar(db, catalog),
+            bellSettings: await readBellSettings(db, catalog), displaySettings: await readDisplaySettings(db), editorBootstrap: true,
         } satisfies StateResponse);
     });
     app.get<{
@@ -4588,14 +4810,16 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         const weekOffset = Number(request.query.weekOffset);
         if (!validText(groupId, 120) || !validText(quarterId, 120) || !Number.isInteger(weekOffset) || Math.abs(weekOffset) > 10000)
             return reply.code(400).send({ error: "Некорректный запрос недели" });
-        const catalog = await readCatalog(db);
-        const quarter = (await readQuarters(db)).find((entry) => entry.id === quarterId);
-        if (!catalog.groups.some((entry) => entry.id === groupId) || !quarter)
-            return reply.code(404).send({ error: "Группа или четверть не найдена" });
-        if (!quarterWeeks(quarter).includes(weekOffset))
-            return reply.code(400).send({ error: "Неделя не входит в выбранную четверть" });
-        reply.header("cache-control", "no-store");
-        return reply.send(await editorWeekState(db, groupId, quarter, weekOffset));
+        return await db.readTransaction(async () => {
+            const catalog = await readCatalog(db);
+            const quarter = (await readQuarters(db)).find((entry) => entry.id === quarterId);
+            if (!catalog.groups.some((entry) => entry.id === groupId) || !quarter)
+                return reply.code(404).send({ error: "Группа или четверть не найдена" });
+            if (!quarterWeeks(quarter).includes(weekOffset))
+                return reply.code(400).send({ error: "Неделя не входит в выбранную четверть" });
+            reply.header("cache-control", "no-store");
+            return reply.send(await editorWeekState(db, groupId, quarter, weekOffset, undefined, catalog));
+        });
     });
     app.post<{
         Body: EditorPreviewRequest;
@@ -5000,8 +5224,8 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
             return reply.code(409).send({ error: "Данные изменились. Обновите предпросмотр замен" });
         const requested = body.request as import("../shared/automaticTeacherReplacement.ts").ReplacementRequest;
         const dates = await scheduleDatesInRange(db, requested.startDate, requested.endDate);
-        const originalSchedule = await readSchedule(db, await readCatalog(db), dates);
         const catalog = await readCatalog(db);
+        const originalSchedule = await readSchedule(db, catalog, dates);
         let preview;
         try {
             preview = previewAutomaticTeacherReplacement(originalSchedule, catalog, requested);
@@ -5019,7 +5243,10 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
                 ...day,
                 slots: day.slots.map((slot) => slot.map((lesson) => selectedLessonIds.has(lesson.id) ? previewLessons.get(lesson.id) ?? lesson : lesson)),
             }))]));
-        if (!validateSchedule(nextSchedule, originalSchedule, catalog, await readQuarters(db), await readStudyPlans(db)))
+        const quarters = await readQuarters(db);
+        const changedGroupIds = [...new Set(preview.units.filter((unit) => selectedUnitIds.has(unit.id)).flatMap((unit) => unit.groupIds))];
+        const plans = await readReplacementStudyPlans(db, changedGroupIds, quarters, dates);
+        if (!validateSchedule(nextSchedule, originalSchedule, catalog, quarters, plans))
             return reply.code(400).send({ error: "Предложения содержат недопустимые данные" });
         const resolved = roomResolvedSchedule(nextSchedule, originalSchedule, catalog);
         const previousResolved = roomResolvedSchedule(originalSchedule, originalSchedule, catalog);
@@ -5104,16 +5331,17 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
                 };
                 if (revisionNow.revision !== body.revision)
                     throw new Error("revision-conflict");
+                const teacherSnapshot = await reassignmentTeacherSnapshot(db, originalSchedule, selectedLessonIds);
                 await persistScheduleDelta(db, originalSchedule, resolved);
                 await writeTeacherLessonOrigins(db, nextOrigins);
                 await writeTemporaryTeacherReplacements(db, policies);
                 const nextRevision = revisionNow.revision + 1;
                 await db.prepare("UPDATE draft_metadata SET revision=?,updated_at=? WHERE id=1").run(nextRevision, updatedAt);
-                const state = request.query.response === "compact"
-                    ? await adminState(db, { view: "operation", dates }) : await fullState(db);
-                const result = { state, operationId };
+                const result = request.query.response === "receipt" ? { revision: nextRevision, updatedAt, operationId }
+                    : { state: request.query.response === "compact"
+                        ? await adminState(db, { view: "operation", dates }) : await fullState(db), operationId };
                 await db.prepare(`INSERT INTO teacher_replacement_operations(operation_id,apply_request_id,apply_fingerprint,apply_response_json,applied_revision,previous_schedule_json,previous_policies_json,previous_origins_json,previous_assignments_json)
-          VALUES(?,?,?,?,?,?,?,?,?)`).run(operationId, requestId, fingerprint, JSON.stringify(result), nextRevision, JSON.stringify(originalSchedule), JSON.stringify(previousPolicies), JSON.stringify(previousOrigins), JSON.stringify(await readTeacherTeachingAssignments(db)));
+          VALUES(?,?,?,?,?,?,?,?,?)`).run(operationId, requestId, fingerprint, JSON.stringify(result), nextRevision, JSON.stringify(teacherSnapshot), JSON.stringify(previousPolicies), JSON.stringify(previousOrigins), JSON.stringify(await readTeacherTeachingAssignments(db)));
                 return result;
             })();
             reply.header("cache-control", "no-store");
@@ -5179,13 +5407,23 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         if (meta.revision !== body.revision || meta.revision !== operation.applied_revision)
             return reply.code(409).send({ error: "После замены данные изменились. Отмена этой операции уже невозможна" });
         const catalog = await readCatalog(db);
-        const previous = JSON.parse(operation.previous_schedule_json) as Schedule;
-        const dates = scheduleDates(previous);
+        const savedSchedule = JSON.parse(operation.previous_schedule_json) as Schedule | ReassignmentTeacherSnapshot;
+        const teacherSnapshot = savedSchedule.format === "teacher-reassignment-v2" ? savedSchedule as ReassignmentTeacherSnapshot : undefined;
+        const oldSchedule = teacherSnapshot ? undefined : savedSchedule as Schedule;
+        const dates = teacherSnapshot ? teacherSnapshot.dates : scheduleDates(oldSchedule!);
         const current = await readSchedule(db, catalog, dates);
+        const previous = teacherSnapshot ? restoreReassignmentTeachers(current, teacherSnapshot) : oldSchedule!;
         const previousPolicies = JSON.parse(operation.previous_policies_json) as TemporaryTeacherReplacement[];
         const previousOrigins = JSON.parse(operation.previous_origins_json) as TeacherLessonOrigin[];
         const previousAssignments = JSON.parse(operation.previous_assignments_json) as TeacherTeachingAssignment[];
-        if (!validateSchedule(previous, current, catalog, await readQuarters(db), await readStudyPlans(db)))
+        const currentById = new Map(locatedLessons(current).map((item) => [item.lesson.id, item]));
+        const changedGroupIds = [...new Set(locatedLessons(previous).filter((item) => {
+            const before = currentById.get(item.lesson.id);
+            return !before || before.groupId !== item.groupId || before.date !== item.date || JSON.stringify(before.lesson) !== JSON.stringify(item.lesson);
+        }).map((item) => item.groupId))];
+        const quarters = await readQuarters(db);
+        const plans = await readReplacementStudyPlans(db, changedGroupIds, quarters, dates);
+        if (!validateSchedule(previous, current, catalog, quarters, plans))
             return reply.code(409).send({ error: "Исходное расписание больше не проходит проверку" });
         const resolved = roomResolvedSchedule(previous, current, catalog);
         const previousResolved = roomResolvedSchedule(previous, previous, catalog);
@@ -5223,13 +5461,20 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
                 };
                 if (latest.revision !== body.revision || latest.revision !== operation.applied_revision)
                     throw new Error("revision-conflict");
-                await persistScheduleDelta(db, current, resolved);
+                if (teacherSnapshot) {
+                    const restore = db.prepare("UPDATE lessons SET teacher=?,teacher_ref=? WHERE id=?");
+                    for (const teacher of teacherSnapshot.teachers)
+                        await restore.run(teacher.teacher, teacher.teacher_ref, teacher.id);
+                }
+                else
+                    await persistScheduleDelta(db, current, resolved);
                 await writeTeacherLessonOrigins(db, previousOrigins);
                 await writeTeacherTeachingAssignments(db, previousAssignments);
                 await writeTemporaryTeacherReplacements(db, previousPolicies);
                 const nextRevision = latest.revision + 1;
                 await db.prepare("UPDATE draft_metadata SET revision=?,updated_at=? WHERE id=1").run(nextRevision, updatedAt);
-                const response = { state: request.query.response === "compact"
+                const response = request.query.response === "receipt" ? { revision: nextRevision, updatedAt }
+                    : { state: request.query.response === "compact"
                         ? await adminState(db, { view: "operation", dates }) : await fullState(db) };
                 await db.prepare("UPDATE teacher_replacement_operations SET undo_request_id=?,undo_fingerprint=?,undo_response_json=? WHERE operation_id=?")
                     .run(requestId, fingerprint, JSON.stringify(response), operation.operation_id);
@@ -5647,10 +5892,10 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
                 };
                 const snapshot = createPublicationSnapshot(state, quarterId);
                 const response: PublishResponse = { publication, summary: preview.summary };
-                await db.prepare(`INSERT INTO published_quarters(quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json)
-          VALUES(?,?,?,?,?,?,?) ON CONFLICT(quarter_id) DO UPDATE SET version=excluded.version,published_at=excluded.published_at,
-          draft_revision=excluded.draft_revision,published_by=excluded.published_by,snapshot_json=excluded.snapshot_json,summary_json=excluded.summary_json`)
-                    .run(quarterId, nextVersion, publishedAt, revision, session.username, JSON.stringify(snapshot), JSON.stringify(preview.summary));
+                await db.prepare(`INSERT INTO published_quarters(quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json,print_index_json)
+          VALUES(?,?,?,?,?,?,?,?) ON CONFLICT(quarter_id) DO UPDATE SET version=excluded.version,published_at=excluded.published_at,
+          draft_revision=excluded.draft_revision,published_by=excluded.published_by,snapshot_json=excluded.snapshot_json,summary_json=excluded.summary_json,print_index_json=excluded.print_index_json`)
+                    .run(quarterId, nextVersion, publishedAt, revision, session.username, JSON.stringify(snapshot), JSON.stringify(preview.summary), JSON.stringify(createPublicationPrintIndex(snapshot)));
                 await db.prepare("INSERT INTO publication_replays(request_id,fingerprint,response_json) VALUES(?,?,?)")
                     .run(requestId, fingerprint, JSON.stringify(response));
                 return { response };
@@ -6212,19 +6457,7 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
                 };
                 if (current.revision !== body.revision)
                     throw new Error("revision-conflict");
-                await db.prepare("DELETE FROM curricula").run();
-                const putCurriculum = db.prepare("INSERT INTO curricula(id,curriculum_json) VALUES(?,?)");
-                for (const curriculum of curricula)
-                    await putCurriculum.run(curriculum.id, JSON.stringify(curriculum));
-                await db.prepare("DELETE FROM study_plans").run();
-                const putPlan = db.prepare("INSERT INTO study_plans(id,quarter_id,group_id,subject_id,mode,lesson_kind,room_kind) VALUES(?,?,?,?,?,?,NULL)");
-                const putAssignment = db.prepare("INSERT INTO plan_assignments(id,plan_id,subgroup_id,target) VALUES(?,?,?,?)");
-                for (const plan of projected) {
-                    await putPlan.run(plan.id, plan.quarterId, plan.groupId, plan.subjectId, plan.mode, plan.lessonKind);
-                    for (const assignment of plan.assignments)
-                        await putAssignment.run(assignment.id, plan.id, assignment.subgroupId, assignment.target);
-                }
-                await wrapOrphanPlans(db);
+                await writeCurriculaProjection(db, curricula, projected);
                 const nextRevision = current.revision + 1;
                 await db.prepare("UPDATE draft_metadata SET revision=?,updated_at=? WHERE id=1").run(nextRevision, updatedAt);
                 await db.prepare("INSERT INTO request_replays(request_id,fingerprint,revision,updated_at) VALUES(?,?,?,?)").run(requestId, fingerprint, nextRevision, updatedAt);
@@ -6470,6 +6703,19 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
             rooms: catalog.rooms.map(({ unavailability: _rules, ...room }) => room),
         });
         const availabilityOnly = stableJson(withoutAvailability(before)) === stableJson(withoutAvailability(next));
+        const affectedProjectionGroups = new Set<string>();
+        const previousGroups = new Map(before.groups.map(group => [group.id, group]));
+        const nextGroups = new Map(next.groups.map(group => [group.id, group]));
+        for (const id of new Set([...previousGroups.keys(), ...nextGroups.keys()]))
+            if (previousGroups.has(id) !== nextGroups.has(id) || previousGroups.get(id)?.archived !== nextGroups.get(id)?.archived)
+                affectedProjectionGroups.add(id);
+        const subgroupProjection = (catalog: Catalog, groupId: string) => catalog.subgroups
+            .filter(subgroup => subgroup.groupId === groupId)
+            .map(subgroup => [subgroup.id, subgroup.archived] as const)
+            .sort((a, b) => a[0].localeCompare(b[0]));
+        for (const id of new Set([...before.subgroups.map(subgroup => subgroup.groupId), ...next.subgroups.map(subgroup => subgroup.groupId)]))
+            if (stableJson(subgroupProjection(before, id)) !== stableJson(subgroupProjection(next, id)))
+                affectedProjectionGroups.add(id);
         const updatedAt = nowIso();
         try {
             await db.transaction(async () => {
@@ -6508,50 +6754,74 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
                         throw new Error(`catalog-deletion-blocked:${blocked}`);
                     const oldGroups = new Map(before.groups.map((entry) => [entry.id, entry]));
                     const upsertSubject = db.prepare("INSERT INTO catalog_subjects(id,name,short_name,color,room_kind,lab_room_kind,joint_group_sets,joint_same_grade,max_joint_groups,icon_id,archived) VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,short_name=excluded.short_name,color=excluded.color,room_kind=excluded.room_kind,lab_room_kind=excluded.lab_room_kind,joint_group_sets=excluded.joint_group_sets,joint_same_grade=excluded.joint_same_grade,max_joint_groups=excluded.max_joint_groups,icon_id=excluded.icon_id,archived=excluded.archived");
+                    const oldSubjects = new Map(before.subjects.map((entry) => [entry.id, entry]));
                     for (const entry of next.subjects) {
-                        await upsertSubject.run(entry.id, entry.name, entry.shortName, entry.color, entry.roomKind, entry.labRoomKind, JSON.stringify(entry.jointGroupSets ?? []), Number(entry.jointSameGrade ?? false), entry.maxJointGroups ?? 2, entry.iconId === null ? "none" : entry.iconId ?? null, Number(entry.archived));
+                        if (!oldSubjects.has(entry.id) || stableJson(oldSubjects.get(entry.id)) !== stableJson(entry))
+                            await upsertSubject.run(entry.id, entry.name, entry.shortName, entry.color, entry.roomKind, entry.labRoomKind, JSON.stringify(entry.jointGroupSets ?? []), Number(entry.jointSameGrade ?? false), entry.maxJointGroups ?? 2, entry.iconId === null ? "none" : entry.iconId ?? null, Number(entry.archived));
                     }
                     const upsertRoom = db.prepare("INSERT INTO catalog_rooms(id,name,capacity,kind,archived,unavailability_json) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,capacity=excluded.capacity,kind=excluded.kind,archived=excluded.archived,unavailability_json=excluded.unavailability_json");
+                    const oldRooms = new Map(before.rooms.map((entry) => [entry.id, entry]));
                     for (const entry of next.rooms) {
-                        await upsertRoom.run(entry.id, entry.name, entry.capacity, entry.kind, Number(entry.archived), JSON.stringify(entry.unavailability ?? []));
+                        if (!oldRooms.has(entry.id) || stableJson(oldRooms.get(entry.id)) !== stableJson(entry))
+                            await upsertRoom.run(entry.id, entry.name, entry.capacity, entry.kind, Number(entry.archived), JSON.stringify(entry.unavailability ?? []));
                     }
                     // Rooms must exist before teachers and groups that reference them.
                     // Keep this dependency order inside the transaction so a valid catalog
                     // can introduce linked rows together without a transient FK failure.
                     const upsertTeacher = db.prepare("INSERT INTO catalog_teachers(id,name,archived,default_room_id,preferred_group_ids,preferred_shift,unavailability_json) VALUES(?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,archived=excluded.archived,default_room_id=excluded.default_room_id,preferred_group_ids=excluded.preferred_group_ids,preferred_shift=excluded.preferred_shift,unavailability_json=excluded.unavailability_json");
+                    const oldTeachers = new Map(before.teachers.map((entry) => [entry.id, entry]));
                     for (const entry of next.teachers) {
-                        await upsertTeacher.run(entry.id, entry.name, Number(entry.archived), entry.defaultRoomId, JSON.stringify(entry.preferredGroupIds ?? []), entry.preferredShift ?? null, JSON.stringify(entry.unavailability ?? []));
+                        if (!oldTeachers.has(entry.id) || stableJson(oldTeachers.get(entry.id)) !== stableJson(entry))
+                            await upsertTeacher.run(entry.id, entry.name, Number(entry.archived), entry.defaultRoomId, JSON.stringify(entry.preferredGroupIds ?? []), entry.preferredShift ?? null, JSON.stringify(entry.unavailability ?? []));
                     }
                     const upsertGroup = db.prepare("INSERT INTO catalog_groups(id,name,students,leader_id,room_id,archived) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,students=excluded.students,leader_id=excluded.leader_id,room_id=excluded.room_id,archived=excluded.archived");
                     for (const entry of next.groups) {
-                        await upsertGroup.run(entry.id, entry.name, entry.students, entry.leaderId, entry.roomId, Number(entry.archived));
+                        if (!oldGroups.has(entry.id) || stableJson(oldGroups.get(entry.id)) !== stableJson(entry))
+                            await upsertGroup.run(entry.id, entry.name, entry.students, entry.leaderId, entry.roomId, Number(entry.archived));
                     }
-                    await db.prepare("DELETE FROM catalog_group_auto_rooms").run();
+                    const oldGroupsById = new Map(before.groups.map((entry) => [entry.id, entry]));
+                    const deleteAutoRoom = db.prepare("DELETE FROM catalog_group_auto_rooms WHERE group_id=? AND room_id=?");
                     const insertAutoRoom = db.prepare("INSERT INTO catalog_group_auto_rooms(group_id,room_id,position) VALUES(?,?,?)");
-                    for (const entry of next.groups)
-                        for (const [position, roomId] of entry.autoRoomIds.entries()) {
-                            await insertAutoRoom.run(entry.id, roomId, position);
+                    const updateAutoRoom = db.prepare("UPDATE catalog_group_auto_rooms SET position=? WHERE group_id=? AND room_id=?");
+                    for (const entry of next.groups) {
+                        const oldPositions = new Map((oldGroupsById.get(entry.id)?.autoRoomIds ?? []).map((roomId, position) => [roomId, position]));
+                        const newPositions = new Map(entry.autoRoomIds.map((roomId, position) => [roomId, position]));
+                        for (const roomId of oldPositions.keys())
+                            if (!newPositions.has(roomId)) await deleteAutoRoom.run(entry.id, roomId);
+                        for (const [roomId, position] of newPositions) {
+                            if (!oldPositions.has(roomId)) await insertAutoRoom.run(entry.id, roomId, position);
+                            else if (oldPositions.get(roomId) !== position) await updateAutoRoom.run(position, entry.id, roomId);
                         }
+                    }
                     const upsertSubgroup = db.prepare("INSERT INTO catalog_subgroups(id,group_id,name,students,archived) VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,students=excluded.students,archived=excluded.archived");
+                    const oldSubgroups = new Map(before.subgroups.map((entry) => [entry.id, entry]));
                     for (const entry of next.subgroups) {
-                        await upsertSubgroup.run(entry.id, entry.groupId, entry.name, entry.students, Number(entry.archived));
+                        if (!oldSubgroups.has(entry.id) || stableJson(oldSubgroups.get(entry.id)) !== stableJson(entry))
+                            await upsertSubgroup.run(entry.id, entry.groupId, entry.name, entry.students, Number(entry.archived));
                     }
                     for (const entry of next.groups)
                         if (!oldGroups.has(entry.id))
                             await addGroupSchedule(db, entry.id);
-                    const oldSubgroups = new Map(before.subgroups.map((entry) => [entry.id, entry]));
                     const renameBaseline = db.prepare("UPDATE plan_baselines SET subgroup=? WHERE group_id=? AND subgroup=?");
                     for (const entry of next.subgroups) {
                         const old = oldSubgroups.get(entry.id);
                         if (old && old.name !== entry.name)
                             await renameBaseline.run(entry.name, old.groupId, old.name);
                     }
-                    await reprojectCurriculumAssignments(db, next);
-                    await db.prepare("DELETE FROM catalog_teacher_subjects").run();
+                    if (affectedProjectionGroups.size)
+                        await reprojectCurriculumAssignments(db, next, affectedProjectionGroups);
+                    const oldTeacherSubjects = new Map(before.teachers.map(teacher => [teacher.id, new Set(teacher.subjectIds)]));
+                    const nextTeacherSubjects = new Map(next.teachers.map(teacher => [teacher.id, new Set(teacher.subjectIds)]));
+                    const deleteTeacherSubject = db.prepare("DELETE FROM catalog_teacher_subjects WHERE teacher_id=? AND subject_id=?");
                     const insertTeacherSubject = db.prepare("INSERT INTO catalog_teacher_subjects(teacher_id,subject_id) VALUES(?,?)");
-                    for (const teacher of next.teachers)
-                        for (const subjectId of teacher.subjectIds)
-                            await insertTeacherSubject.run(teacher.id, subjectId);
+                    for (const teacherId of new Set([...oldTeacherSubjects.keys(), ...nextTeacherSubjects.keys()])) {
+                        const oldSubjects = oldTeacherSubjects.get(teacherId) ?? new Set<string>();
+                        const newSubjects = nextTeacherSubjects.get(teacherId) ?? new Set<string>();
+                        for (const subjectId of oldSubjects)
+                            if (!newSubjects.has(subjectId)) await deleteTeacherSubject.run(teacherId, subjectId);
+                        for (const subjectId of newSubjects)
+                            if (!oldSubjects.has(subjectId)) await insertTeacherSubject.run(teacherId, subjectId);
+                    }
                     for (const [kind, column, reference] of [
                         ["subgroups", "subgroup", "subgroup_ref"],
                         ["teachers", "teacher", "teacher_ref"],

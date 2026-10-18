@@ -5,6 +5,8 @@ import { mkdtempSync, realpathSync, rmSync, statSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
+import { createPublicationPrintIndex } from "../server/publicationPrintIndex.ts";
+import type { PublicationSnapshot } from "../shared/publicationTypes.ts";
 
 /** Tables whose application data is copied from a schema-23 SQLite database. */
 const TABLES = [
@@ -241,12 +243,24 @@ export async function migrateSqliteToPostgres(options: MigrationOptions): Promis
         await assertFreshTarget(client);
         for (const table of TABLES) {
           const pgColumns = await targetColumns(client, table);
-          assertCompatibleColumns(table, migrationColumns.get(table)!, pgColumns);
+          const columns = migrationColumns.get(table)!;
+          const legacyPublication = table === "published_quarters" && !columns.includes("print_index_json");
+          assertCompatibleColumns(table, columns, legacyPublication ? pgColumns.filter(column => column !== "print_index_json") : pgColumns);
         }
         for (const table of [...INSERT_ORDER].reverse()) await client.query(`DELETE FROM ${quoteIdentifier(table)}`);
         for (const table of INSERT_ORDER) {
           const columns = migrationColumns.get(table)!;
           await insertRows(client, table, columns, sourceRows.get(table)!);
+        }
+        if (!migrationColumns.get("published_quarters")!.includes("print_index_json")) {
+          // v23 sources predate this derived column. Keep the source-column
+          // digest comparison below intact and verify the new data separately.
+          for (const row of sourceRows.get("published_quarters")!) {
+            const compact = JSON.stringify(createPublicationPrintIndex(JSON.parse(String(row.snapshot_json)) as PublicationSnapshot));
+            await client.query("UPDATE published_quarters SET print_index_json=$1 WHERE quarter_id=$2", [compact, row.quarter_id]);
+            const persisted = await client.query("SELECT print_index_json FROM published_quarters WHERE quarter_id=$1", [row.quarter_id]);
+            if (persisted.rows[0]?.print_index_json !== compact) throw new Error("Verification failed for imported publication print index");
+          }
         }
         await setIdentitySequences(client);
         for (const table of TABLES) {

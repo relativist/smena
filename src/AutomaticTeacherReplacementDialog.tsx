@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ActionLabel from "./ActionLabel";
 import InfoTooltip from "./InfoTooltip";
 import { ApiError, api, type AuthSession } from "./api.ts";
-import type { StateResponse, TeacherReplacementApplyResponse, TeacherReplacementUndoResponse } from "../server/contracts.ts";
+import type { StateResponse, TeacherReplacementApplyReceipt, TeacherReplacementUndoReceipt } from "../server/contracts.ts";
 import type { ReplacementRequest } from "../shared/automaticTeacherReplacement.ts";
 import type { AutomaticTeacherReplacementPreview } from "../shared/automaticTeacherReplacement.ts";
 import RussianDateInput from "./RussianDateInput.tsx";
@@ -43,6 +43,8 @@ export default function AutomaticTeacherReplacementDialog({ state, auth, initial
   const [operationId,setOperationId] = useState("");
   const [writeUncertain,setWriteUncertain] = useState(false);
   const [success,setSuccess] = useState("");
+  const [confirmedRevision,setConfirmedRevision] = useState<number|null>(null);
+  const [refreshError,setRefreshError] = useState("");
   const skipRevisionEffect = useRef<number|null>(null);
 
   useEffect(()=>{ const el=dialogRef.current; if(el&&!el.open) el.showModal(); return ()=>{previewAbort.current?.abort();}; },[]);
@@ -85,13 +87,13 @@ export default function AutomaticTeacherReplacementDialog({ state, auth, initial
       else setError(reason instanceof Error?reason.message:"Не удалось подобрать замены.");
     } finally { if(seq===previewSeq.current)setLoading(false); }
   }
-  useEffect(()=>{ if(skipRevisionEffect.current===state.revision){skipRevisionEffect.current=null;return;} if(!applied) void loadPreview(request); return ()=>previewAbort.current?.abort(); // first preview and date/filter changes
-  },[requestKey,state.revision,applied,dateEditing]);
+  useEffect(()=>{ if(skipRevisionEffect.current===state.revision){skipRevisionEffect.current=null;return;} if(!applied && !refreshError && (confirmedRevision===null || state.revision>=confirmedRevision)) void loadPreview(request); return ()=>previewAbort.current?.abort(); // first preview and date/filter changes
+  },[requestKey,state.revision,applied,dateEditing,confirmedRevision,refreshError]);
 
   async function refreshState() {
-    setBusy(true); setError("");
-    try { const next=await onRefresh(); onStateChange(next); setStale(false); setPreview(null); setPreviewRequest(null); setPreviewRevision(null); skipRevisionEffect.current=next.revision; void loadPreview(request,next.revision); }
-    catch(reason){ if(reason instanceof ApiError&&(reason.status===401||reason.status===403))onUnauthorized(); setError(reason instanceof Error?reason.message:"Не удалось обновить данные."); }
+    setBusy(true); setError(""); setRefreshError("");
+    try { const next=await onRefresh(); onStateChange(next); setStale(false); setPreview(null); setPreviewRequest(null); setPreviewRevision(null); if(!applied){skipRevisionEffect.current=next.revision; void loadPreview(request,next.revision);} }
+    catch(reason){ if(reason instanceof ApiError&&(reason.status===401||reason.status===403))onUnauthorized(); setRefreshError(reason instanceof Error?reason.message:"Не удалось обновить данные."); }
     finally{setBusy(false);}
   }
   async function apply() {
@@ -105,20 +107,26 @@ export default function AutomaticTeacherReplacementDialog({ state, auth, initial
   }
   async function undo() {
     if(!operationId||busy||writeRef.current?.kind==="apply")return;
-    if(!writeRef.current) writeRef.current={kind:"undo",path:`/api/teacher-replacements/${encodeURIComponent(operationId)}/undo`,body:{revision:state.revision,requestId:undoRequestId||newId()}};
+    if(!writeRef.current) writeRef.current={kind:"undo",path:`/api/teacher-replacements/${encodeURIComponent(operationId)}/undo`,body:{revision:Math.max(state.revision,confirmedRevision??state.revision),requestId:undoRequestId||newId()}};
     if(!undoRequestId){const current=writeRef.current.body.requestId as string;setUndoRequestId(current);}
     await sendWrite();
   }
   async function sendWrite() {
     const pending=writeRef.current; if(!pending)return;
-    setBusy(true);setWriteError("");
+    setBusy(true);setWriteError("");setRefreshError("");
     try {
       if(pending.kind==="apply"){
-        const result=await api<TeacherReplacementApplyResponse>(`${pending.path}?response=compact`,{method:"POST",headers:{"x-csrf-token":auth.csrfToken},body:JSON.stringify(pending.body)});
-        writeRef.current=null;setWriteUncertain(false);setApplied(true);setOperationId(result.operationId);onStateChange(result.state);setSuccess("Замены сохранены в черновике.");setPreview(null);setPreviewRequest(null);setPreviewRevision(null);
+        const result=await api<TeacherReplacementApplyReceipt>(`${pending.path}?response=receipt`,{method:"POST",headers:{"x-csrf-token":auth.csrfToken},body:JSON.stringify(pending.body)});
+        writeRef.current=null;setWriteUncertain(false);setApplied(true);setOperationId(result.operationId);setConfirmedRevision(result.revision);setSuccess("Замены сохранены в черновике.");setPreview(null);setPreviewRequest(null);setPreviewRevision(null);
       }else{
-        const result=await api<TeacherReplacementUndoResponse>(`${pending.path}?response=compact`,{method:"POST",headers:{"x-csrf-token":auth.csrfToken},body:JSON.stringify(pending.body)});
-        writeRef.current=null;setWriteUncertain(false);setApplied(false);setOperationId("");onStateChange(result.state);setSuccess("Замены отменены.");setUndoRequestId("");
+        const result=await api<TeacherReplacementUndoReceipt>(`${pending.path}?response=receipt`,{method:"POST",headers:{"x-csrf-token":auth.csrfToken},body:JSON.stringify(pending.body)});
+        writeRef.current=null;setWriteUncertain(false);setApplied(false);setOperationId("");setConfirmedRevision(result.revision);setSuccess("Замены отменены.");setUndoRequestId("");
+      }
+      // A receipt confirms the write. Refresh errors must never make it retryable.
+      try { const next=await onRefresh(); onStateChange(next); setStale(false); }
+      catch(reason) {
+        if(reason instanceof ApiError&&(reason.status===401||reason.status===403))onUnauthorized();
+        setRefreshError(`Изменения подтверждены сервером. Не удалось обновить экран: ${reason instanceof Error?reason.message:"ошибка загрузки"}`);
       }
     }catch(reason){
       if(reason instanceof ApiError&&(reason.status===401||reason.status===403)){writeRef.current=null;setWriteUncertain(false);setWriteError(reason.message);onUnauthorized();return;}
@@ -158,7 +166,7 @@ export default function AutomaticTeacherReplacementDialog({ state, auth, initial
       </form>
       {loading&&<p className="atr-status">Подбираем преподавателей и проверяем совпадения расписаний…</p>}
       {error&&<p className="atr-error" role="alert">{error}</p>}
-      {stale&&<button type="button" className="atr-secondary" disabled={busy} onClick={()=>void refreshState()}>Обновить данные</button>}
+      {(stale||refreshError)&&<button type="button" className="atr-secondary" disabled={busy} onClick={()=>void refreshState()}>Обновить данные</button>}
       {preview&&previewRequest&&previewRevision===state.revision&&JSON.stringify(previewRequest)===requestKey&&<>
         <div className="atr-counts" role="status"><span>Занятий к замене: <b>{unitRows.length}</b></span><span>Подобрано: <b>{proposedUnits}</b></span><span>Без замены: <b>{skippedUnits}</b></span></div>
         {skippedUnits>0&&<label className="atr-ack"><input type="checkbox" checked={ack} disabled={busy} onChange={e=>setAck(e.target.checked)}/>Применить найденные замены, оставив уроки без замены без изменений</label>}
@@ -166,8 +174,9 @@ export default function AutomaticTeacherReplacementDialog({ state, auth, initial
       </>}
       {success&&<p className="atr-success" role="status">{success}</p>}
       {writeError&&<p className="atr-error" role="alert">{writeError}</p>}
+      {refreshError&&<p className="atr-error" role="alert">{refreshError}</p>}
       {writeUncertain&&<p className="atr-status">Результат запроса пока неизвестен. Повтор будет отправлен с тем же идентификатором.</p>}
     </div>
-    <footer className="atr-footer"><span>{applied?"Замены можно отменить, пока черновик не менялся":"Проверьте предложения перед применением"}</span><div>{writeUncertain&&<button type="button" className="atr-secondary" disabled={busy} onClick={()=>void sendWrite()}>Повторить запрос</button>}{!applied&&!writeUncertain&&<button type="button" className="atr-secondary" disabled={busy||loading||stale} onClick={()=>void loadPreview(request)}><ActionLabel action="preview">Подобрать замены</ActionLabel></button>}{applied?<button type="button" className="atr-secondary" disabled={busy||writeUncertain} onClick={()=>void undo()}>Отменить замены</button>:<button type="button" disabled={busy||loading||stale||!preview||previewRevision!==state.revision||JSON.stringify(previewRequest)!==requestKey||!preview.units.some(u=>u.teacherId)||(skippedUnits>0&&!ack)||Boolean(writeRef.current)} onClick={()=>void apply()}><ActionLabel action="apply">Применить замены</ActionLabel></button>}<button type="button" className="atr-secondary" disabled={!canClose} onClick={onClose}>Закрыть</button></div></footer>
+    <footer className="atr-footer"><span>{applied?"Замены можно отменить, пока черновик не менялся":"Проверьте предложения перед применением"}</span><div>{writeUncertain&&<button type="button" className="atr-secondary" disabled={busy} onClick={()=>void sendWrite()}>Повторить запрос</button>}{!applied&&!writeUncertain&&<button type="button" className="atr-secondary" disabled={busy||loading||stale||Boolean(refreshError)} onClick={()=>void loadPreview(request)}><ActionLabel action="preview">Подобрать замены</ActionLabel></button>}{applied?<button type="button" className="atr-secondary" disabled={busy||writeUncertain} onClick={()=>void undo()}>Отменить замены</button>:<button type="button" disabled={busy||loading||stale||Boolean(refreshError)||!preview||previewRevision!==state.revision||JSON.stringify(previewRequest)!==requestKey||!preview.units.some(u=>u.teacherId)||(skippedUnits>0&&!ack)||Boolean(writeRef.current)} onClick={()=>void apply()}><ActionLabel action="apply">Применить замены</ActionLabel></button>}<button type="button" className="atr-secondary" disabled={!canClose} onClick={onClose}>Закрыть</button></div></footer>
   </dialog>;
 }

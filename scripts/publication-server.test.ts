@@ -7,6 +7,7 @@ import { buildApp } from "../server/app.ts";
 import type { StateResponse } from "../server/contracts.ts";
 import type { PublishResponse, PublishedQuarterResponse } from "../shared/publicationTypes.ts";
 import type Database from "better-sqlite3";
+import { createPublicationPrintIndex } from "../server/publicationPrintIndex.ts";
 
 const roots: string[] = [];
 const apps: Array<Awaited<ReturnType<typeof buildApp>>> = [];
@@ -66,6 +67,8 @@ test("publication endpoints enforce admin and CSRF, publish frozen quarter snaps
   const publishedResponse = await app.inject({ url: `/api/publications/${quarterId}`, headers });
   assert.equal(publishedResponse.statusCode, 200, publishedResponse.body);
   const published = publishedResponse.json() as PublishedQuarterResponse;
+  const firstCompact = db.prepare("SELECT print_index_json FROM published_quarters WHERE quarter_id=?").pluck().get(quarterId) as string;
+  assert.deepEqual(JSON.parse(firstCompact), createPublicationPrintIndex(published.snapshot));
   assert.equal(published.publication.version, 1);
   assert.equal(published.snapshot.quarter.id, quarterId);
   const publishedLesson = Object.values(published.snapshot.schedule).flat().flatMap((day) => day.slots.flat())[0]!;
@@ -90,6 +93,7 @@ test("publication endpoints enforce admin and CSRF, publish frozen quarter snaps
   const renamed = structuredClone(changedState.catalog);
   const publishedTeacher = renamed.teachers.find((teacher) => teacher.id === publishedLesson.teacherId)!;
   publishedTeacher.name = "Имя после публикации";
+  renamed.groups[0]!.name = "Класс после публикации";
   const saved = await app.inject({ method: "PUT", url: "/api/catalog", headers, payload: { catalog: renamed, revision: changedState.revision, requestId: "publish-catalog-edit" } });
   assert.equal(saved.statusCode, 200, saved.body);
   let afterEdit = saved.json() as StateResponse;
@@ -111,6 +115,7 @@ test("publication endpoints enforce admin and CSRF, publish frozen quarter snaps
   assert.equal(failedSecond.statusCode, 500, failedSecond.body);
   const afterFailedPublish = await app.inject({ url: `/api/publications/${quarterId}`, headers });
   assert.deepEqual(afterFailedPublish.json(), published, "failed replay insert must roll back snapshot and metadata upsert");
+  assert.equal(db.prepare("SELECT print_index_json FROM published_quarters WHERE quarter_id=?").pluck().get(quarterId), firstCompact, "failed publication rolls back compact metadata atomically");
   assert.equal((db.prepare("SELECT count(*) AS count FROM publication_replays WHERE request_id=?").get(secondRequest.requestId) as { count: number }).count, 0);
   assert.equal(((await app.inject({ url: "/api/state", headers })).json() as StateResponse).revision, afterEdit.revision, "failed publication must not mutate draft revision");
   db.exec("DROP TRIGGER fail_publication_replay;");
@@ -120,6 +125,9 @@ test("publication endpoints enforce admin and CSRF, publish frozen quarter snaps
   assert.equal(second.json().unchanged, undefined, "settings changes must create a new publication version");
   const secondTeacherName = renamed.teachers.find((teacher) => teacher.id === publishedLesson.teacherId)!.name;
   const latestFirstQuarter = (await app.inject({ url: `/api/publications/${quarterId}`, headers })).json() as PublishedQuarterResponse;
+  const secondCompact = db.prepare("SELECT print_index_json FROM published_quarters WHERE quarter_id=?").pluck().get(quarterId) as string;
+  assert.notEqual(secondCompact, firstCompact, "a changed published group refreshes the compact metadata");
+  assert.deepEqual(JSON.parse(secondCompact), createPublicationPrintIndex(latestFirstQuarter.snapshot));
   db.prepare("INSERT INTO quarters(id,name,start_date,end_date) VALUES(?,?,?,?)").run("publication-other-quarter", "Следующая четверть", "2026-11-02", "2026-11-06");
   const otherQuarter = { id: "publication-other-quarter", name: "Следующая четверть", startDate: "2026-11-02", endDate: "2026-11-06" };
   const otherPublish = await app.inject({ method: "POST", url: "/api/publications", headers, payload: { quarterId: otherQuarter.id, revision: afterEdit.revision, requestId: "publish-other-quarter" } });

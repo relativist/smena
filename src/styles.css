@@ -1890,6 +1890,13 @@ main {
   background: #fff2f3;
   color: #a51622;
 }
+.drag-feedback.pending-drop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: auto;
+}
 .week-strip > button.drag-week-target {
   outline: 2px solid #16834b;
   outline-offset: -2px;

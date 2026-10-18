@@ -2,6 +2,7 @@ import { createId } from "../shared/createId.ts";
 import { useEffect, useRef, useState } from "react";
 import type { StateResponse } from "../server/contracts";
 import type { Schedule } from "./editor";
+import { scheduleDayChanges } from "./scheduleContext";
 import { api, ApiError } from "./api";
 
 type SaveStatus = {
@@ -190,34 +191,4 @@ export function useAutosave(
   function currentRevision() { return revision.current; }
 
   return { status, queue, flush, reset, setScopedMode, currentRevision, revision: savedRevision };
-}
-
-function scheduleDayChanges(before: Schedule, after: Schedule) {
-  const changes: Array<{
-    key: string;
-    dayIndex: number;
-    before: Schedule[string][number];
-    after: Schedule[string][number];
-  }> = [];
-  const keys = new Set([...Object.keys(before), ...Object.keys(after)]);
-  for (const scheduleKey of keys) {
-    const previousDays = before[scheduleKey] ?? [];
-    const nextDays = after[scheduleKey] ?? [];
-    const dates = new Set([
-      ...previousDays.map((day) => day.date),
-      ...nextDays.map((day) => day.date),
-    ]);
-    for (const date of dates) {
-      const beforeIndex = previousDays.findIndex((day) => day.date === date);
-      const afterIndex = nextDays.findIndex((day) => day.date === date);
-      const previous = beforeIndex >= 0 ? previousDays[beforeIndex] : undefined;
-      const next = afterIndex >= 0 ? nextDays[afterIndex] : undefined;
-      if (JSON.stringify(previous) === JSON.stringify(next)) continue;
-      // The server identifies a day by its index within the submitted week.
-      const dayIndex = afterIndex >= 0 ? afterIndex : beforeIndex;
-      if (previous && next)
-        changes.push({ key: scheduleKey, dayIndex, before: previous, after: next });
-    }
-  }
-  return changes;
 }

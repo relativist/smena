@@ -3,13 +3,16 @@ import { afterEach, test } from "node:test";
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { Pool } from "pg";
 import { buildApp } from "../server/app.ts";
 import type { AsyncDatabase } from "../server/database.ts";
 import { SchoolArchiveService } from "../server/schoolArchive.ts";
 import type { ArchivePreview, ArchiveRestoreResult } from "../shared/dataTransfer.ts";
+import type { StateResponse } from "../server/contracts.ts";
+import { createPublicationSnapshot } from "../shared/publication.ts";
+import { createPublicationPrintIndex } from "../server/publicationPrintIndex.ts";
 
 const baseUrl = process.env.SMENA_TEST_DATABASE_URL;
 const skipReason = baseUrl ? false : "Set SMENA_TEST_DATABASE_URL to run PostgreSQL integration tests";
@@ -155,6 +158,17 @@ test("invalid archives and stale previews are rejected without changing the targ
     first.manifest.formatVersion = 999;
     const unsupported = await inspectArchive(targetApp.app, targetAuth.headers, gzipSync(`${JSON.stringify(first)}\n${lines.slice(1).join("\n")}\n`));
     assert.equal(unsupported.statusCode, 400, unsupported.body);
+    for (const mutate of [
+      (manifest: ArchivePreview["archive"]) => { manifest.schemaVersions = [1, 2, 3]; },
+      (manifest: ArchivePreview["archive"]) => { manifest.schemaVersions = [1, 2, 3, 4, 5, 6]; },
+      (manifest: ArchivePreview["archive"]) => { manifest.tables.find(table => table.name === "catalog_groups")!.columns.pop(); },
+    ]) {
+      const changed = JSON.parse(lines[0]!);
+      mutate(changed.manifest);
+      const incompatible = await inspectArchive(targetApp.app, targetAuth.headers, gzipSync(`${JSON.stringify(changed)}\n${lines.slice(1).join("\n")}\n`));
+      assert.equal(incompatible.statusCode, 400, incompatible.body);
+      assert.equal(await countGroups(targetApp.db), originalCount);
+    }
     const alteredLines = [...lines];
     const end = JSON.parse(alteredLines.at(-1)!);
     end.sha256 = "0".repeat(64);
@@ -247,6 +261,68 @@ test("restore replaces school data, preserves the local administrator, rotates s
     assert.deepEqual(durableRetry.json(), result);
     assert.equal(await countGroups(restarted.db), 1);
     assert.equal(readdirSync(backupDirectory).length, 1, "durable receipt retry must not create another backup");
+  });
+});
+
+test("publication print metadata restores current and v4 archives from exact snapshots and clears warm caches", { skip: skipReason }, async () => {
+  await withOwnedSchemas(async ({ source, target }, root) => {
+    const sourceApp = await startApp(source, root);
+    const sourceAuth = await startAdmin(sourceApp.app, "print-source-admin");
+    const targetApp = await startApp(target, root);
+    let targetAuth = await startAdmin(targetApp.app, "print-target-admin");
+    const quarter = { id: "print-quarter", name: "Опубликованная четверть", startDate: "2026-09-01", endDate: "2026-10-23" };
+    for (const { db } of [sourceApp, targetApp]) {
+      await db.prepare("INSERT INTO quarters(id,name,start_date,end_date) VALUES(?,?,?,?)").run(quarter.id, quarter.name, quarter.startDate, quarter.endDate);
+      await addGroup(db, "print-group", "Текущее название класса");
+    }
+    const state = (await sourceApp.app.inject({ url: "/api/state", headers: sourceAuth.headers })).json() as StateResponse;
+    const snapshot = createPublicationSnapshot(state, quarter.id);
+    snapshot.catalog.groups[0]!.name = "Название класса в снимке";
+    snapshot.catalog.groups.push({ ...snapshot.catalog.groups[0]!, id: "archived-print-group", name: "Архивный класс", archived: true });
+    const snapshotJson = JSON.stringify(snapshot);
+    const compact = JSON.stringify(createPublicationPrintIndex(snapshot));
+    const put = async (db: AsyncDatabase, json: string, metadata: string) => db.prepare(`
+      INSERT INTO published_quarters(quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json,print_index_json)
+      VALUES(?,7,'2026-10-18T00:00:00.000Z',0,'publisher',?,'{}',?) ON CONFLICT(quarter_id) DO UPDATE SET snapshot_json=excluded.snapshot_json,print_index_json=excluded.print_index_json
+    `).run(quarter.id, json, metadata);
+    // Even current archives must derive metadata from snapshot, not trust a
+    // stale or forged compact payload supplied alongside it.
+    await put(sourceApp.db, snapshotJson, JSON.stringify({ ...createPublicationPrintIndex(snapshot), groups: [] }));
+    const currentBytes = await exportArchive(sourceApp.app, sourceAuth.headers);
+    const adminBefore = await targetApp.db.prepare("SELECT * FROM admin_users").all();
+
+    const legacyLines = gunzipSync(currentBytes).toString("utf8").trimEnd().split("\n").map(line => JSON.parse(line));
+    const manifest = legacyLines[0].manifest;
+    assert.deepEqual(manifest.schemaVersions, [1, 2, 3, 4, 5]);
+    manifest.schemaVersions = [1, 2, 3, 4];
+    const table = manifest.tables.find((item: { name: string }) => item.name === "published_quarters");
+    const compactColumn = table.columns.indexOf("print_index_json");
+    assert.ok(compactColumn >= 0);
+    table.columns.splice(compactColumn, 1);
+    for (const line of legacyLines) if (line.type === "row" && line.table === "published_quarters") line.values.splice(compactColumn, 1);
+    const content = legacyLines.slice(0, -1).map(line => `${JSON.stringify(line)}\n`).join("");
+    const legacyBytes = gzipSync(content + JSON.stringify({ type: "end", sha256: createHash("sha256").update(content).digest("hex") }) + "\n");
+
+    for (const [label, bytes] of [["current", currentBytes], ["legacy-v4", legacyBytes]] as const) {
+      const other = structuredClone(snapshot);
+      other.catalog.groups[0]!.name = `Локальный снимок ${label}`;
+      await put(targetApp.db, JSON.stringify(other), JSON.stringify(createPublicationPrintIndex(other)));
+      const warm = await targetApp.app.inject({ url: "/api/schedule-print/index", headers: targetAuth.headers });
+      assert.equal(warm.statusCode, 200, warm.body);
+      assert.equal(warm.json().published[0].groups[0].name, `Локальный снимок ${label}`);
+      const preview = await inspectArchive(targetApp.app, targetAuth.headers, bytes);
+      assert.equal(preview.statusCode, 200, `${label}: ${preview.body}`);
+      const restored = await targetApp.app.inject({ method: "POST", url: "/api/data-transfer/restore", headers: targetAuth.headers, payload: { token: preview.json().token, confirm: true } });
+      assert.equal(restored.statusCode, 200, `${label}: ${restored.body}`);
+      targetAuth = await startAdmin(targetApp.app, "print-target-admin");
+      assert.deepEqual(await targetApp.db.prepare("SELECT snapshot_json,print_index_json FROM published_quarters").all(), [{ snapshot_json: snapshotJson, print_index_json: compact }]);
+      assert.deepEqual(await targetApp.db.prepare("SELECT * FROM admin_users").all(), adminBefore, "local administrator is unchanged");
+      const printed = await targetApp.app.inject({ url: "/api/schedule-print/index", headers: targetAuth.headers });
+      assert.equal(printed.statusCode, 200, printed.body);
+      assert.deepEqual(printed.json().published[0].groups, createPublicationPrintIndex(snapshot).groups);
+      assert.equal(printed.json().published[0].publication.version, 7);
+      assert.equal(printed.json().draft[0].groups[0].name, "Текущее название класса");
+    }
   });
 });
 
