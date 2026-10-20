@@ -35,3 +35,18 @@ export type PublicStudentSchedule = {
   group: { id: string; name: string };
   days: PublicStudentDay[];
 };
+
+export type PublicStudentsWeekSchedule = {
+  quarter: Quarter;
+  publication: PublicPublication;
+  weekStart: string;
+  weekEnd: string;
+  groups: Array<{ id: string; name: string; days: PublicStudentDay[] }>;
+};
+
+export type PublicStudentsDaySchedule = {
+  requestedDate: string;
+  date: string;
+  hasPublications: boolean;
+  groups: Array<{ id: string; name: string; day?: PublicStudentDay }>;
+};

@@ -33,10 +33,10 @@ import { newRoomSuitabilityViolation, roomSuitabilityViolationMessage, } from ".
 import { findUnavailability, newUnavailabilityViolation, unavailabilityViolationMessage, validateUnavailabilityRules, } from "../shared/unavailability.ts";
 import { analyzePublication, createPublicationSnapshot } from "../shared/publication.ts";
 import type { PublicationMetadata, PublishedQuarterResponse, PublishResponse, } from "../shared/publicationTypes.ts";
-import type { PublicStudentSchedule, PublicStudentsIndex } from "../shared/studentTypes.ts";
+import type { PublicStudentSchedule, PublicStudentsDaySchedule, PublicStudentsIndex, PublicStudentsWeekSchedule } from "../shared/studentTypes.ts";
 import { projectPublicStudents, type PublicStudentProjection } from "../shared/studentPublic.ts";
 import type { SchedulePrintIndex, SchedulePrintPreview, SchedulePrintPreviewRequest, SchedulePrintSource } from "../shared/schedulePrintTypes.ts";
-import type { PublicTeacherSchedule, PublicTeachersIndex } from "../shared/teacherTypes.ts";
+import type { PublicTeacherSchedule, PublicTeachersDaySchedule, PublicTeachersIndex, PublicTeachersWeekSchedule } from "../shared/teacherTypes.ts";
 import { projectPublicTeachers, type PublicTeacherProjection } from "../shared/teacherPublic.ts";
 import { registerTeacherLoadApi } from "./teacherLoadApi.ts";
 import { registerPlanCoverageApi } from "./planCoverageApi.ts";
@@ -4067,6 +4067,10 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         key: string;
         projection: PublicStudentProjection;
     } | undefined;
+    let publicStudentsDayCache: { key: string; signature: string; value: PublicStudentsDaySchedule } | undefined;
+    let publicStudentsWeekCache: { key: string; value: PublicStudentsWeekSchedule } | undefined;
+    let publicTeachersDayCache: { key: string; signature: string; value: PublicTeachersDaySchedule } | undefined;
+    let publicTeachersWeekCache: { key: string; value: PublicTeachersWeekSchedule } | undefined;
     let publicTeacherScheduleCache: {
         quarterId: string;
         targetId: string;
@@ -4153,6 +4157,10 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
             publicProjectionIndexCache.clear();
             printPublishedIndexCache.clear();
             publicStudentScheduleCache = undefined;
+            publicStudentsDayCache = undefined;
+            publicStudentsWeekCache = undefined;
+            publicTeachersDayCache = undefined;
+            publicTeachersWeekCache = undefined;
             publicTeacherScheduleCache = undefined;
         },
     });
@@ -4236,13 +4244,27 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         quarter_id: string;
         version: number;
         published_at: string;
+        start_date: string;
+        end_date: string;
+        print_index_json: string;
     };
     const publishedProjectionRows = async (): Promise<PublishedProjectionRow[]> => {
-        const rows = await db.prepare("SELECT p.quarter_id,p.version,p.published_at FROM published_quarters p JOIN quarters q ON q.id=p.quarter_id WHERE q.archived=0 ORDER BY p.quarter_id").all() as Array<{
+        const rows = await db.prepare("SELECT p.quarter_id,p.version,p.published_at,p.print_index_json,q.start_date,q.end_date FROM published_quarters p JOIN quarters q ON q.id=p.quarter_id WHERE q.archived=0 ORDER BY p.quarter_id").all() as Array<{
             quarter_id: string;
             version: number;
             published_at: string;
+            print_index_json: string;
+            start_date: string;
+            end_date: string;
         }>;
+        for (const row of rows) {
+            if (row.print_index_json) {
+                const publishedQuarter = readPublicationPrintIndex(row.print_index_json).quarter;
+                row.start_date = publishedQuarter.startDate;
+                row.end_date = publishedQuarter.endDate;
+            }
+        }
+        rows.sort((a, b) => a.start_date.localeCompare(b.start_date) || a.quarter_id.localeCompare(b.quarter_id));
         const present = new Set(rows.map((row) => row.quarter_id));
         for (const quarterId of publicProjectionIndexCache.keys())
             if (!present.has(quarterId))
@@ -4308,6 +4330,111 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
         reply.header("cache-control", "no-store");
         return { quarters: await publicIndex("students") };
     });
+    app.get<{ Querystring: { date?: string; nextStudyDay?: string } }>("/api/public/students/day", async (request, reply): Promise<PublicStudentsDaySchedule | unknown> => {
+        const requestedDate = request.query.date;
+        if (!requestedDate || !/^\d{4}-\d{2}-\d{2}$/.test(requestedDate) || !Number.isFinite(Date.parse(`${requestedDate}T00:00:00Z`)) || new Date(`${requestedDate}T00:00:00Z`).toISOString().slice(0, 10) !== requestedDate)
+            return reply.code(400).send({ error: "Укажите корректную дату в формате YYYY-MM-DD" });
+        if (request.query.nextStudyDay !== undefined && request.query.nextStudyDay !== "true" && request.query.nextStudyDay !== "false")
+            return reply.code(400).send({ error: "Некорректный параметр nextStudyDay" });
+        const nextStudyDay = request.query.nextStudyDay === "true";
+        const rows = await publishedProjectionRows();
+        const signature = rows.map((row) => `${row.quarter_id}:${publicationKey(row)}`).join("|");
+        const cacheKey = `${requestedDate}\0${nextStudyDay}`;
+        if (publicStudentsDayCache?.key === cacheKey && publicStudentsDayCache.signature === signature) {
+            reply.header("cache-control", "no-store");
+            return publicStudentsDayCache.value;
+        }
+        let selectedDate = requestedDate;
+        const selectedRow = rows.find((row) => requestedDate >= row.start_date && requestedDate <= row.end_date);
+        let selected: { row: PublishedProjectionRow; snapshot: Awaited<ReturnType<typeof publishedSnapshot>> } | undefined;
+        if (selectedRow) selected = { row: selectedRow, snapshot: await publishedSnapshot(selectedRow) };
+        if (nextStudyDay) {
+            for (const row of rows) {
+                if (row.end_date < requestedDate) continue;
+                const snapshot = selected?.row.quarter_id === row.quarter_id ? selected.snapshot : await publishedSnapshot(row);
+                const groupById = new Map(snapshot.catalog.groups.map((group) => [group.id, group]));
+                const candidates = [...new Set(Object.values(snapshot.schedule).flatMap((days) => days
+                    .filter((day) => day.date >= requestedDate && day.slots.some((slot) => slot.length)).map((day) => day.date)))].sort();
+                let found: string | undefined;
+                for (const date of candidates) {
+                    const hasTeachingLessons = Object.entries(snapshot.schedule).some(([key, days]) => {
+                        const groupId = key.slice(0, key.lastIndexOf(":"));
+                        const group = groupById.get(groupId);
+                        const day = days.find((entry) => entry.date === date);
+                        if (!group || !day || !day.slots.some((slot) => slot.length)) return false;
+                        const stored = snapshot.calendar ? calendarDay(snapshot.calendar, groupId, date) : { holiday: false, kind: "regular" as const };
+                        return !(stored.kind === "study" ? false : Boolean(stored.holiday || (day.holiday && stored.kind === "regular")));
+                    });
+                    if (hasTeachingLessons) { found = date; break; }
+                }
+                if (found) { selectedDate = found; selected = { row, snapshot }; break; }
+            }
+        }
+        const groups: PublicStudentsDaySchedule["groups"] = [];
+        if (selected) {
+            const slicedSchedule: typeof selected.snapshot.schedule = {};
+            for (const [key, days] of Object.entries(selected.snapshot.schedule)) {
+                const match = days.filter((day) => day.date === selectedDate);
+                if (match.length) slicedSchedule[key] = match;
+            }
+            const projection = projectPublicStudents({ ...selected.snapshot, schedule: slicedSchedule }, { version: selected.row.version, publishedAt: selected.row.published_at });
+            for (const group of projection.quarter.groups) {
+                const day = projection.schedules.get(group.id)?.days[0];
+                groups.push({ id: group.id, name: group.name, ...(day ? { day } : {}) });
+            }
+        }
+        const value = { requestedDate, date: selectedDate, hasPublications: rows.length > 0, groups };
+        publicStudentsDayCache = { key: cacheKey, signature, value };
+        reply.header("cache-control", "no-store");
+        return value;
+    });
+    app.get<{ Querystring: { quarterId?: string; weekStart?: string } }>("/api/public/students/week", async (request, reply): Promise<PublicStudentsWeekSchedule | unknown> => {
+        const { quarterId, weekStart } = request.query;
+        const isIsoDate = (value: string | undefined): value is string => Boolean(value && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value);
+        if (!validText(quarterId, 120) || !quarterId || !isIsoDate(weekStart) || new Date(`${weekStart}T00:00:00Z`).getUTCDay() !== 1)
+            return reply.code(400).send({ error: "Укажите четверть и понедельник недели в формате YYYY-MM-DD" });
+        const end = new Date(`${weekStart}T00:00:00Z`);
+        end.setUTCDate(end.getUTCDate() + 6);
+        const weekEnd = end.toISOString().slice(0, 10);
+        const row = (await publishedProjectionRows()).find((item) => item.quarter_id === quarterId);
+        if (!row)
+            return reply.code(404).send({ error: "Опубликованное расписание не найдено" });
+        const key = `${quarterId}\0${weekStart}\0${publicationKey(row)}`;
+        if (publicStudentsWeekCache?.key === key) {
+            reply.header("cache-control", "no-store");
+            return publicStudentsWeekCache.value;
+        }
+        const snapshot = await publishedSnapshot(row);
+        if (weekEnd < snapshot.quarter.startDate || weekStart > snapshot.quarter.endDate)
+            return reply.code(400).send({ error: "Неделя не пересекается с четвертью" });
+        const publicGroupIds = new Set(snapshot.catalog.groups.filter((group) => !group.archived).map((group) => group.id));
+        for (const [scheduleKey, days] of Object.entries(snapshot.schedule)) {
+            const groupId = scheduleKey.slice(0, scheduleKey.lastIndexOf(":"));
+            if (days.some((day) => day.slots.some((slot, index) => Boolean(day.times[index] && slot.length))))
+                publicGroupIds.add(groupId);
+        }
+        const publicGroups = snapshot.catalog.groups
+            .filter((group) => publicGroupIds.has(group.id))
+            .sort((a, b) => a.name.localeCompare(b.name, "ru", { numeric: true }) || a.id.localeCompare(b.id, "ru", { numeric: true }));
+        const slicedSchedule = printSnapshotSlice(snapshot, [...publicGroupIds], weekStart, weekEnd).schedule;
+        const projection = projectPublicStudents({ ...snapshot, schedule: slicedSchedule }, { version: row.version, publishedAt: row.published_at });
+        const value: PublicStudentsWeekSchedule = {
+            quarter: {
+                id: snapshot.quarter.id,
+                name: snapshot.quarter.name,
+                startDate: snapshot.quarter.startDate,
+                endDate: snapshot.quarter.endDate,
+                ...(snapshot.quarter.archived !== undefined ? { archived: snapshot.quarter.archived } : {}),
+            },
+            publication: { version: row.version, publishedAt: row.published_at },
+            weekStart,
+            weekEnd,
+            groups: publicGroups.map((group) => ({ id: group.id, name: group.name, days: projection.schedules.get(group.id)?.days ?? [] })),
+        };
+        publicStudentsWeekCache = { key, value };
+        reply.header("cache-control", "no-store");
+        return value;
+    });
     app.get<{
         Querystring: {
             quarterId?: string;
@@ -4330,6 +4457,95 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
     app.get("/api/public/teachers", async (_request, reply): Promise<PublicTeachersIndex> => {
         reply.header("cache-control", "no-store");
         return { quarters: await publicIndex("teachers") };
+    });
+    app.get<{ Querystring: { date?: string; nextStudyDay?: string } }>("/api/public/teachers/day", async (request, reply): Promise<PublicTeachersDaySchedule | unknown> => {
+        const requestedDate = request.query.date;
+        const isIsoDate = (value: string | undefined): value is string => Boolean(value && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value);
+        if (!isIsoDate(requestedDate)) return reply.code(400).send({ error: "Укажите корректную дату в формате YYYY-MM-DD" });
+        if (request.query.nextStudyDay !== undefined && request.query.nextStudyDay !== "true" && request.query.nextStudyDay !== "false")
+            return reply.code(400).send({ error: "Некорректный параметр nextStudyDay" });
+        const rows = await publishedProjectionRows();
+        const signature = rows.map((row) => `${row.quarter_id}:${publicationKey(row)}`).join("|");
+        const nextStudyDay = request.query.nextStudyDay === "true";
+        const cacheKey = `${requestedDate}\0${nextStudyDay}`;
+        if (publicTeachersDayCache?.key === cacheKey && publicTeachersDayCache.signature === signature) {
+            reply.header("cache-control", "no-store");
+            return publicTeachersDayCache.value;
+        }
+        let date = requestedDate;
+        let selected: { row: PublishedProjectionRow; snapshot: Awaited<ReturnType<typeof publishedSnapshot>> } | undefined;
+        const containing = rows.find((row) => date >= row.start_date && date <= row.end_date);
+        if (containing) selected = { row: containing, snapshot: await publishedSnapshot(containing) };
+        if (nextStudyDay) {
+            outer: for (const row of rows) {
+                if (row.end_date < requestedDate) continue;
+                const snapshot: Awaited<ReturnType<typeof publishedSnapshot>> = await publishedSnapshot(row);
+                const catalogGroups = new Map(snapshot.catalog.groups.map((group) => [group.id, group]));
+                const teacherIds = new Set(snapshot.catalog.teachers.map((teacher) => teacher.id));
+                const candidates = [...new Set(Object.entries(snapshot.schedule).flatMap(([key, days]) => {
+                    const groupId = key.slice(0, key.lastIndexOf(":"));
+                    return days.filter((day) => day.date >= requestedDate && day.date >= snapshot.quarter.startDate && day.date <= snapshot.quarter.endDate &&
+                        day.slots.some((slot, index) => Boolean(day.times[index] && slot.some((lesson) => lesson.teacherId && teacherIds.has(lesson.teacherId))))
+                    ).map((day) => day.date).map((candidate) => `${groupId}\0${candidate}`);
+                }))].map((value) => value.split("\0")).sort((a, b) => a[1]!.localeCompare(b[1]!));
+                for (const [groupId, candidateDate] of candidates) {
+                    const group = catalogGroups.get(groupId!);
+                    if (!group) continue;
+                    const day = snapshot.schedule[`${groupId}:0`]?.find((entry) => entry.date === candidateDate)
+                        ?? Object.entries(snapshot.schedule).filter(([key]) => key.slice(0, key.lastIndexOf(":")) === groupId).flatMap(([, days]) => days).find((entry) => entry.date === candidateDate);
+                    const calendar = snapshot.calendar ?? defaultSchoolCalendar();
+                    const status = calendarDay(calendar, groupId!, candidateDate!);
+                    const hasLessons = Object.entries(snapshot.schedule).some(([key, days]) =>
+                        key.slice(0, key.lastIndexOf(":")) === groupId && days.some((entry) =>
+                            entry.date === candidateDate && entry.slots.some((slot, index) =>
+                                Boolean(entry.times[index] && slot.some((lesson) => lesson.teacherId && teacherIds.has(lesson.teacherId))))));
+                    if (!day || !hasLessons || (status.kind !== "study" && (status.holiday || (day.holiday && status.kind === "regular")))) continue;
+                    date = candidateDate!;
+                    selected = { row, snapshot };
+                    break outer;
+                }
+            }
+        }
+        let teachers: PublicTeachersDaySchedule["teachers"] = [];
+        if (selected) {
+            const projection = projectPublicTeachers(selected.snapshot, { version: selected.row.version, publishedAt: selected.row.published_at }, { startDate: date, endDate: date });
+            teachers = projection.quarter.teachers.map((teacher) => ({ id: teacher.id, name: teacher.name, ...(projection.schedules.get(teacher.id)?.days[0] ? { day: projection.schedules.get(teacher.id)!.days[0] } : {}) }));
+        }
+        const value: PublicTeachersDaySchedule = { requestedDate, date, hasPublications: rows.length > 0, teachers };
+        publicTeachersDayCache = { key: cacheKey, signature, value };
+        reply.header("cache-control", "no-store");
+        return value;
+    });
+    app.get<{ Querystring: { quarterId?: string; weekStart?: string } }>("/api/public/teachers/week", async (request, reply): Promise<PublicTeachersWeekSchedule | unknown> => {
+        const { quarterId, weekStart } = request.query;
+        const isIsoDate = (value: string | undefined): value is string => Boolean(value && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value);
+        if (!validText(quarterId, 120) || !quarterId || !isIsoDate(weekStart) || new Date(`${weekStart}T00:00:00Z`).getUTCDay() !== 1)
+            return reply.code(400).send({ error: "Укажите четверть и понедельник недели в формате YYYY-MM-DD" });
+        const weekEndDate = new Date(`${weekStart}T00:00:00Z`);
+        weekEndDate.setUTCDate(weekEndDate.getUTCDate() + 6);
+        if (!Number.isFinite(weekEndDate.getTime()) || weekEndDate.getUTCFullYear() > 9999)
+            return reply.code(400).send({ error: "Недопустимая граница недели" });
+        const weekEnd = weekEndDate.toISOString().slice(0, 10);
+        const row = (await publishedProjectionRows()).find((item) => item.quarter_id === quarterId);
+        if (!row) return reply.code(404).send({ error: "Опубликованное расписание не найдено" });
+        const key = `${quarterId}\0${weekStart}\0${publicationKey(row)}`;
+        if (publicTeachersWeekCache?.key === key) {
+            reply.header("cache-control", "no-store");
+            return publicTeachersWeekCache.value;
+        }
+        const snapshot = await publishedSnapshot(row);
+        if (weekEnd < snapshot.quarter.startDate || weekStart > snapshot.quarter.endDate)
+            return reply.code(400).send({ error: "Неделя не пересекается с четвертью" });
+        const from = weekStart < snapshot.quarter.startDate ? snapshot.quarter.startDate : weekStart;
+        const through = weekEnd > snapshot.quarter.endDate ? snapshot.quarter.endDate : weekEnd;
+        const projection = projectPublicTeachers(snapshot, { version: row.version, publishedAt: row.published_at }, { startDate: from, endDate: through });
+        const value: PublicTeachersWeekSchedule = {
+            quarter: { ...snapshot.quarter }, publication: { version: row.version, publishedAt: row.published_at }, weekStart, weekEnd,
+            teachers: projection.quarter.teachers.map((teacher) => ({ id: teacher.id, name: teacher.name, days: projection.schedules.get(teacher.id)?.days ?? [] })),
+        };
+        publicTeachersWeekCache = { key, value };
+        reply.header("cache-control", "no-store");
+        return value;
     });
     app.get<{
         Querystring: {
@@ -4614,12 +4830,14 @@ export async function buildApp(options: AppOptions = {}): Promise<FastifyInstanc
                 .map(({ id, name }) => ({ id, name }))
                 .sort((a, b) => a.name.localeCompare(b.name, "ru", { numeric: true }));
             const draft = visibleQuarters(quarters).map((quarter) => ({ ...quarter, groups: activeGroups }));
-            const rows = await db.prepare("SELECT p.quarter_id,p.version,p.published_at,p.print_index_json FROM published_quarters p JOIN quarters q ON q.id=p.quarter_id WHERE q.archived=0 ORDER BY p.quarter_id")
+            const rows = await db.prepare("SELECT p.quarter_id,p.version,p.published_at,p.print_index_json,q.start_date,q.end_date FROM published_quarters p JOIN quarters q ON q.id=p.quarter_id WHERE q.archived=0 ORDER BY p.quarter_id")
                 .all() as Array<{
                 quarter_id: string;
                 version: number;
                 published_at: string;
                 print_index_json: string;
+                start_date: string;
+                end_date: string;
             }>;
             const present = new Set(rows.map((row) => row.quarter_id));
             for (const quarterId of printPublishedIndexCache.keys())

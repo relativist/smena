@@ -94,6 +94,27 @@ test("compact print index survives cold restart, preserves snapshot names, and i
   } finally { Database.prototype.prepare = prepare; }
 });
 
+for (const invalidIndex of ["", "{", "{}"]) test(`startup repairs invalid print index with an existing migration marker (${JSON.stringify(invalidIndex)})`, async () => {
+  const { app, headers, state, db } = await fixture();
+  const snapshot = createPublicationSnapshot(state, state.quarters[0]!.id);
+  snapshot.catalog.groups[0]!.name = "Название на момент публикации";
+  putPublication(db, snapshot);
+  db.prepare("UPDATE published_quarters SET print_index_json=?").run(invalidIndex);
+  const original = db.prepare("SELECT quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json FROM published_quarters").all();
+  const dbPath = db.name;
+  await app.close();
+  apps.splice(apps.indexOf(app), 1);
+
+  const restarted = await buildApp({ dbPath });
+  apps.push(restarted);
+  const response = await restarted.inject({ url: "/api/schedule-print/index", headers });
+  assert.equal(response.statusCode, 200, response.body);
+  assert.deepEqual(response.json().published[0].groups, createPublicationPrintIndex(snapshot).groups);
+  const repairedDb = (restarted as unknown as { smenaDb: Database.Database }).smenaDb;
+  assert.deepEqual(repairedDb.prepare("SELECT quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json FROM published_quarters").all(), original);
+  assert.equal((await restarted.inject({ url: "/api/state", headers })).json().revision, state.revision);
+});
+
 for (const retainColumn of [false, true]) test(`publication migration backfills compact index and preserves original data (${retainColumn ? "existing column without marker" : "legacy schema"})`, async () => {
   const { app, headers, state, db } = await fixture();
   const snapshot = createPublicationSnapshot(state, state.quarters[0]!.id);

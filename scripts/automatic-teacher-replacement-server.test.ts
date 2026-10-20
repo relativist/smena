@@ -6,6 +6,7 @@ import { join } from "node:path";
 import Database from "better-sqlite3";
 import { buildApp } from "../server/app.ts";
 import type { StateResponse } from "../server/contracts.ts";
+import { createPublicationSnapshot } from "../shared/publication.ts";
 
 const roots: string[] = [];
 const apps: Array<Awaited<ReturnType<typeof buildApp>>> = [];
@@ -125,9 +126,10 @@ test("automatic teacher replacement is protected, recomputed, persisted and undo
   assert.equal(stale.statusCode, 409);
   const applyId = `auto-apply-${crypto.randomUUID()}`;
   const db = (app as unknown as { smenaDb: Database.Database }).smenaDb;
+  const publicationQuarterId = state.quarters[0]!.id;
   db.prepare(`INSERT INTO published_quarters(quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json) VALUES(?,?,?,?,?,?,?)`)
-    .run("f2-isolation-test", 1, new Date().toISOString(), state.revision, "test", JSON.stringify({ unchanged: true }), JSON.stringify({}));
-  const publicationBefore = db.prepare("SELECT snapshot_json,summary_json,version FROM published_quarters WHERE quarter_id=?").get("f2-isolation-test");
+    .run(publicationQuarterId, 1, new Date().toISOString(), state.revision, "test", JSON.stringify(createPublicationSnapshot(state, publicationQuarterId)), JSON.stringify({}));
+  const publicationBefore = db.prepare("SELECT snapshot_json,summary_json,version FROM published_quarters WHERE quarter_id=?").get(publicationQuarterId);
   const applied = await app.inject({ method: "POST", url: "/api/teacher-replacements/apply?response=receipt", headers, payload: { revision: state.revision, requestId: applyId, request: replacementRequest, expectedAssignments: proposed } });
   assert.equal(applied.statusCode, 200, applied.body);
   const applyBody = applied.json() as { revision: number; updatedAt: string; operationId: string };
@@ -143,7 +145,7 @@ test("automatic teacher replacement is protected, recomputed, persisted and undo
   assert.equal(changed.teacherId, proposed[0]!.teacherId);
   assert.equal(state.schedule[chosen.key]![chosen.dayIndex]!.slots[chosen.slotIndex]![0]!.roomId, chosen.lesson.roomId);
   assert.equal(state.temporaryTeacherReplacements?.length, 1);
-  assert.deepEqual(db.prepare("SELECT snapshot_json,summary_json,version FROM published_quarters WHERE quarter_id=?").get("f2-isolation-test"), publicationBefore);
+  assert.deepEqual(db.prepare("SELECT snapshot_json,summary_json,version FROM published_quarters WHERE quarter_id=?").get(publicationQuarterId), publicationBefore);
   await app.close(); apps.splice(apps.indexOf(app), 1);
   const reopened = await buildApp({ dbPath }); apps.push(reopened);
   const login = await reopened.inject({ method: "POST", url: "/api/auth/login", headers: { origin, host: "127.0.0.1" }, payload: { username: "admin", password: "automatic replacement test password" } });
@@ -171,7 +173,7 @@ test("automatic teacher replacement is protected, recomputed, persisted and undo
   assert.ok(Buffer.byteLength(undone.body) < 400);
   const undoState = (await reopened.inject({ url: "/api/state", headers: reopenedHeaders })).json() as StateResponse;
   const reopenedDb = (reopened as unknown as { smenaDb: Database.Database }).smenaDb;
-  assert.deepEqual(reopenedDb.prepare("SELECT snapshot_json,summary_json,version FROM published_quarters WHERE quarter_id=?").get("f2-isolation-test"), publicationBefore);
+  assert.deepEqual(reopenedDb.prepare("SELECT snapshot_json,summary_json,version FROM published_quarters WHERE quarter_id=?").get(publicationQuarterId), publicationBefore);
   assert.equal(undoState.schedule[chosen.key]![chosen.dayIndex]!.slots[chosen.slotIndex]![0]!.teacherId, chosen.teacher.id);
   assert.deepEqual(undoState.temporaryTeacherReplacements, []);
   const undoReplay = await reopened.inject({ method: "POST", url: `/api/teacher-replacements/${applyBody.operationId}/undo?response=receipt`, headers: reopenedHeaders, payload: { revision: undoState.revision - 1, requestId: undoId } });

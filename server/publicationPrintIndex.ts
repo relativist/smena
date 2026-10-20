@@ -28,11 +28,21 @@ export function readPublicationPrintIndex(json: string): PublicationPrintIndex {
   return index;
 }
 
-/** The marker makes snapshot reads a one-time migration cost, not a startup cost. */
+/** Healthy indexes need no snapshot reads; incomplete imports are repaired from the publication. */
 export async function migratePublicationPrintIndex(db: AsyncDatabase): Promise<void> {
   const table = db.dialect === "postgres" ? "postgres_schema_migrations" : "schema_migrations";
   const version = db.dialect === "postgres" ? 5 : 24;
-  if (await db.prepare(`SELECT 1 FROM ${table} WHERE version=?`).get(version)) return;
+  if (await db.prepare(`SELECT 1 FROM ${table} WHERE version=?`).get(version)) {
+    const rows = await db.prepare("SELECT quarter_id,print_index_json FROM published_quarters").all() as Array<{ quarter_id: string; print_index_json: string }>;
+    for (const row of rows) {
+      try { readPublicationPrintIndex(row.print_index_json); continue; }
+      catch { /* The compact index is derived data and can be reconstructed. */ }
+      const publication = await db.prepare("SELECT snapshot_json FROM published_quarters WHERE quarter_id=?").get(row.quarter_id) as { snapshot_json: string };
+      const index = createPublicationPrintIndex(JSON.parse(publication.snapshot_json) as PublicationSnapshot);
+      await db.prepare("UPDATE published_quarters SET print_index_json=? WHERE quarter_id=?").run(JSON.stringify(index), row.quarter_id);
+    }
+    return;
+  }
   const columns = await db.pragma("table_info(published_quarters)") as Array<{ name: string }>;
   if (!columns.some(column => column.name === "print_index_json"))
     await db.exec(`ALTER TABLE published_quarters ADD COLUMN print_index_json TEXT${db.dialect === "postgres" ? ' COLLATE "C"' : ""} NOT NULL DEFAULT ''`);

@@ -6,6 +6,7 @@ import { join } from "node:path";
 import Database from "better-sqlite3";
 import { buildApp } from "../server/app.ts";
 import { createDatabaseBackup, restoreDatabaseBackup } from "./database-backup.ts";
+import { createPublicationSnapshot } from "../shared/publication.ts";
 
 const roots: string[] = [];
 const apps: Awaited<ReturnType<typeof buildApp>>[] = [];
@@ -49,7 +50,7 @@ test("backup captures uncheckpointed WAL and restores authentication, settings, 
   db.prepare("UPDATE school_display_settings SET settings_json=?,revision=? WHERE id=1")
     .run(JSON.stringify({ adminSubjectIcons: false, studentSubjectIcons: true }), 4);
   db.prepare(`INSERT INTO published_quarters(quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json)
-    VALUES(?,?,?,?,?,?,?)`).run(quarter.id, 3, "2026-10-14T12:00:00Z", 7, "backup-admin", "{\"proof\":\"published\"}", "{\"lessons\":1}");
+    VALUES(?,?,?,?,?,?,?)`).run(quarter.id, 3, "2026-10-14T12:00:00Z", 7, "backup-admin", JSON.stringify(createPublicationSnapshot(state, quarter.id)), "{\"lessons\":1}");
   const sourceBefore = db.prepare("SELECT version,snapshot_json FROM published_quarters WHERE quarter_id=?").get(quarter.id);
   assert.ok(existsSync(`${source}-wal`), "fixture writes remain in the WAL before backup");
 

@@ -32,3 +32,18 @@ export type PublicTeacherSchedule = {
   teacher: { id: string; name: string };
   days: PublicTeacherDay[];
 };
+
+export type PublicTeachersDaySchedule = {
+  requestedDate: string;
+  date: string;
+  hasPublications: boolean;
+  teachers: Array<{ id: string; name: string; day?: PublicTeacherDay }>;
+};
+
+export type PublicTeachersWeekSchedule = {
+  quarter: Quarter;
+  publication: PublicPublication;
+  weekStart: string;
+  weekEnd: string;
+  teachers: Array<{ id: string; name: string; days: PublicTeacherDay[] }>;
+};

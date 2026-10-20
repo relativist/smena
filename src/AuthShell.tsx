@@ -547,5 +547,12 @@ function AuthForm(props: AuthFormProps) {
         {card}
       </dialog>
     );
-  return <main className="auth-page">{card}</main>;
+  return (
+    <main className="auth-page auth-page-with-back">
+      <a className="auth-back" href={withBasePath("/")}>
+        ← К расписанию
+      </a>
+      {card}
+    </main>
+  );
 }

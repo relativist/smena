@@ -129,6 +129,26 @@ test("legacy v23 SQLite import derives and verifies publication print metadata w
       assert.equal(index.statusCode, 200, index.body);
       assert.deepEqual(index.json().published[0].groups, createPublicationPrintIndex(snapshot).groups);
       assert.deepEqual((await targetApp.inject({ url: "/api/state", headers: targetAuth.headers })).json(), sourceStateAfterPublication);
+
+      // A prior v5 migration marker must not prevent startup from repairing a
+      // blank derived index left by an interrupted or incomplete import.
+      const pgDb = (targetApp as unknown as { smenaDb: AsyncDatabase }).smenaDb;
+      assert.ok(await pgDb.prepare("SELECT 1 FROM postgres_schema_migrations WHERE version=5").get());
+      const publishedBeforeRepair = await pgDb.prepare(`SELECT quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json
+        FROM published_quarters WHERE quarter_id=?`).get(snapshot.quarter.id);
+      await pgDb.prepare("UPDATE published_quarters SET print_index_json='' WHERE quarter_id=?").run(snapshot.quarter.id);
+      await targetApp.close(); targetApp = undefined;
+
+      targetApp = await buildApp({ databaseUrl });
+      const repairedDb = (targetApp as unknown as { smenaDb: AsyncDatabase }).smenaDb;
+      assert.deepEqual(await repairedDb.prepare(`SELECT quarter_id,version,published_at,draft_revision,published_by,snapshot_json,summary_json
+        FROM published_quarters WHERE quarter_id=?`).get(snapshot.quarter.id), publishedBeforeRepair);
+      assert.deepEqual(JSON.parse((await repairedDb.prepare("SELECT print_index_json FROM published_quarters WHERE quarter_id=?")
+        .get(snapshot.quarter.id)).print_index_json), createPublicationPrintIndex(snapshot));
+      const repairedAuth = await startAdmin(targetApp);
+      const repairedIndex = await targetApp.inject({ url: "/api/schedule-print/index", headers: repairedAuth.headers });
+      assert.equal(repairedIndex.statusCode, 200, repairedIndex.body);
+      assert.deepEqual(repairedIndex.json().published[0].groups, createPublicationPrintIndex(snapshot).groups);
     } finally {
       await sourceApp?.close();
       await targetApp?.close();

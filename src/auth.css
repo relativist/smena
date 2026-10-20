@@ -167,6 +167,36 @@
   cursor: wait;
 }
 
+.auth-page-with-back {
+  position: relative;
+  padding-block: 84px;
+}
+
+.auth-back {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 8px;
+  color: #253047;
+  font-size: var(--ui-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-back:hover {
+  color: #354cc1;
+  background: rgb(70 96 221 / 8%);
+}
+
+.auth-back:focus-visible {
+  outline: 3px solid rgb(70 96 221 / 35%);
+  outline-offset: 2px;
+}
+
 .auth-error {
   margin: 5px 0 2px;
   padding: 9px 10px;
@@ -192,6 +222,13 @@
   }
   .auth-page {
     padding: 16px;
+  }
+  .auth-page-with-back {
+    padding-block: 76px;
+  }
+  .auth-back {
+    top: 16px;
+    left: 16px;
   }
   .auth-card {
     padding: 28px 24px;

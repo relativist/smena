@@ -4,15 +4,24 @@ import SchoolName, { useSchoolSettings } from "./SchoolSettings";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import AdminPageHeader from "./AdminPageHeader";
 import ActionLabel from "./ActionLabel";
+import RussianDateInput from "./RussianDateInput";
 import { ApiError, api, type AuthSession } from "./api";
 import type { StateResponse } from "../server/contracts.ts";
 import type { SchedulePrintGroup, SchedulePrintIndex, SchedulePrintPreview, SchedulePrintPreviewRequest, SchedulePrintSource } from "../shared/schedulePrintTypes.ts";
 import { visibleQuarters } from "../shared/plans.ts";
-import { packPrintRows, printLessonDisplay, printRows, printWeekDays, splitOversizedPrintRow, type PrintDay, type PrintRow } from "../shared/schedulePrint.ts";
+import { packPrintRows, printDateTables, printLessonDisplay, printTimeRows, printWeekDays, splitOversizedPrintRow, type PrintDay, type PrintRow } from "../shared/schedulePrint.ts";
+import { isValidIsoDate } from "../shared/studentNavigation.ts";
+import { matchesSchoolStage, shiftStudentDate, type SchoolStage } from "../shared/studentDayNavigation.ts";
 import "./schedule-print.css";
 
 type Props = { initialState: StateResponse; auth: AuthSession; onUnauthorized: () => void; onBack: () => Promise<void>; initialGroupId?: string; initialQuarterId?: string; initialDate?: string };
-type PrintPage = { group: SchedulePrintGroup; days: PrintDay[]; rows: PrintRow[]; start: number; end: number; continued: boolean };
+type PrintTable = { group: SchedulePrintGroup; days: PrintDay[]; rows: PrintRow[]; columnHeadings?: string[]; date?: string };
+type PrintPage = PrintTable & { start: number; end: number; continued: boolean };
+type PrintView = "quarter" | "date";
+const stages: Array<{ id: SchoolStage; label: string }> = [
+  { id: "all", label: "Вся школа" }, { id: "primary", label: "Начальная · 1–4" },
+  { id: "middle", label: "Средняя · 5–9" }, { id: "high", label: "Старшая · 10–11" },
+];
 const dateIso = (date = new Date()) => date.toLocaleDateString("sv-SE");
 const mondayOf = (date: string) => { const value = new Date(`${date}T12:00:00`); value.setDate(value.getDate() - ((value.getDay() + 6) % 7)); return value.toLocaleDateString("sv-SE"); };
 const addDays = (date: string, amount: number) => { const value = new Date(`${date}T12:00:00`); value.setDate(value.getDate() + amount); return value.toLocaleDateString("sv-SE"); };
@@ -49,19 +58,20 @@ function GroupPicker({ groups, selected, onChange }: { groups: SchedulePrintGrou
 }
 
 function Sheet({ page, quarter, weekStart, watermark, measure = false }: { page: PrintPage; quarter: SchedulePrintPreview["quarter"]; weekStart: string; watermark: boolean; measure?: boolean }) {
-  const columnIndexes = page.days.some(day => day.weekday > 4 && day.lessons.length) ? [0, 1, 2, 3, 4, 5, 6] : [0, 1, 2, 3, 4];
+  const columnIndexes = page.columnHeadings ? page.days.map((_, index) => index) : page.days.some(day => day.weekday > 4 && day.lessons.length) ? [0, 1, 2, 3, 4, 5, 6] : [0, 1, 2, 3, 4];
   const continuation = page.continued;
+  const tableWidth = `calc(20mm + ${columnIndexes.length} * 38.5mm)`;
   return <section className={`sp-sheet${measure ? " sp-measure-sheet" : ""}`}>
     <div className="sp-page-head">
-      <div><SchoolName className="sp-school-name" /><h2>{page.group.name}{continuation ? " - продолжение" : ""}</h2><p>{quarter.name} · неделя {dateLabel(weekStart)} - {dateLabel(addDays(weekStart, 6))}</p></div>
+      <div><SchoolName className="sp-school-name" /><h2>{page.date ? dateLabel(page.date, { weekday: "long", day: "numeric", month: "long", year: "numeric" }) : page.group.name}{continuation ? " - продолжение" : ""}</h2><p>{quarter.name}{!page.date && ` · неделя ${dateLabel(weekStart)} - ${dateLabel(addDays(weekStart, 6))}`}</p></div>
       {watermark && <strong className="sp-watermark">ЧЕРНОВИК</strong>}
     </div>
-    <table className="sp-table"><thead><tr><th className="sp-number-head">№</th>{columnIndexes.map(index => <th key={index} className={page.days[index].inQuarter ? "" : "is-outside-quarter"}>{weekdays[index]}<span>{dateLabel(page.days[index].date, { day: "numeric", month: "short" })}</span>{page.days[index].holidayLabel && <small>{page.days[index].holidayLabel}</small>}{!page.days[index].inQuarter && <small>вне четверти</small>}</th>)}</tr></thead>
+    <table className="sp-table" style={{ width: tableWidth }}><colgroup><col className="sp-time-col" />{columnIndexes.map(index => <col key={index} className="sp-group-col" />)}</colgroup><thead><tr><th className="sp-number-head">№<span>Время</span></th>{columnIndexes.map(index => <th key={index} className={page.days[index].inQuarter ? "" : "is-outside-quarter"}>{page.columnHeadings?.[index] ?? weekdays[index]}{!page.date && <span>{dateLabel(page.days[index].date, { day: "numeric", month: "short" })}</span>}{page.days[index].holidayLabel && <small>{page.days[index].holidayLabel}</small>}{!page.days[index].inQuarter && <small>вне четверти</small>}</th>)}</tr></thead>
       <tbody>{page.rows.slice(page.start, page.end).map((row, fragment) => <tr className="sp-row" key={`${row.slot}-${page.start}-${fragment}`}>
-        <th scope="row">{row.slot || "-"}{row.continued && row.slot ? <small>далее</small> : null}</th>
+        <th scope="row"><strong>{row.slot || "—"}</strong>{row.start !== undefined && <time>{`${String(Math.floor(row.start / 60) % 24).padStart(2, "0")}:${String(row.start % 60).padStart(2, "0")}`}</time>}{row.continued && row.slot ? <small>далее</small> : null}</th>
         {columnIndexes.map(index => <td key={index} data-day-index={index}>{row.days[index]?.length ? row.days[index].map(lesson => {
           const detail = printLessonDisplay(lesson);
-          return <div className="sp-lesson" key={lesson.id}><strong>{detail.time} · {detail.subject}</strong><span>{[detail.teacher, detail.subgroup, detail.room].filter(Boolean).join(" · ")}</span>{detail.joint && <small>Общий: {detail.joint}</small>}</div>;
+          return <div className="sp-lesson" key={lesson.id}><strong>{detail.subject}</strong><span>{[detail.teacher, detail.subgroup, detail.room].filter(Boolean).join(" · ")}</span>{detail.joint && <small>Общий: {detail.joint}</small>}</div>;
         }) : row.slot === 0 && !page.days[index].holidayLabel ? <span className="sp-no-lessons">Занятий нет</span> : null}</td>)}
       </tr>)}</tbody>
     </table>
@@ -70,6 +80,10 @@ function Sheet({ page, quarter, weekStart, watermark, measure = false }: { page:
 
 export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initialGroupId, initialQuarterId, initialDate }: Props) {
   const { schoolName } = useSchoolSettings();
+  const [view, setView] = useState<PrintView>("date");
+  const [date, setDate] = useState(isValidIsoDate(initialDate) ? initialDate : dateIso());
+  const [stage, setStage] = useState<SchoolStage>("all");
+  const [dateGroupIds, setDateGroupIds] = useState<string[] | undefined>(initialGroupId ? [initialGroupId] : undefined);
   const [index, setIndex] = useState<SchedulePrintIndex>(); const [indexBusy, setIndexBusy] = useState(true); const [indexError, setIndexError] = useState("");
   const [source, setSource] = useState<SchedulePrintSource>("published"); const [quarterId, setQuarterId] = useState(""); const [weekStart, setWeekStart] = useState(""); const [groupIds, setGroupIds] = useState<string[]>([]);
   const [preview, setPreview] = useState<SchedulePrintPreview>(); const [previewKey, setPreviewKey] = useState(""); const [previewBusy, setPreviewBusy] = useState(false); const [error, setError] = useState(""); const [backBusy, setBackBusy] = useState(false);
@@ -78,11 +92,13 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
   const clearPreview = () => { selectionVersion.current += 1; requestController.current?.abort(); requestController.current = undefined; setPreviewBusy(false); setPreview(undefined); setPreviewKey(""); setPages([]); setPaginationKey(""); setError(""); setPaginationError(""); };
 
   const quarters = visibleQuarters(source === "published" ? index?.published ?? [] : index?.draft ?? []);
-  const quarter = quarters.find(item => item.id === quarterId) ?? quarters[0];
-  const groupList = useMemo(() => [...(quarter?.groups ?? [])].sort((a, b) => collator.compare(a.name, b.name)), [quarter]);
+  const quarter = view === "date" ? quarters.find(item => item.startDate <= date && item.endDate >= date) : quarters.find(item => item.id === quarterId) ?? quarters[0];
+  const groupList = useMemo(() => [...(quarter?.groups ?? [])].filter(group => view !== "date" || matchesSchoolStage(group.name, stage)).sort((a, b) => collator.compare(a.name, b.name)), [quarter, view, stage]);
+  const selectedGroupIds = view === "date" ? groupList.filter(group => dateGroupIds === undefined || dateGroupIds.includes(group.id)).map(group => group.id) : groupIds;
+  const selectedWeek = view === "date" ? date ? mondayOf(date) : "" : weekStart;
   const weeks = useMemo(() => quarter ? weeksFor(quarter) : [], [quarter]);
-  const selectedKey = JSON.stringify({ source, quarterId: quarter?.id ?? "", weekStart, groupIds: [...groupIds].sort(collator.compare) });
-  const canPreview = Boolean(index && quarter && weekStart && groupIds.length && !indexBusy && !previewBusy);
+  const selectedKey = JSON.stringify({ view, date: view === "date" ? date : undefined, source, quarterId: quarter?.id ?? "", weekStart: selectedWeek, groupIds: [...selectedGroupIds].sort(collator.compare) });
+  const canPreview = Boolean(index && quarter && selectedWeek && selectedGroupIds.length && !indexBusy && !previewBusy);
   const canPrint = Boolean(preview && previewKey === selectedKey && paginationKey === previewKey && pages.length && !previewBusy && !paginationError);
 
   useEffect(() => {
@@ -110,7 +126,7 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
   }, []);
 
   const changeSource = (next: SchedulePrintSource) => {
-    clearPreview(); setSource(next);
+    clearPreview(); setSource(next); setDateGroupIds(undefined);
     const target = visibleQuarters((next === "published" ? index?.published : index?.draft) ?? []);
     const preferred = target.find(item => item.id === quarterId) ?? target.find(item => item.startDate <= dateIso() && item.endDate >= dateIso()) ?? target[0];
     setQuarterId(preferred?.id ?? "");
@@ -124,7 +140,13 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
     setGroupIds(initialGroupId && next.groups.some(group => group.id === initialGroupId) ? [initialGroupId] : []);
   };
   const changeWeek = (next: string) => { clearPreview(); setWeekStart(next); };
-  const changeGroups = (next: string[]) => { clearPreview(); setGroupIds(next.filter(id => groupList.some(group => group.id === id))); };
+  const changeGroups = (next: string[]) => { clearPreview(); const valid = next.filter(id => groupList.some(group => group.id === id)); if (view === "date") setDateGroupIds(valid); else setGroupIds(valid); };
+  const changeView = (next: PrintView) => { if (next !== view) { clearPreview(); setView(next); } };
+  const changeDate = (next: string) => {
+    if (next && !isValidIsoDate(next)) return;
+    clearPreview(); setDate(next);
+    if (quarters.find(item => item.startDate <= next && item.endDate >= next)?.id !== quarter?.id) setDateGroupIds(undefined);
+  };
 
   const refreshIndex = async () => {
     setIndexBusy(true); setIndexError("");
@@ -147,10 +169,10 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
   };
 
   const requestPreview = async () => {
-    if (!index || !quarter || !weekStart || !groupIds.length) return;
+    if (!index || !quarter || !selectedWeek || !selectedGroupIds.length) return;
     const version = ++selectionVersion.current; const key = selectedKey; const controller = new AbortController(); requestController.current?.abort(); requestController.current = controller;
     const publishedQuarter = source === "published" ? index.published.find(item => item.id === quarter.id) : undefined;
-    const body: SchedulePrintPreviewRequest = { source, quarterId: quarter.id, weekStart, groupIds: [...groupIds].sort(collator.compare), ...(publishedQuarter ? { version: publishedQuarter.publication.version } : { revision: index.revision }) };
+    const body: SchedulePrintPreviewRequest = { source, quarterId: quarter.id, weekStart: selectedWeek, groupIds: [...selectedGroupIds].sort(collator.compare), ...(publishedQuarter ? { version: publishedQuarter.publication.version } : { revision: index.revision }) };
     setPreview(undefined); setPreviewKey(""); setPages([]); setPaginationKey(""); setError(""); setPaginationError(""); setPreviewBusy(true);
     try {
       const value = await api<SchedulePrintPreview>("/api/schedule-print/preview", { method: "POST", headers: { "x-csrf-token": auth.csrfToken }, body: JSON.stringify(body), signal: controller.signal });
@@ -164,9 +186,9 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
     } finally { if (!controller.signal.aborted && version === selectionVersion.current) setPreviewBusy(false); }
   };
 
-  const measuredGroups = useMemo(() => preview ? preview.groups.map(item => {
-    const days = printWeekDays(item.days, preview.weekStart, preview.quarter); return { group: item.group, days, rows: printRows(days) };
-  }) : [], [preview]);
+  const measuredGroups = useMemo<PrintTable[]>(() => preview ? view === "date" ? printDateTables(preview, date) : preview.groups.map(item => {
+    const days = printWeekDays(item.days, preview.weekStart, preview.quarter); return { group: item.group, days, rows: printTimeRows(days) };
+  }) : [], [preview, view, date]);
   useLayoutEffect(() => {
     const host = measureHost.current;
     if (!preview || !previewKey || !host) return;
@@ -188,7 +210,7 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
           for (const [rowIndex, row] of rowNodes.entries()) {
             const rowHeight = row.getBoundingClientRect().height / pxPerMm;
             if (rowHeight <= available + 0.5) { pageRows.push(group.rows[rowIndex]); heights.push(rowHeight); continue; }
-            const cardHeights = Array.from({ length: 7 }, () => [] as number[]);
+            const cardHeights = Array.from({ length: group.days.length }, () => [] as number[]);
             for (const cell of Array.from(row.querySelectorAll("td[data-day-index]")) as HTMLElement[]) {
               const dayIndex = Number(cell.dataset.dayIndex);
               cardHeights[dayIndex] = (Array.from(cell.querySelectorAll(".sp-lesson")) as HTMLElement[]).map(card => {
@@ -203,7 +225,7 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
             }
             pageRows.push(...split.rows); heights.push(...split.heightsMm);
           }
-          for (const slice of packPrintRows(heights, available)) all.push({ group: group.group, days: group.days, rows: pageRows, start: slice.start, end: slice.end, continued: slice.start > 0 });
+          for (const slice of packPrintRows(heights, available)) all.push({ ...group, rows: pageRows, start: slice.start, end: slice.end, continued: slice.start > 0 });
         }
         if (active) { setPages(all); setPaginationKey(previewKey); }
       });
@@ -217,17 +239,37 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
     <style media="print">{"@page { size: A4 landscape; margin: 0; }"}</style>
     <AdminPageHeader title="Печать расписания" onBack={() => void back()} busy={backBusy} />
     <main className="sp-main">
+      <div className="sp-view-tabs" role="tablist" aria-label="Вид расписания для печати">{(["date", "quarter"] as const).map(tab => <button key={tab} id={`sp-tab-${tab}`} type="button" role="tab" aria-selected={view === tab} aria-controls="sp-schedule-panel" tabIndex={view === tab ? 0 : -1} onClick={() => changeView(tab)} onKeyDown={event => {
+        if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
+          event.preventDefault();
+          const next = event.key === "Home" ? "date" : event.key === "End" ? "quarter" : view === "date" ? "quarter" : "date";
+          changeView(next); document.getElementById(`sp-tab-${next}`)?.focus();
+        }
+      }}>{tab === "quarter" ? "Четверть" : "Дата"}</button>)}</div>
+      <div id="sp-schedule-panel" role="tabpanel" aria-labelledby={`sp-tab-${view}`}>
       <section className="sp-controls" aria-label="Параметры печати">
-        <div className="sp-control-grid">
-          <label>Источник расписания<select value={source} onChange={event => changeSource(event.target.value as SchedulePrintSource)}><option value="published">Опубликованное</option><option value="draft">Черновик</option></select></label>
-          <label>Четверть<select value={quarter?.id ?? ""} onChange={event => changeQuarter(event.target.value)} disabled={!quarters?.length}>{quarters?.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
-          <label>Неделя<select value={weekStart} onChange={event => changeWeek(event.target.value)} disabled={!weeks.length}>{weeks.map(week => <option key={week} value={week}>{dateLabel(week)} – {dateLabel(addDays(week, 6))}</option>)}</select></label>
-          <GroupPicker groups={groupList} selected={groupIds} onChange={changeGroups} />
+        <div className={`sp-control-grid${view === "date" ? " sp-date-controls" : ""}`}>
+          <label>Источник расписания<select aria-label="Источник расписания" value={source} onChange={event => changeSource(event.target.value as SchedulePrintSource)}><option value="published">Опубликованное</option><option value="draft">Черновик</option></select></label>
+          {view === "quarter" ? <>
+            <label>Четверть<select aria-label="Четверть" value={quarter?.id ?? ""} onChange={event => changeQuarter(event.target.value)} disabled={!quarters?.length}>{quarters?.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
+            <label>Неделя<select aria-label="Неделя" value={weekStart} onChange={event => changeWeek(event.target.value)} disabled={!weeks.length}>{weeks.map(week => <option key={week} value={week}>{dateLabel(week)} – {dateLabel(addDays(week, 6))}</option>)}</select></label>
+          </> : <>
+            <label>Школа<select aria-label="Школа" value={stage} onChange={event => { clearPreview(); setStage(event.target.value as SchoolStage); setDateGroupIds(undefined); }}>{stages.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+            <div className="sp-date-control"><span className="sp-field-label">Дата</span><div className="sp-date-picker">
+              <button type="button" aria-label="Предыдущий день" disabled={!date || date <= "0001-01-01"} onClick={() => changeDate(shiftStudentDate(date, -1))}>‹</button>
+              <RussianDateInput label="Дата расписания" value={date} onChange={changeDate} />
+              <button type="button" aria-label="Следующий день" disabled={!date || date >= "9999-12-31"} onClick={() => changeDate(shiftStudentDate(date, 1))}>›</button>
+              <button type="button" className="sp-today" onClick={() => changeDate(dateIso())}>Сегодня</button>
+            </div></div>
+          </>}
+          <GroupPicker groups={groupList} selected={selectedGroupIds} onChange={changeGroups} />
         </div>
-        <div className="sp-controls-footer"><p>Каждая группа печатается отдельно на листах А4 в альбомной ориентации. Чтобы убрать адрес, дату и номера страниц, отключите «Колонтитулы» в дополнительных настройках печати браузера.</p><button type="button" className="sp-primary" onClick={() => void requestPreview()} disabled={!canPreview}><ActionLabel action="preview">{previewBusy ? "Формируем…" : "Предпросмотр"}</ActionLabel></button><button type="button" onClick={() => window.print()} disabled={!canPrint}><ActionLabel action="print">Печать</ActionLabel></button></div>
+        <div className="sp-controls-footer"><p>{view === "date" ? "Классы печатаются общей таблицей на выбранную дату, до семи классов на листе." : "Каждая группа печатается отдельно на листах А4 в альбомной ориентации."} Чтобы убрать адрес, дату и номера страниц, отключите «Колонтитулы» в дополнительных настройках печати браузера.</p><button type="button" className="sp-primary" onClick={() => void requestPreview()} disabled={!canPreview}><ActionLabel action="preview">{previewBusy ? "Формируем…" : "Предпросмотр"}</ActionLabel></button><button type="button" onClick={() => window.print()} disabled={!canPrint}><ActionLabel action="print">Печать</ActionLabel></button></div>
         {indexError && <p className="sp-error" role="alert">{indexError} <button type="button" onClick={() => void refreshIndex()}>Повторить</button></p>}
         {error && <p className="sp-error" role="alert">{error}</p>}{paginationError && <p className="sp-error" role="alert">{paginationError}</p>}
         {index && !quarters?.length && <p className="sp-empty">{source === "published" ? "Нет опубликованных четвертей. Опубликуйте расписание или выберите черновик." : "Нет черновых четвертей для печати."}</p>}
+        {index && quarters.length > 0 && view === "date" && !quarter && <p className="sp-empty">{!date ? "Выберите дату расписания." : <>{source === "published" ? "На эту дату нет опубликованного расписания." : "Эта дата не входит ни в одну четверть черновика."} Выберите другую дату.</>}</p>}
+        {index && view === "date" && quarter && !groupList.length && <p className="sp-empty">Нет групп выбранной ступени школы.</p>}
         {preview && preview.groups.length === 0 && <p className="sp-empty">Для выбранных групп нет данных в этом расписании.</p>}
       </section>
       {preview && previewKey === selectedKey && <div className="sp-preview-scroll" aria-label="Предпросмотр страниц">
@@ -235,7 +277,8 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
       </div>}
       {preview && preview.source === "draft" && <p className="sp-screen-watermark">Черновик · для проверки, не опубликованное расписание</p>}
       {preview && <div className="sp-measure-host" ref={measureHost} aria-hidden="true">{measuredGroups.map((group, index) => <div data-measure-group={index} key={group.group.id}><Sheet page={{ ...group, start: 0, end: group.rows.length, continued: true }} quarter={preview.quarter} weekStart={preview.weekStart} watermark={preview.source === "draft"} measure /></div>)}</div>}
-      {!preview && !indexBusy && !indexError && <div className="sp-empty sp-before-preview">Выберите четверть, неделю и группы, затем нажмите «Предпросмотр».</div>}
+      {!preview && !indexBusy && !indexError && quarter && <div className="sp-empty sp-before-preview">{view === "date" ? "Выберите дату и группы, затем нажмите «Предпросмотр»." : "Выберите четверть, неделю и группы, затем нажмите «Предпросмотр»."}</div>}
+      </div>
     </main>
   </div>;
 }

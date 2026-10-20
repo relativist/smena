@@ -103,22 +103,24 @@ test("teacher reassignment records an absence origin and early return restores o
 
 test("partial persisted transfer does not create a policy for an unselected lesson in the same stream", async () => {
   const { app, headers, state: initial } = await setup();
-  const today = new Date().toLocaleDateString("sv-SE");
   let chosen: { key: string; dayIndex: number; slotIndex: number; date: string; groupId: string; sourceId: string; targetId: string; lesson: StateResponse["schedule"][string][number]["slots"][number][number] } | undefined;
   for (const [key, days] of Object.entries(initial.schedule)) {
     const groupId = key.slice(0, key.lastIndexOf(":"));
     for (const [dayIndex, day] of days.entries()) {
-      if (day.date < today) continue;
       for (const [slotIndex, slot] of day.slots.entries()) for (const lesson of slot) {
         const source = initial.catalog.teachers.find((teacher) => teacher.id === lesson.teacherId);
         const target = initial.catalog.teachers.find((teacher) => teacher.id !== lesson.teacherId && !teacher.archived && teacher.subjectIds.includes(lesson.subjectId));
-        if (source && target) { chosen = { key, dayIndex, slotIndex, date: day.date, groupId, sourceId: source.id, targetId: target.id, lesson }; break; }
+        const quarter = initial.quarters.find(item => item.startDate <= day.date && item.endDate >= day.date);
+        const hasLaterLesson = quarter && Object.entries(initial.schedule).some(([otherKey, otherDays]) =>
+          otherKey.startsWith(`${groupId}:`) && otherDays.some(otherDay => otherDay.date > day.date && otherDay.date <= quarter.endDate &&
+            otherDay.slots.some(otherSlot => otherSlot.some(other => other.subjectId === lesson.subjectId && other.teacherId === lesson.teacherId))));
+        if (source && target && hasLaterLesson) { chosen = { key, dayIndex, slotIndex, date: day.date, groupId, sourceId: source.id, targetId: target.id, lesson }; break; }
       }
       if (chosen) break;
     }
     if (chosen) break;
   }
-  assert.ok(chosen, "fixture needs an eligible future lesson");
+  assert.ok(chosen, "fixture needs an eligible lesson with a later occurrence in the same stream");
   const quarter = initial.quarters.find((item) => item.startDate <= chosen!.date && item.endDate >= chosen!.date)!;
   const allDays = Object.entries(initial.schedule).flatMap(([key, days]) => key.startsWith(`${chosen!.groupId}:`) ? days.map((day, dayIndex) => ({ key, day, dayIndex })) : []);
   const sibling = allDays.flatMap(({ key, day, dayIndex }) => day.date > chosen!.date && day.date <= quarter.endDate ? day.slots.flatMap((slot, slotIndex) => slot.filter((lesson) => lesson.subjectId === chosen!.lesson.subjectId && lesson.teacherId === chosen!.sourceId).map((lesson) => ({ key, day, dayIndex, slotIndex, lesson }))) : []).find(Boolean);

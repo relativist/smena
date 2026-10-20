@@ -18,6 +18,8 @@ export type PublicTeacherProjection = {
   schedules: Map<string, PublicTeacherSchedule>;
 };
 
+export type PublicTeacherProjectionRange = { startDate: string; endDate: string };
+
 type LessonSource = {
   date: string;
   groupId: string;
@@ -155,6 +157,7 @@ function teacherDayStatus(snapshot: PublicationSnapshot, date: string, assignedG
 export function projectPublicTeachers(
   snapshot: PublicationSnapshot,
   publication: PublicPublication,
+  range?: PublicTeacherProjectionRange,
 ): PublicTeacherProjection {
   const groupNames = new Map(snapshot.catalog.groups.map((group) => [group.id, group.name]));
   const teacherById = new Map(snapshot.catalog.teachers.map((teacher) => [teacher.id, teacher]));
@@ -225,7 +228,10 @@ export function projectPublicTeachers(
       byDate.set(source.date, entries);
     }
     const fallbackNormalBreakMinutes = normalSchoolBreakMinutes(snapshot.bellSettings);
-    const days: PublicTeacherDay[] = datesInclusive(snapshot.quarter.startDate, snapshot.quarter.endDate).map((date) => {
+    const firstDate = range && range.startDate > snapshot.quarter.startDate ? range.startDate : snapshot.quarter.startDate;
+    const lastDate = range && range.endDate < snapshot.quarter.endDate ? range.endDate : snapshot.quarter.endDate;
+    const projectionDates = firstDate <= lastDate ? datesInclusive(firstDate, lastDate) : [];
+    const days: PublicTeacherDay[] = projectionDates.map((date) => {
       const dateSources = byDate.get(date) ?? [];
       const grouped = new Map<string, LessonSource[]>();
       for (const source of dateSources) {
