@@ -172,3 +172,12 @@
 @media (max-width: 560px) {
   .calendar-form-fields > label, .calendar-form-fields > .calendar-date-field { grid-template-columns: minmax(0, 1fr); gap: 6px; }
 }
+
+.calendar-days-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.calendar-days-heading .calendar-panel-title { margin: 0; }
+.calendar-days-panel > .calendar-hint { margin-bottom: 10px; line-height: 1.5; }
+.calendar-days-table td { vertical-align: top; }
+.calendar-days-table td:nth-child(2), .calendar-days-table td:nth-child(3) { min-width: 140px; max-width: 360px; overflow-wrap: anywhere; white-space: normal; }
+.calendar-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.calendar-dialog .group-selection-list input { width: 14px; height: 14px; flex: none; padding: 0; margin: 0; accent-color: #4660dd; }
+.calendar-dialog .group-selection-list label { min-height: 24px; gap: 6px; }

@@ -64,6 +64,7 @@ export default function CalendarPage({ initialState, auth, onUnauthorized, onBac
   const [quarterBusy, setQuarterBusy] = useState(false);
   const [calendar, setCalendar] = useState<SchoolCalendar>(initialState.calendar ?? defaultSchoolCalendar());
   const [periodDraft, setPeriodDraft] = useState<PeriodDraft | null>(null);
+  const [singleDayDialog, setSingleDayDialog] = useState(false);
   const [preview, setPreview] = useState<Omit<ReturnType<typeof import("../shared/schoolCalendar.ts").applyCalendar>, "schedule"> | null>(null);
   const [previewBusy, setPreviewBusy] = useState(false);
   const previewController = useRef<AbortController | null>(null);
@@ -88,6 +89,8 @@ export default function CalendarPage({ initialState, auth, onUnauthorized, onBac
   const groups = useMemo(() => state.catalog.groups.filter((group) => !group.archived).sort((a, b) => collator.compare(a.name, b.name)), [state.catalog.groups]);
   const groupChoices = useMemo(() => state.catalog.groups.slice().sort((a, b) => collator.compare(a.name, b.name)), [state.catalog.groups]);
   const sortedPeriods = useMemo(() => [...calendar.periods].sort((a, b) => a.startDate.localeCompare(b.startDate) || collator.compare(a.name, b.name)), [calendar.periods]);
+  const nonStudyDays = sortedPeriods.filter((period) => period.kind === "day-off" && period.startDate === period.endDate);
+  const otherPeriods = sortedPeriods.filter((period) => period.kind !== "day-off" || period.startDate !== period.endDate);
   const quarters = useMemo(() => visibleQuarters(state.quarters), [state.quarters]);
   const archivedQuarters = useMemo(() => state.quarters.filter((quarter) => quarter.archived).sort((a, b) => b.startDate.localeCompare(a.startDate)), [state.quarters]);
   const selectedQuarter = quarters.find((q) => q.id === quarterId) ?? quarters[0];
@@ -176,7 +179,12 @@ export default function CalendarPage({ initialState, auth, onUnauthorized, onBac
         body: JSON.stringify({ calendar, revision: state.revision }),
         signal: controller.signal,
       });
-      if (!controller.signal.aborted) setPreview(result);
+      if (controller.signal.aborted) return;
+      if (!result.changedDays.length && !result.removedCount && !result.studyOverrideCount && !result.jointChanges.length) {
+        await persist({ calendar, revision: state.revision, requestId: id(), confirmLessonRemoval: false });
+      } else {
+        setPreview(result);
+      }
     } catch (reason) {
       if (controller.signal.aborted) return;
       if (reason instanceof ApiError && (reason.status === 401 || reason.status === 403)) onUnauthorized();
@@ -186,14 +194,15 @@ export default function CalendarPage({ initialState, auth, onUnauthorized, onBac
     }
   }
 
-  function editPeriod(period?: CalendarPeriod) {
+  function editPeriod(period?: CalendarPeriod, singleDay = false) {
     if (pending) return;
     setError("");
+    setSingleDayDialog(singleDay);
     setPeriodDraft(period ? {
       ...period,
       allGroups: period.groupIds === null,
       groupIds: period.groupIds ?? [],
-    } : blankPeriod());
+    } : { ...blankPeriod(), kind: singleDay ? "day-off" : "holiday" });
   }
 
   function savePeriod() {
@@ -202,16 +211,16 @@ export default function CalendarPage({ initialState, auth, onUnauthorized, onBac
     const proposed: CalendarPeriod = {
       id: periodDraft.id ?? id(),
       name: trimmedName,
-      kind: periodDraft.kind,
+      kind: singleDayDialog ? "day-off" : periodDraft.kind,
       startDate: periodDraft.startDate,
-      endDate: periodDraft.endDate,
-      groupIds: periodDraft.allGroups ? null : periodDraft.groupIds,
+      endDate: singleDayDialog ? periodDraft.startDate : periodDraft.endDate,
+      groupIds: singleDayDialog ? (periodDraft.groupIds.length ? periodDraft.groupIds : null) : periodDraft.allGroups ? null : periodDraft.groupIds,
     };
     const next = { ...calendar, periods: periodDraft.id
       ? calendar.periods.map((period) => period.id === periodDraft.id ? proposed : period)
       : [...calendar.periods, proposed] };
     const validation = validateCalendar(next, state.catalog);
-    if (!trimmedName) return setError("Укажите название периода.");
+    if (!trimmedName) return setError(singleDayDialog ? "Укажите причину неучебного дня." : "Укажите название периода.");
     if (validation) return setError(validation);
     changeCalendar(next);
     setPeriodDraft(null);
@@ -334,7 +343,7 @@ export default function CalendarPage({ initialState, auth, onUnauthorized, onBac
     <main className="catalog-page calendar-page">
       <AdminPageHeader title="Календарь школы" username={auth.username} onBack={back} disabled={busy || Boolean(pending)} busy={backBusy} />
       <section className="catalog-body calendar-body">
-        <div className="calendar-heading"><div><h1>Календарь школы</h1><p>Четверти, каникулы и учебные дни</p></div><button className="catalog-primary" type="button" onClick={() => editPeriod()} disabled={busy || Boolean(pending)}><ActionLabel action="add">Период</ActionLabel></button></div>
+        <div className="calendar-heading"><div><h1>Календарь школы</h1><p>Четверти, каникулы и неучебные дни</p></div><button className="catalog-primary" type="button" onClick={() => editPeriod()} disabled={busy || Boolean(pending)}><ActionLabel action="add">Период</ActionLabel></button></div>
 
         <section className="school-calendar-panel" aria-labelledby="calendar-quarters-title">
           <div className="calendar-panel-title"><strong id="calendar-quarters-title">Учебные четверти</strong><span>Для всей школы</span></div>
@@ -422,10 +431,23 @@ export default function CalendarPage({ initialState, auth, onUnauthorized, onBac
           </div>
         </section>
 
+        <section className="school-calendar-panel calendar-days-panel" aria-labelledby="calendar-days-title">
+          <div className="calendar-days-heading"><div className="calendar-panel-title"><strong id="calendar-days-title">Неучебные дни</strong><span>{nonStudyDays.length}</span></div><button className="catalog-button" type="button" onClick={() => editPeriod(undefined, true)} disabled={busy || Boolean(pending)}><ActionLabel action="add">Неучебный день</ActionLabel></button></div>
+          <p className="calendar-hint">Одна дата в строке. Если группы не выбраны, не учится вся школа. При применении календаря занятия в эти дни будут сняты.</p>
+          {nonStudyDays.length ? <div className="calendar-table-wrap"><table className="catalog-table calendar-table calendar-days-table"><thead><tr><th>День</th><th>Группы</th><th>Причина</th><th><span className="calendar-visually-hidden">Действия</span></th></tr></thead><tbody>
+            {nonStudyDays.map((period) => <tr key={period.id}>
+              <td>{formatDate(period.startDate)}</td>
+              <td>{period.groupIds === null ? "Все группы" : period.groupIds.map((groupId) => state.catalog.groups.find((group) => group.id === groupId)?.name ?? "Удалённая группа").sort(collator.compare).map((name, index, names) => <span key={`${name}-${index}`}><span className="school-code">{name}</span>{index < names.length - 1 ? ", " : ""}</span>)}</td>
+              <td>{period.name}</td>
+              <td className="catalog-actions"><button type="button" onClick={() => editPeriod(period, true)} disabled={busy || Boolean(pending)}><ActionLabel action="edit">Изменить</ActionLabel></button><button type="button" className="archive" onClick={() => changeCalendar({ ...calendar, periods: calendar.periods.filter((item) => item.id !== period.id) })} disabled={busy || Boolean(pending)}><ActionLabel action="delete">Удалить</ActionLabel></button></td>
+            </tr>)}
+          </tbody></table></div> : <p className="calendar-empty">Неучебных дней пока нет. Добавьте праздник или другой день без занятий.</p>}
+        </section>
+
         <section className="school-calendar-panel calendar-period-panel" aria-labelledby="calendar-period-title">
-          <div className="calendar-panel-title"><strong id="calendar-period-title">Периоды</strong><span>{sortedPeriods.length}</span></div>
-          {sortedPeriods.length ? <div className="calendar-table-wrap"><table className="catalog-table calendar-table"><thead><tr><th>Название</th><th>Тип</th><th>Даты</th><th>Группы</th><th /></tr></thead><tbody>
-            {sortedPeriods.map((period) => <tr key={period.id}>
+          <div className="calendar-panel-title"><strong id="calendar-period-title">Периоды</strong><span>{otherPeriods.length}</span></div>
+          {otherPeriods.length ? <div className="calendar-table-wrap"><table className="catalog-table calendar-table"><thead><tr><th>Название</th><th>Тип</th><th>Даты</th><th>Группы</th><th /></tr></thead><tbody>
+            {otherPeriods.map((period) => <tr key={period.id}>
               <td><strong>{period.name}</strong></td><td>{kindLabel(period.kind)}</td><td>{formatDate(period.startDate)} — {formatDate(period.endDate)}</td>
               <td>{period.groupIds === null ? "Вся школа" : period.groupIds.map((groupId) => state.catalog.groups.find((group) => group.id === groupId)?.name ?? "Удалённая группа").sort(collator.compare).map((name, index, names) => <span key={`${name}-${index}`}><span className="school-code">{name}</span>{index < names.length - 1 ? ", " : ""}</span>)}</td>
               <td className="catalog-actions"><button type="button" onClick={() => editPeriod(period)} disabled={busy || Boolean(pending)}><ActionLabel action="edit">Изменить</ActionLabel></button><button type="button" className="archive" onClick={() => changeCalendar({ ...calendar, periods: calendar.periods.filter((item) => item.id !== period.id) })} disabled={busy || Boolean(pending)}><ActionLabel action="delete">Удалить</ActionLabel></button></td>
@@ -434,10 +456,10 @@ export default function CalendarPage({ initialState, auth, onUnauthorized, onBac
         </section>
 
         <div className={`catalog-alert ${conflict ? "conflict" : ""}`} role="status">
-          {error || (conflict ? "Данные календаря изменились. Обновите страницу и повторите изменения." : validationError || "Изменения учебных дней и каникул сохраняются после проверки и применения.")}
+          {error || (conflict ? "Данные календаря изменились. Обновите страницу и повторите изменения." : validationError || "Если расписание не меняется, календарь сохранится сразу. Изменения расписания потребуют подтверждения.")}
         </div>
         <div className="school-calendar-actions">
-          <button className="catalog-button" type="button" onClick={() => void calculatePreview()} disabled={busy || previewBusy || Boolean(pending) || Boolean(validationError)}><ActionLabel action="preview">{previewBusy ? "Расчёт…" : "Проверить изменения"}</ActionLabel></button>
+          <button className="catalog-button" type="button" onClick={() => void calculatePreview()} disabled={!dirty || busy || previewBusy || Boolean(pending) || Boolean(validationError)}><ActionLabel action="preview">{busy ? "Сохранение…" : previewBusy ? "Проверка…" : "Проверить изменения и сохранить"}</ActionLabel></button>
           {calculated && <span className="calendar-preview-summary">Изменится дней: {calculated.changedDays.length}; занятий к снятию: {calculated.removedCount}</span>}
           {saved && !dirty && <span className="calendar-saved">Календарь сохранён</span>}
         </div>
@@ -460,21 +482,27 @@ export default function CalendarPage({ initialState, auth, onUnauthorized, onBac
       </section>
 
       <dialog ref={periodDialog} className="catalog-dialog calendar-dialog" aria-labelledby="calendar-dialog-title" onCancel={(event) => { if (busy || pending) event.preventDefault(); else setPeriodDraft(null); }}>
-        <header><h2 id="calendar-dialog-title">{periodDraft?.id ? "Изменить период" : "Новый период"}</h2><button type="button" aria-label="Закрыть" onClick={() => setPeriodDraft(null)} disabled={busy || Boolean(pending)}>×</button></header>
+        <header><h2 id="calendar-dialog-title">{singleDayDialog ? (periodDraft?.id ? "Изменить неучебный день" : "Новый неучебный день") : periodDraft?.id ? "Изменить период" : "Новый период"}</h2><button type="button" aria-label="Закрыть" onClick={() => setPeriodDraft(null)} disabled={busy || Boolean(pending)}>×</button></header>
         {periodDraft && <form onSubmit={(event) => { event.preventDefault(); savePeriod(); }}>
           <div className="calendar-form-fields">
-            <label><span>Название</span><input ref={nameRef} maxLength={120} value={periodDraft.name} onChange={(event) => setPeriodDraft({ ...periodDraft, name: event.target.value })} placeholder="Например, осенние каникулы" /></label>
-            <label><span>Тип</span><select aria-label="Тип" value={periodDraft.kind} onChange={(event) => setPeriodDraft({ ...periodDraft, kind: event.target.value as CalendarPeriod["kind"] })}><option value="holiday">Каникулы</option><option value="day-off">Неучебные дни</option><option value="study">Дополнительные учебные дни</option></select></label>
+            <label><span>{singleDayDialog ? "Причина" : "Название"}</span><input ref={nameRef} maxLength={120} value={periodDraft.name} onChange={(event) => setPeriodDraft({ ...periodDraft, name: event.target.value })} placeholder={singleDayDialog ? "Например, День России" : "Например, осенние каникулы"} /></label>
+            {!singleDayDialog && <><label><span>Тип</span><select aria-label="Тип" value={periodDraft.kind} onChange={(event) => setPeriodDraft({ ...periodDraft, kind: event.target.value as CalendarPeriod["kind"] })}><option value="holiday">Каникулы</option><option value="day-off">Неучебные дни</option><option value="study">Дополнительные учебные дни</option></select></label>
             <div className="calendar-date-field"><span>С</span><RussianDateInput label="С" value={periodDraft.startDate} onChange={(value) => setPeriodDraft({ ...periodDraft, startDate: value })} /></div>
             <div className="calendar-date-field"><span>По</span><RussianDateInput label="По" value={periodDraft.endDate} onChange={(value) => setPeriodDraft({ ...periodDraft, endDate: value })} /></div>
-            <fieldset className="calendar-group-picker"><legend>Применение</legend>
+            </>}
+            {singleDayDialog && <>
+              <div className="calendar-date-field"><span>День</span><RussianDateInput label="День" value={periodDraft.startDate} onChange={(value) => setPeriodDraft({ ...periodDraft, startDate: value, endDate: value })} /></div>
+              <p className="calendar-hint" role="status">{periodDraft.groupIds.length ? `Не учатся только выбранные группы: ${periodDraft.groupIds.length}.` : "Группы не выбраны — не учится вся школа, включая будущие группы."}</p>
+              <GroupSelection key={periodDraft.id ?? "new-day"} groups={groupChoices} value={periodDraft.groupIds} onChange={(groupIds) => setPeriodDraft({ ...periodDraft, groupIds })} disabled={busy || Boolean(pending)} label="Группы без занятий" />
+            </>}
+            {!singleDayDialog && <fieldset className="calendar-group-picker"><legend>Применение</legend>
               <label><input type="radio" name="calendar-scope" checked={periodDraft.allGroups} onChange={() => setPeriodDraft({ ...periodDraft, allGroups: true })} /> Вся школа, включая будущие группы</label>
               <label><input type="radio" name="calendar-scope" checked={!periodDraft.allGroups} onChange={() => setPeriodDraft({ ...periodDraft, allGroups: false, groupIds: periodDraft.groupIds.length ? periodDraft.groupIds : groups.slice(0, 1).map((group) => group.id) })} /> Выбранные группы</label>
               {!periodDraft.allGroups && <div className="calendar-group-list">{groupChoices.map((group) => <label key={group.id}><input type="checkbox" checked={periodDraft.groupIds.includes(group.id)} onChange={() => setPeriodDraft({ ...periodDraft, groupIds: periodDraft.groupIds.includes(group.id) ? periodDraft.groupIds.filter((groupId) => groupId !== group.id) : [...periodDraft.groupIds, group.id] })} /><span className="school-code">{group.name}</span>{group.archived ? " (архив)" : ""}</label>)}{periodDraft.groupIds.filter((groupId) => !state.catalog.groups.some((group) => group.id === groupId)).map((groupId) => <label key={groupId}><input type="checkbox" checked onChange={() => setPeriodDraft({ ...periodDraft, groupIds: periodDraft.groupIds.filter((item) => item !== groupId) })} />Архивная группа</label>)}</div>}
-            </fieldset>
+            </fieldset>}
           </div>
           {error && <p className="calendar-dialog-error" role="alert">{error}</p>}
-          <footer><button className="catalog-primary" type="submit" disabled={busy || Boolean(pending)}><ActionLabel action="save">Сохранить период</ActionLabel></button><button className="catalog-button" type="button" onClick={() => setPeriodDraft(null)} disabled={busy || Boolean(pending)}>Отмена</button></footer>
+          <footer><button className="catalog-primary" type="submit" disabled={busy || Boolean(pending)}><ActionLabel action="save">{singleDayDialog ? "Сохранить день" : "Сохранить период"}</ActionLabel></button><button className="catalog-button" type="button" onClick={() => setPeriodDraft(null)} disabled={busy || Boolean(pending)}>Отмена</button></footer>
         </form>}
       </dialog>
 

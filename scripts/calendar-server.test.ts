@@ -119,6 +119,99 @@ test("schoolwide periods apply to quarter dates and groups materialized later", 
   assert.equal(newGroupDays.find((day) => day.date === "2026-11-09")?.holiday, true);
 });
 
+test("single-day group day-off previews and clears only scoped lessons, while edits and deletion keep cleared lessons removed", async () => {
+  const { app, path, headers } = await setup();
+  const initial = await state(app, headers);
+  const occupied = Object.entries(initial.schedule).flatMap(([key, days]) => days
+    .filter((day) => day.slots.some((slot) => slot.length))
+    .map((day) => ({ key, day })));
+  const target = occupied.find(({ key, day }) => {
+    const groupId = key.slice(0, key.lastIndexOf(":"));
+    return occupied.some((other) => other.day.date === day.date && other.key !== key &&
+      other.key.slice(0, other.key.lastIndexOf(":")) !== groupId);
+  });
+  assert.ok(target, "seed schedule has lessons for multiple groups on one date");
+  const groupId = target.key.slice(0, target.key.lastIndexOf(":"));
+  const unaffected = occupied.find(({ key, day }) => day.date === target.day.date && key !== target.key &&
+    key.slice(0, key.lastIndexOf(":")) !== groupId)!;
+
+  // Give the target row explicit metadata so cleanup must preserve it.
+  const annotated = structuredClone(initial.schedule);
+  const targetDay = annotated[target.key].find((day) => day.date === target.day.date)!;
+  targetDay.note = "Перенос кабинета";
+  const annotateResponse = await app.inject({ method: "PUT", url: "/api/state", headers, payload: {
+    schedule: annotated, revision: initial.revision, requestId: "day-off-annotate-01",
+  } });
+  assert.equal(annotateResponse.statusCode, 200, annotateResponse.body);
+  const before = await state(app, headers);
+  const rowBefore = before.schedule[target.key].find((day) => day.date === target.day.date)!;
+  const otherBefore = before.schedule[unaffected.key].find((day) => day.date === target.day.date)!;
+  const period = { id: "day-off-russia", name: "День России", kind: "day-off" as const,
+    startDate: target.day.date, endDate: target.day.date, groupIds: [groupId] };
+  const calendar = { weekdays: [1, 2, 3, 4, 5], periods: [period] };
+  const request = { calendar, revision: before.revision, requestId: "day-off-scoped-save-01", confirmLessonRemoval: false };
+  const preview = await app.inject({ method: "PUT", url: "/api/calendar", headers, payload: request });
+  assert.equal(preview.statusCode, 409, preview.body);
+  assert.equal(preview.json().removedCount, rowBefore.slots.flat().length);
+  assert.ok(preview.json().changedDays.some((day: { groupId: string; date: string; label: string }) =>
+    day.groupId === groupId && day.date === target.day.date && day.label === "День России"));
+  assert.equal((await state(app, headers)).revision, before.revision, "preview does not persist changes");
+
+  const saved = await app.inject({ method: "PUT", url: "/api/calendar", headers, payload: {
+    ...request, confirmLessonRemoval: true,
+  } });
+  assert.equal(saved.statusCode, 200, saved.body);
+  let after = saved.json() as StateResponse;
+  assert.deepEqual(after.calendar?.periods, [period]);
+  const cleaned = after.schedule[target.key].find((day) => day.date === target.day.date)!;
+  assert.equal(cleaned.holiday, true);
+  assert.equal(cleaned.note, "Перенос кабинета");
+  assert.deepEqual(cleaned.times, rowBefore.times);
+  assert.equal(cleaned.slots.flat().length, 0);
+  assert.deepEqual(after.schedule[unaffected.key].find((day) => day.date === target.day.date), otherBefore,
+    "other groups keep their lessons and metadata");
+
+  // Reload the app to verify the calendar entry and cleanup are persisted.
+  await app.close();
+  apps.splice(apps.indexOf(app), 1);
+  const reloaded = await buildApp({ dbPath: path });
+  apps.push(reloaded);
+  const login = await reloaded.inject({ method: "POST", url: "/api/auth/login", headers: { origin, host: "127.0.0.1" }, payload: {
+    username: "admin", password: "temporary test password",
+  } });
+  assert.equal(login.statusCode, 200, login.body);
+  const raw = login.headers["set-cookie"];
+  const cookie = (Array.isArray(raw) ? raw[0] : raw)?.split(";")[0];
+  assert.ok(cookie);
+  const reloadHeaders = { cookie, origin, host: "127.0.0.1", "x-csrf-token": login.json().csrfToken as string };
+  after = await state(reloaded, reloadHeaders);
+  assert.deepEqual(after.calendar?.periods, [period]);
+  assert.equal(after.schedule[target.key].find((day) => day.date === target.day.date)?.slots.flat().length, 0);
+
+  const editedCalendar = { ...calendar, periods: [{ ...period, name: "Праздничный выходной" }] };
+  const edited = await reloaded.inject({ method: "PUT", url: "/api/calendar", headers: reloadHeaders, payload: {
+    calendar: editedCalendar, revision: after.revision, requestId: "day-off-reason-edit-01", confirmLessonRemoval: true,
+  } });
+  assert.equal(edited.statusCode, 200, edited.body);
+  after = edited.json() as StateResponse;
+  assert.equal(after.calendar?.periods[0].name, "Праздничный выходной");
+  assert.equal(after.schedule[target.key].find((day) => day.date === target.day.date)?.slots.flat().length, 0,
+    "editing the reason never restores removed lessons");
+
+  const deleted = await reloaded.inject({ method: "PUT", url: "/api/calendar", headers: reloadHeaders, payload: {
+    calendar: { weekdays: [1, 2, 3, 4, 5], periods: [] }, revision: after.revision,
+    requestId: "day-off-delete-01", confirmLessonRemoval: true,
+  } });
+  assert.equal(deleted.statusCode, 200, deleted.body);
+  after = deleted.json() as StateResponse;
+  assert.equal(after.calendar?.periods.length, 0);
+  const deletedDay = after.schedule[target.key].find((day) => day.date === target.day.date)!;
+  assert.notEqual(deletedDay.holiday, true);
+  assert.equal(deletedDay.slots.flat().length, 0, "deleting the calendar entry never restores removed lessons");
+  assert.equal(after.schedule[unaffected.key].find((day) => day.date === target.day.date)?.slots.flat().length,
+    otherBefore.slots.flat().length);
+});
+
 test("calendar migration imports old holiday flags and preserves lesson, day times, and notes", async () => {
   const { app, path, headers } = await setup();
   const before = await state(app, headers);

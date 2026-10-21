@@ -575,6 +575,9 @@ h1 {
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
+.teacher-name-preferred {
+  color: #166534;
+}
 .room-label {
   display: flex;
   gap: 4px;

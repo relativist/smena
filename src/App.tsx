@@ -1637,6 +1637,8 @@ export default function App({
                 </p>
               )}
               {palette.map((item) => {
+                const preferred = catalog.teachers.find(teacher => teacher.id === item.teacherId)
+                  ?.preferredGroupIds?.includes(item.groupId);
                 const subgroup = paletteReady && item.subgroupId ? item.name : undefined;
                 const payload: Placement = {
                   lesson: {
@@ -1695,7 +1697,7 @@ export default function App({
                         <Icon name="grip" size={16} />
                       </span>
                     </div>
-                    <p className="teacher-name" title={item.fullTeacher}>
+                    <p className={`teacher-name${preferred ? " teacher-name-preferred" : ""}`} title={item.fullTeacher}>
                       {teacherInitials(item.fullTeacher)}
                     </p>
                     {paletteReady && <><span className="room-label">

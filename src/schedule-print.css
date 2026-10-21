@@ -2,7 +2,7 @@
 .schedule-print-view *, .schedule-print-view *::before, .schedule-print-view *::after { box-sizing: border-box; }
 .schedule-print-page { min-height: 100%; color: #233047; background: #f4f6fb; }
 .sp-main { display: block; width: 100%; max-width: none; height: auto; min-height: 0; max-height: none; min-width: 0; margin: 0; padding: 18px clamp(12px, 2vw, 28px) 30px; overflow: visible; }
-.sp-view-tabs { display: flex; gap: 5px; width: fit-content; padding: 4px; margin: 0 auto 14px; background: #e9edf6; border-radius: 10px; }
+.sp-view-tabs { display: flex; gap: 5px; width: fit-content; padding: 4px; margin: 0 0 14px max(0px, calc((100% - 1180px) / 2)); background: #e9edf6; border-radius: 10px; }
 .sp-view-tabs button { min-width: 106px; min-height: 40px; padding: 8px 20px; border: 0; border-radius: 7px; color: #65728a; background: transparent; font: inherit; cursor: pointer; }
 .sp-view-tabs button[aria-selected="true"] { color: #3653bc; background: #fff; box-shadow: 0 2px 6px #25304712; }
 .sp-controls { max-width: 1180px; margin: 0 auto 18px; padding: 18px; border: 1px solid #e0e5ef; border-radius: 14px; background: #fff; box-shadow: 0 5px 20px #1c2d4b0a; }

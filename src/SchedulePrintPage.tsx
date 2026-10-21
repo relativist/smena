@@ -83,7 +83,7 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
   const [view, setView] = useState<PrintView>("date");
   const [date, setDate] = useState(isValidIsoDate(initialDate) ? initialDate : dateIso());
   const [stage, setStage] = useState<SchoolStage>("all");
-  const [dateGroupIds, setDateGroupIds] = useState<string[] | undefined>(initialGroupId ? [initialGroupId] : undefined);
+  const [dateGroupIds, setDateGroupIds] = useState<string[] | undefined>(undefined);
   const [index, setIndex] = useState<SchedulePrintIndex>(); const [indexBusy, setIndexBusy] = useState(true); const [indexError, setIndexError] = useState("");
   const [source, setSource] = useState<SchedulePrintSource>("published"); const [quarterId, setQuarterId] = useState(""); const [weekStart, setWeekStart] = useState(""); const [groupIds, setGroupIds] = useState<string[]>([]);
   const [preview, setPreview] = useState<SchedulePrintPreview>(); const [previewKey, setPreviewKey] = useState(""); const [previewBusy, setPreviewBusy] = useState(false); const [error, setError] = useState(""); const [backBusy, setBackBusy] = useState(false);
@@ -93,7 +93,7 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
 
   const quarters = visibleQuarters(source === "published" ? index?.published ?? [] : index?.draft ?? []);
   const quarter = view === "date" ? quarters.find(item => item.startDate <= date && item.endDate >= date) : quarters.find(item => item.id === quarterId) ?? quarters[0];
-  const groupList = useMemo(() => [...(quarter?.groups ?? [])].filter(group => view !== "date" || matchesSchoolStage(group.name, stage)).sort((a, b) => collator.compare(a.name, b.name)), [quarter, view, stage]);
+  const groupList = useMemo(() => [...(quarter?.groups ?? [])].sort((a, b) => collator.compare(a.name, b.name)), [quarter]);
   const selectedGroupIds = view === "date" ? groupList.filter(group => dateGroupIds === undefined || dateGroupIds.includes(group.id)).map(group => group.id) : groupIds;
   const selectedWeek = view === "date" ? date ? mondayOf(date) : "" : weekStart;
   const weeks = useMemo(() => quarter ? weeksFor(quarter) : [], [quarter]);
@@ -254,7 +254,7 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
             <label>Четверть<select aria-label="Четверть" value={quarter?.id ?? ""} onChange={event => changeQuarter(event.target.value)} disabled={!quarters?.length}>{quarters?.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
             <label>Неделя<select aria-label="Неделя" value={weekStart} onChange={event => changeWeek(event.target.value)} disabled={!weeks.length}>{weeks.map(week => <option key={week} value={week}>{dateLabel(week)} – {dateLabel(addDays(week, 6))}</option>)}</select></label>
           </> : <>
-            <label>Школа<select aria-label="Школа" value={stage} onChange={event => { clearPreview(); setStage(event.target.value as SchoolStage); setDateGroupIds(undefined); }}>{stages.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+            <label>Школа<select aria-label="Школа" value={stage} onChange={event => { const next = event.target.value as SchoolStage; clearPreview(); setStage(next); setDateGroupIds(groupList.filter(group => matchesSchoolStage(group.name, next)).map(group => group.id)); }}>{stages.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
             <div className="sp-date-control"><span className="sp-field-label">Дата</span><div className="sp-date-picker">
               <button type="button" aria-label="Предыдущий день" disabled={!date || date <= "0001-01-01"} onClick={() => changeDate(shiftStudentDate(date, -1))}>‹</button>
               <RussianDateInput label="Дата расписания" value={date} onChange={changeDate} />
@@ -269,7 +269,7 @@ export default function SchedulePrintPage({ auth, onUnauthorized, onBack, initia
         {error && <p className="sp-error" role="alert">{error}</p>}{paginationError && <p className="sp-error" role="alert">{paginationError}</p>}
         {index && !quarters?.length && <p className="sp-empty">{source === "published" ? "Нет опубликованных четвертей. Опубликуйте расписание или выберите черновик." : "Нет черновых четвертей для печати."}</p>}
         {index && quarters.length > 0 && view === "date" && !quarter && <p className="sp-empty">{!date ? "Выберите дату расписания." : <>{source === "published" ? "На эту дату нет опубликованного расписания." : "Эта дата не входит ни в одну четверть черновика."} Выберите другую дату.</>}</p>}
-        {index && view === "date" && quarter && !groupList.length && <p className="sp-empty">Нет групп выбранной ступени школы.</p>}
+        {index && view === "date" && quarter && !groupList.length && <p className="sp-empty">Нет групп для печати.</p>}
         {preview && preview.groups.length === 0 && <p className="sp-empty">Для выбранных групп нет данных в этом расписании.</p>}
       </section>
       {preview && previewKey === selectedKey && <div className="sp-preview-scroll" aria-label="Предпросмотр страниц">
